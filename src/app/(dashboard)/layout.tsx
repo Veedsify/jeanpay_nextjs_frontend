@@ -13,8 +13,8 @@ export default function LayoutPage({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body className={`${font.className}`}>
-        <div className="max-w-[1440px] mx-auto grid grid-cols-8">
-          <div className="col-span-1">
+        <div className="mx-auto grid grid-cols-8">
+          <div className="">
             <SideBar />
           </div>
           <div className="col-span-7 px-7 py-4">
