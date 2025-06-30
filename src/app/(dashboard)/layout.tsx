@@ -13,11 +13,11 @@ export default function LayoutPage({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body className={`${font.className}`}>
-        <div className="mx-auto grid grid-cols-8">
-          <div className="">
+        <div className="mx-auto flex">
+          <div className="hidden lg:block">
             <SideBar />
           </div>
-          <div className="col-span-7 px-7 py-4">
+          <div className="2xl:flex-1 px-7 py-4">
             <DashboardHeader />
             {children}
           </div>
