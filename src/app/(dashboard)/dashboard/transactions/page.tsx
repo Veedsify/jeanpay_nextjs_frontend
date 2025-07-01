@@ -101,126 +101,131 @@
 
 
 
-export default function TransactionTable() {
+'use client';
+
+import { useState } from 'react';
+import { 
+  DollarSign, 
+  TrendingUp, 
+  Wifi, 
+  ShoppingCart, 
+  Dumbbell, 
+  Home, 
+  Shield, 
+  Smartphone, 
+  Play, 
+  Plane 
+} from 'lucide-react';
+// import TransactionTableHeader from '@/app/components/transactions/TransactionTableHeader';
+import TransactionFilters from '@/app/components/transactions/TransactionFilters';
+import TransactionTable from '@/app/components/transactions/TransactionTable';
+import TransactionPagination from '@/app/components/transactions/Pagination';
+
+// Mock Data (to be replaced with API calls)
+const mockTransactions = [
+  {
+    id: '4567890135',
+    name: 'Bonus Payment',
+    category: 'Income',
+    account: 'Platinum Plus Visa',
+    accountType: 'visa',
+    date: '2024-09-25',
+    time: '11:00 AM',
+    amount: 1500.00,
+    note: 'Annual performance bonus',
+    status: 'Completed',
+    icon: DollarSign
+  },
+  // ... (include all other transactions)
+] as const;
+
+export default function TransactionComponent() {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedAccount, setSelectedAccount] = useState('All Account');
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedTransactions, setSelectedTransactions] = useState(new Set());
-  const [selectAll, setSelectAll] = useState(false);
-  const [filters, setFilters] = useState({
-    search: '',
-    category: 'All Category',
-    account: 'All Account'
+  const itemsPerPage = 12;
+
+  // Get unique categories
+  const categories = Array.from(new Set(mockTransactions.map(t => t.category)));
+
+  // Filter transactions
+  const filteredTransactions = mockTransactions.filter(transaction => {
+    const matchesSearch = transaction.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         transaction.note.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         transaction.id.includes(searchTerm);
+    const matchesCategory = !selectedCategory || transaction.category === selectedCategory;
+    const matchesAccount = selectedAccount === 'All Account' || transaction.account === selectedAccount;
+    return matchesSearch && matchesCategory && matchesAccount;
   });
 
-  const filteredTransactions = useMemo(() => {
-    return mockTransactions.filter(transaction => {
-      const matchesSearch = transaction.name.toLowerCase().includes(filters.search.toLowerCase()) ||
-                           transaction.note.toLowerCase().includes(filters.search.toLowerCase());
-      const matchesCategory = filters.category === 'All Category' || transaction.category === filters.category;
-      const matchesAccount = filters.account === 'All Account' || transaction.account === filters.account;
-      
-      return matchesSearch && matchesCategory && matchesAccount;
-    });
-  }, [filters]);
-
-  const itemsPerPage = 12;
+  // Pagination
   const totalPages = Math.ceil(filteredTransactions.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentTransactions = filteredTransactions.slice(startIndex, startIndex + itemsPerPage);
+  const paginatedTransactions = filteredTransactions.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
-  const handleFiltersChange = (newFilters) => {
-    setFilters(newFilters);
-    setCurrentPage(1);
-    setSelectedTransactions(new Set());
-    setSelectAll(false);
+  // Handlers
+  const handleSelectTransaction = (id: string) => {
+    setSelectedIds(prev => 
+      prev.includes(id) 
+        ? prev.filter(selectedId => selectedId !== id)
+        : [...prev, id]
+    );
   };
 
-  const handlePageChange = (page) => {
+  const handleSelectAll = (checked: boolean) => {
+    setSelectedIds(checked ? paginatedTransactions.map(t => t.id) : []);
+  };
+
+  const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    setSelectedTransactions(new Set());
-    setSelectAll(false);
+    setSelectedIds([]);
   };
 
-  const handleSelectTransaction = (transactionId) => {
-    const newSelected = new Set(selectedTransactions);
-    if (newSelected.has(transactionId)) {
-      newSelected.delete(transactionId);
-    } else {
-      newSelected.add(transactionId);
-    }
-    setSelectedTransactions(newSelected);
-    setSelectAll(newSelected.size === currentTransactions.length);
-  };
-
-  const handleSelectAll = () => {
-    if (selectAll) {
-      setSelectedTransactions(new Set());
-      setSelectAll(false);
-    } else {
-      const allIds = new Set(currentTransactions.map(t => t.id));
-      setSelectedTransactions(allIds);
-      setSelectAll(true);
-    }
+  const handleDownload = () => {
+    console.log('Downloading transactions with filters:', {
+      searchTerm,
+      selectedCategory,
+      selectedAccount,
+      selectedIds
+    });
+    // API call for download would go here
   };
 
   return (
-    <div className="w-full space-y-6">
-      <TransactionFilters onFiltersChange={handleFiltersChange} />
+    <div className="max-w-7xl mx-auto p-6 space-y-6">
+      {/* <TransactionHeader /> */}
       
-      <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-gray-50 dark:bg-gray-800">
-              <tr>
-                <th className="px-6 py-3 text-left w-12">
-                  <input
-                    type="checkbox"
-                    checked={selectAll}
-                    onChange={handleSelectAll}
-                    className="h-4 w-4 text-[#004643] focus:ring-[#004643] border-gray-300 rounded"
-                  />
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Transaction Name
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Account
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Transaction ID
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Date & Time
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Amount
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Note
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Status
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
-              {currentTransactions.map((transaction) => (
-                <TransactionRow
-                  key={transaction.id} 
-                  transaction={transaction}
-                  isSelected={selectedTransactions.has(transaction.id)}
-                  onSelect={handleSelectTransaction}
-                />
-              ))}
-            </tbody>
-          </table>
-        </div>
-        
-        <Pagination
+      <TransactionFilters
+        search={searchTerm}
+        onSearchChange={setSearchTerm}
+        category={selectedCategory}
+        onCategoryChange={setSelectedCategory}
+        categories={categories}
+        account={selectedAccount}
+        onAccountChange={setSelectedAccount}
+        onDownload={handleDownload}
+      />
+      
+      <TransactionTable
+        transactions={paginatedTransactions}
+        selectedIds={selectedIds}
+        onSelectTransaction={handleSelectTransaction}
+        onSelectAll={handleSelectAll}
+      />
+      
+      {filteredTransactions.length > 0 && (
+        <TransactionPagination
           currentPage={currentPage}
           totalPages={totalPages}
+          totalItems={filteredTransactions.length}
+          itemsPerPage={itemsPerPage}
           onPageChange={handlePageChange}
         />
-      </div>
+      )}
     </div>
   );
 }
