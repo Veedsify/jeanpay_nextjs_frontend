@@ -287,7 +287,7 @@ export default function DashBoardPage() {
               </div>
 
               <div className="bg-white shadow-sm overflow-hidden rounded-2xl">
-                <div className="overflow-x-auto">
+                <div className="relative w-full overflow-x-auto">
                   <table className="w-full">
                     <thead className="bg-green-bg border-b">
                       <tr>
@@ -320,11 +320,11 @@ export default function DashBoardPage() {
                                 {getTransactionIcon(transaction.type)}
                               </div>
                               <div>
-                                <p className="font-medium text-gray-900">
+                                <p className="font-medium text-gray-900 text-base sm:text-sm">
                                   {transaction.description}
                                 </p>
                                 {transaction.recipient && (
-                                  <p className="text-sm text-gray-600">
+                                  <p className="text-sm sm:text-xs text-gray-600">
                                     {transaction.recipient}
                                   </p>
                                 )}
@@ -332,7 +332,7 @@ export default function DashBoardPage() {
                             </div>
                           </td>
                           <td className="py-4 px-6">
-                            <p className="font-semibold text-gray-900">
+                            <p className="font-semibold text-gray-900 text-base sm:text-sm">
                               {getTransactionText(transaction)}
                             </p>
                           </td>
@@ -348,16 +348,16 @@ export default function DashBoardPage() {
                           </td>
                           <td className="py-4 px-6">
                             <div>
-                              <p className="text-gray-900">
+                              <p className="text-gray-900 text-base sm:text-sm">
                                 {transaction.date}
                               </p>
-                              <p className="text-sm text-gray-600">
+                              <p className="text-sm sm:text-xs text-gray-600">
                                 {transaction.time}
                               </p>
                             </div>
                           </td>
                           <td className="py-4 px-6">
-                            <p className="text-sm font-mono text-gray-600">
+                            <p className="text-sm sm:text-xs font-mono text-gray-600">
                               {transaction.transactionId}
                             </p>
                           </td>
