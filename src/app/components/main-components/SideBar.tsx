@@ -10,11 +10,15 @@ import {
   Bell,
   Gear,
 } from "@phosphor-icons/react";
+import { ArrowRightLeft } from "lucide-react";
+
 
 const navItems = [
   { name: "Dashboard", href: "/dashboard", icon: House },
   { name: "Wallet", href: "/dashboard/wallet", icon: Wallet },
   { name: "Convert", href: "/dashboard/convert", icon: ArrowsClockwise },
+  { name: "Transcations", href: "/dashboard/transactions", icon: ArrowRightLeft},
+  { name: "Settings", href: "/dashboard/settings", icon: ArrowRightLeft},
   { name: "History", href: "/dashboard/history", icon: ClockCounterClockwise },
   { name: "Notifications", href: "/dashboard/notifications", icon: Bell },
   { name: "Settings", href: "/dashboard/settings", icon: Gear },

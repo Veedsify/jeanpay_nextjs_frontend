@@ -19,6 +19,7 @@ export default function LayoutPage({ children }: { children: ReactNode }) {
           </div>
           <div className="2xl:flex-1 px-7 py-4">
             <DashboardHeader />
+            
             {children}
           </div>
         </div>
