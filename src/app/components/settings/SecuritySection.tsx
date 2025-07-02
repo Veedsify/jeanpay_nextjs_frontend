@@ -33,29 +33,19 @@ export const SecuritySection = () => {
       alert('New passwords do not match!');
       return;
     }
-    
+
     if (passwordData.newPassword.length < 6) {
       alert('Password must be at least 6 characters long!');
       return;
     }
 
-    // Here you would typically call your API to update the password
-    console.log('Password updated successfully');
     alert('Password updated successfully!');
-    
-    // Reset form and hide it
-    setPasswordData({
-      currentPassword: '',
-      newPassword: '',
-      confirmPassword: '',
-    });
+    setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
     setShowPasswordForm(false);
   };
 
   const handleDeleteAccount = () => {
     if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
-      // Here you would typically call your API to delete the account
-      console.log('Account deletion requested');
       alert('Account deletion request submitted. Please check your email for confirmation.');
     }
   };
@@ -68,31 +58,37 @@ export const SecuritySection = () => {
         onChange={onChange}
         className="sr-only peer"
       />
-      <div className={`w-12 h-7 rounded-full peer transition-colors duration-200 ease-in-out ${
-        checked ? 'bg-green-400' : 'bg-gray-200'
-      }`}>
-        <div className={`absolute top-0.5 left-0.5 bg-white w-6 h-6 rounded-full transition-transform duration-200 ease-in-out ${
-          checked ? 'translate-x-5' : 'translate-x-0'
-        }`}></div>
+      <div
+        className={`w-12 h-7 rounded-full peer transition-colors duration-200 ease-in-out ${
+          checked
+            ? 'bg-[var(--jean-green-400)]'
+            : 'bg-[var(--jean-gray-200)]'
+        }`}
+      >
+        <div
+          className={`absolute top-0.5 left-0.5 bg-[var(--jean-white)] w-6 h-6 rounded-full transition-transform duration-200 ease-in-out ${
+            checked ? 'translate-x-5' : 'translate-x-0'
+          }`}
+        ></div>
       </div>
     </label>
   );
 
   return (
-    <div className="w-full h-auto bg-white px-6 pb-16">
+    <div className="w-full bg-[var(--jean-white)] px-6 pb-16">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-gray-900 mb-2">Security</h1>
-        <p className="text-gray-600">Manage Your Security Settings</p>
+        <h1 className="text-2xl font-semibold text-[var(--jean-gray-900)] mb-2">Security</h1>
+        <p className="text-[var(--jean-gray-600)]">Manage Your Security Settings</p>
       </div>
 
       {/* Password Section */}
-      <div className="mb-8 p-6 border border-gray-200 rounded-lg">
+      <div className="mb-8 p-6 border border-[var(--jean-gray-200)] rounded-lg">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-gray-900">Password</h2>
+          <h2 className="text-lg font-semibold text-[var(--jean-gray-900)]">Password</h2>
           <button
             onClick={() => setShowPasswordForm(!showPasswordForm)}
-            className="flex items-center gap-2 bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors text-sm"
+            className="flex items-center gap-2 bg-[var(--jean-teal-700)] text-[var(--jean-white)] px-4 py-2 rounded-lg hover:bg-[var(--jean-teal-800)] transition-colors text-sm"
           >
             <span className="text-xs">📝</span>
             Change Password
@@ -100,86 +96,67 @@ export const SecuritySection = () => {
         </div>
 
         {showPasswordForm && (
-          <div className="mt-6 space-y-4 bg-gray-50 p-4 rounded-lg">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Current Password
-              </label>
-              <div className="relative">
-                <input
-                  type={showCurrentPassword ? "text" : "password"}
-                  name="currentPassword"
-                  value={passwordData.currentPassword}
-                  onChange={handlePasswordChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 pr-12"
-                  placeholder="Enter current password"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                >
-                  {showCurrentPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                </button>
-              </div>
-            </div>
+          <div className="mt-6 space-y-4 bg-[var(--jean-gray-50)] p-4 rounded-lg">
+            {['currentPassword', 'newPassword', 'confirmPassword'].map((field, idx) => {
+              const isShown =
+                field === 'currentPassword'
+                  ? showCurrentPassword
+                  : field === 'newPassword'
+                  ? showNewPassword
+                  : showConfirmPassword;
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                New Password
-              </label>
-              <div className="relative">
-                <input
-                  type={showNewPassword ? "text" : "password"}
-                  name="newPassword"
-                  value={passwordData.newPassword}
-                  onChange={handlePasswordChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 pr-12"
-                  placeholder="Enter new password"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowNewPassword(!showNewPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                >
-                  {showNewPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                </button>
-              </div>
-            </div>
+              const setShown =
+                field === 'currentPassword'
+                  ? setShowCurrentPassword
+                  : field === 'newPassword'
+                  ? setShowNewPassword
+                  : setShowConfirmPassword;
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Confirm New Password
-              </label>
-              <div className="relative">
-                <input
-                  type={showConfirmPassword ? "text" : "password"}
-                  name="confirmPassword"
-                  value={passwordData.confirmPassword}
-                  onChange={handlePasswordChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 pr-12"
-                  placeholder="Confirm new password"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                >
-                  {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                </button>
-              </div>
-            </div>
+              const labelText =
+                field === 'currentPassword'
+                  ? 'Current Password'
+                  : field === 'newPassword'
+                  ? 'New Password'
+                  : 'Confirm New Password';
+
+              const placeholderText = labelText;
+
+              return (
+                <div key={field}>
+                  <label className="block text-sm font-medium text-[var(--jean-gray-700)] mb-2">
+                    {labelText}
+                  </label>
+                  <div className="relative">
+                    <input
+                      type={isShown ? 'text' : 'password'}
+                      name={field}
+                      value={passwordData[field as keyof PasswordData]}
+                      onChange={handlePasswordChange}
+                      placeholder={placeholderText}
+                      className="w-full px-4 py-3 border border-[var(--jean-gray-300)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--jean-teal-700)] pr-12"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShown(prev => !prev)}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[var(--jean-gray-500)] hover:text-[var(--jean-gray-700)]"
+                    >
+                      {isShown ? <EyeOff size={20} /> : <Eye size={20} />}
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
 
             <div className="flex gap-3 pt-4">
               <button
                 onClick={handlePasswordSave}
-                className="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition-colors"
+                className="bg-[var(--jean-teal-700)] text-[var(--jean-white)] px-6 py-2 rounded-lg hover:bg-[var(--jean-teal-800)] transition-colors"
               >
                 Save Changes
               </button>
               <button
                 onClick={() => setShowPasswordForm(false)}
-                className="bg-gray-300 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-400 transition-colors"
+                className="bg-[var(--jean-gray-300)] text-[var(--jean-gray-700)] px-6 py-2 rounded-lg hover:bg-[var(--jean-gray-400)] transition-colors"
               >
                 Cancel
               </button>
@@ -190,25 +167,25 @@ export const SecuritySection = () => {
 
       {/* Devices & Authentication Section */}
       <div className="mb-8">
-        <h2 className="text-lg font-semibold text-gray-900 mb-6">Devices & Authentication</h2>
+        <h2 className="text-lg font-semibold text-[var(--jean-gray-900)] mb-6">Devices & Authentication</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
           <div>
-            <h3 className="font-medium text-gray-900 mb-1">Last Login Time</h3>
-            <p className="text-lg font-semibold text-gray-900">May 12, 2003 | 12:55 PM</p>
+            <h3 className="font-medium text-[var(--jean-gray-900)] mb-1">Last Login Time</h3>
+            <p className="text-lg font-semibold text-[var(--jean-gray-900)]">May 12, 2003 | 12:55 PM</p>
           </div>
           <div>
-            <h3 className="font-medium text-gray-900 mb-1">Trusted Devices</h3>
-            <p className="text-lg font-semibold text-gray-900">Chrome On Linux @ Google (This Device)</p>
+            <h3 className="font-medium text-[var(--jean-gray-900)] mb-1">Trusted Devices</h3>
+            <p className="text-lg font-semibold text-[var(--jean-gray-900)]">Chrome On Linux @ Google (This Device)</p>
           </div>
         </div>
 
         <div className="flex items-center justify-between py-4">
           <div>
-            <h3 className="font-medium text-gray-900 mb-1">Two Factor Authentication</h3>
-            <p className="text-sm text-gray-600">Enable Two Factor Authentication For your Account</p>
+            <h3 className="font-medium text-[var(--jean-gray-900)] mb-1">Two Factor Authentication</h3>
+            <p className="text-sm text-[var(--jean-gray-600)]">Enable Two Factor Authentication For your Account</p>
           </div>
-          <Toggle 
+          <Toggle
             checked={twoFactorEnabled}
             onChange={() => setTwoFactorEnabled(!twoFactorEnabled)}
           />
@@ -216,18 +193,18 @@ export const SecuritySection = () => {
       </div>
 
       {/* Danger Zone */}
-      <div className="border-2 border-red-200 rounded-lg p-6 bg-red-50">
+      <div className="border-2 border-red-200 rounded-lg p-6 bg-red-5">
         <h2 className="text-lg font-semibold text-red-600 mb-6">Danger Zone</h2>
         
         <div className="space-y-6">
           <div className="flex items-center justify-between py-4">
             <div>
-              <h3 className="font-medium text-gray-900 mb-1">Deactivate Account</h3>
-              <p className="text-sm text-gray-600">
-                Deactivate Your Account To Prevent Unwanted Access, You'll need to contact Support To re-enable account
+              <h3 className="font-medium text-[var(--jean-gray-900)] mb-1">Deactivate Account</h3>
+              <p className="text-sm text-[var(--jean-gray-600)]">
+                Deactivate Your Account To Prevent Unwanted Access. You'll need to contact Support To re-enable account
               </p>
             </div>
-            <Toggle 
+            <Toggle
               checked={accountDeactivated}
               onChange={() => setAccountDeactivated(!accountDeactivated)}
             />
@@ -235,12 +212,12 @@ export const SecuritySection = () => {
 
           <div className="flex items-center justify-between py-4">
             <div>
-              <h3 className="font-medium text-gray-900 mb-1">Delete Account</h3>
-              <p className="text-sm text-gray-600">Request Account Deletion</p>
+              <h3 className="font-medium text-[var(--jean-gray-900)] mb-1">Delete Account</h3>
+              <p className="text-sm text-[var(--jean-gray-600)]">Request Account Deletion</p>
             </div>
             <button
               onClick={handleDeleteAccount}
-              className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors text-sm"
+              className="bg-red-600 text-[var(--jean-white)] px-4 py-2 rounded-lg hover:bg-red-700 transition-colors text-sm"
             >
               🗑️ Delete Account
             </button>

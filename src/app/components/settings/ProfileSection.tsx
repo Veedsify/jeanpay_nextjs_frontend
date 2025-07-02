@@ -1,4 +1,4 @@
-// import { useState } from "react";
+// import { useState, useRef } from "react";
 // import { Edit } from "lucide-react";
 
 // interface ProfileSectionProps {
@@ -7,6 +7,7 @@
 //     lastName: string;
 //     email: string;
 //     phone: string;
+//     profileImage?: string;
 //   };
 //   onProfileUpdate: (updatedData: typeof profileData) => void;
 // }
@@ -16,145 +17,206 @@
 //   onProfileUpdate,
 // }: ProfileSectionProps) => {
 //   const [isEditing, setIsEditing] = useState(false);
+//   const [isEditingImage, setIsEditingImage] = useState(false);
 //   const [localProfileData, setLocalProfileData] = useState(profileData);
+//   const [previewImage, setPreviewImage] = useState(profileData.profileImage || "");
+//   const fileInputRef = useRef<HTMLInputElement>(null);
 
 //   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 //     const { name, value } = e.target;
 //     setLocalProfileData({ ...localProfileData, [name]: value });
 //   };
 
+//   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//     const file = e.target.files?.[0];
+//     if (file) {
+//       const reader = new FileReader();
+//       reader.onloadend = () => {
+//         setPreviewImage(reader.result as string);
+//         setLocalProfileData({
+//           ...localProfileData,
+//           profileImage: reader.result as string
+//         });
+//       };
+//       reader.readAsDataURL(file);
+//     }
+//   };
+
+//   const triggerFileInput = () => {
+//     fileInputRef.current?.click();
+//   };
+
 //   const handleSubmit = (e: React.FormEvent) => {
 //     e.preventDefault();
 //     onProfileUpdate(localProfileData);
 //     setIsEditing(false);
+//     setIsEditingImage(false);
 //   };
 
 //   return (
 //     <div className="p-8">
 //       <div className="mb-8">
-//         <h1 className="text-2xl font-semibold text-gray-900 mb-2">
+//         <h1 className="text-2xl font-semibold mb-2" style={{ color: 'var(--jean-gray-900)' }}>
 //           Manage Your Profile
 //         </h1>
-//         <p className="text-gray-600">Update your profile information</p>
+//         <p style={{ color: 'var(--jean-gray-600)' }}>Update your profile information</p>
 //       </div>
 
-//       <div className="bg-gray-50 rounded-lg p-6 mb-8">
+//       {/* Profile Header with Image */}
+//       <div className="rounded-lg p-6 mb-8" style={{ backgroundColor: 'var(--jean-gray-50)' , border: '1px solid var(--jean-gray-200)' }}>
 //         <div className="flex items-center justify-between">
 //           <div className="flex items-center space-x-4">
-//             <div className="w-16 h-16 bg-gray-300 rounded-full flex items-center justify-center overflow-hidden">
-//               <div className="w-full h-full bg-gradient-to-br from-pink-200 to-pink-300 flex items-center justify-center">
-//                 <span className="text-2xl text-pink-800">
-//                   {localProfileData.firstName.charAt(0)}
-//                 </span>
+//             <div className="relative">
+//               <div className="w-16 h-16 rounded-full flex items-center justify-center overflow-hidden"
+//                 style={{ backgroundColor: 'var(--jean-gray-300)' }}>
+//                 {previewImage ? (
+//                   <img
+//                     src={previewImage}
+//                     alt="Profile"
+//                     className="w-full h-full object-cover"
+//                   />
+//                 ) : (
+//                   <div className="w-full h-full bg-gradient-to-br flex items-center justify-center"
+//                     style={{
+//                       backgroundImage: 'linear-gradient(to bottom right, var(--jean-pink-200), var(--jean-pink-300))'
+//                     }}>
+//                     <span className="text-2xl" style={{ color: 'var(--jean-pink-800)' }}>
+//                       {localProfileData.firstName.charAt(0)}
+//                     </span>
+//                   </div>
+//                 )}
 //               </div>
+//               {isEditingImage && (
+//                 <input
+//                   type="file"
+//                   ref={fileInputRef}
+//                   onChange={handleImageChange}
+//                   accept="image/*"
+//                   className="hidden"
+//                 />
+//               )}
 //             </div>
 //             <div>
-//               <h2 className="text-xl font-semibold text-gray-900">
+//               <h2 className="text-xl font-semibold" style={{ color: 'var(--jean-gray-900)' }}>
 //                 {localProfileData.firstName} {localProfileData.lastName}
 //               </h2>
-//               <p className="text-gray-600">Nigeria</p>
+//               <p style={{ color: 'var(--jean-gray-600)' }}>Nigeria</p>
 //             </div>
 //           </div>
 //           <button
+//             onClick={() => {
+//               setIsEditingImage(!isEditingImage);
+//               if (!isEditingImage && !isEditing) setIsEditing(true);
+//             }}
+//             className="flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors"
+//             style={{
+//               backgroundColor: 'var(--jean-teal-600)',
+//               color: 'var(--jean-white)'
+//             }}
+//             onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'var(--jean-teal-700)'}
+//             onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'var(--jean-teal-600)'}
+//           >
+//             <Edit size={16} />
+//             <span>{isEditingImage ? "Cancel" : "Edit"}</span>
+//           </button>
+//         </div>
+//         {isEditingImage && (
+//           <div className="mt-4">
+//             <button
+//               onClick={triggerFileInput}
+//               className="px-4 py-2 rounded-lg"
+//               style={{
+//                 backgroundColor: 'var(--jean-blue-600)',
+//                 color: 'var(--jean-white)'
+//               }}
+//               onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'var(--jean-blue-700)'}
+//               onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'var(--jean-blue-600)'}
+//             >
+//               Upload New Image
+//             </button>
+//           </div>
+//         )}
+//       </div>
+
+//       {/* Personal Information Section */}
+//       <div className="rounded-lg p-6" style={{ backgroundColor: 'var(--jean-gray-50)' ,border: '1px solid var(--jean-gray-200)' }}>
+//         <div className="flex items-center justify-between mb-6">
+//           <h3 className="text-lg font-semibold" style={{ color: 'var(--jean-gray-900)' }}>
+//             Personal Information
+//           </h3>
+//           <button
 //             onClick={() => setIsEditing(!isEditing)}
-//             className="flex items-center space-x-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors"
+//             className="flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors"
+//             style={{
+//               backgroundColor: 'var(--jean-teal-600)',
+//               color: 'var(--jean-white)'
+//             }}
+//             onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'var(--jean-teal-700)'}
+//             onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'var(--jean-teal-600)'}
 //           >
 //             <Edit size={16} />
 //             <span>{isEditing ? "Cancel" : "Edit"}</span>
 //           </button>
 //         </div>
-//       </div>
 
-//       <div className="bg-gray-50 rounded-lg p-6">
 //         <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-8">
-//           <div>
-//             <label className="block text-sm font-medium text-gray-700 mb-2">
-//               First name
-//             </label>
-//             {isEditing ? (
-//               <input
-//                 type="text"
-//                 name="firstName"
-//                 value={localProfileData.firstName}
-//                 onChange={handleChange}
-//                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-//               />
-//             ) : (
-//               <div className="text-lg font-semibold text-gray-900">
-//                 {localProfileData.firstName}
-//               </div>
-//             )}
-//           </div>
+//           {['firstName', 'lastName', 'phone', 'email'].map((field) => (
+//             <div key={field}>
+//               <label className="block text-sm font-medium mb-2" style={{ color: 'var(--jean-gray-700)' }}>
+//                 {field === 'firstName' ? 'First name' :
+//                   field === 'lastName' ? 'Last name' :
+//                   field === 'phone' ? 'Phone' : 'Email Address'}
+//               </label>
+//               {isEditing ? (
+//                 <input
+//                   type={field === 'email' ? 'email' : field === 'phone' ? 'tel' : 'text'}
+//                   name={field}
+//                   value={localProfileData[field]}
+//                   onChange={handleChange}
+//                   className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2"
+//                   style={{
+//                     borderColor: 'var(--jean-gray-300)',
+//                     color: 'var(--jean-gray-900)',
+//                     backgroundColor: 'var(--jean-white)',
+//                     outlineColor: 'var(--jean-blue-500)',
+//                   }}
+//                 />
+//               ) : (
+//                 <div className="text-lg font-semibold" style={{ color: 'var(--jean-gray-900)' }}>
+//                   {localProfileData[field]}
+//                 </div>
+//               )}
+//             </div>
+//           ))}
 
-//           <div>
-//             <label className="block text-sm font-medium text-gray-700 mb-2">
-//               Last name
-//             </label>
-//             {isEditing ? (
-//               <input
-//                 type="text"
-//                 name="lastName"
-//                 value={localProfileData.lastName}
-//                 onChange={handleChange}
-//                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-//               />
-//             ) : (
-//               <div className="text-lg font-semibold text-gray-900">
-//                 {localProfileData.lastName}
-//               </div>
-//             )}
-//           </div>
-
-//           <div>
-//             <label className="block text-sm font-medium text-gray-700 mb-2">
-//               Phone
-//             </label>
-//             {isEditing ? (
-//               <input
-//                 type="tel"
-//                 name="phone"
-//                 value={localProfileData.phone}
-//                 onChange={handleChange}
-//                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-//               />
-//             ) : (
-//               <div className="text-lg font-semibold text-gray-900">
-//                 {localProfileData.phone}
-//               </div>
-//             )}
-//           </div>
-
-//           <div>
-//             <label className="block text-sm font-medium text-gray-700 mb-2">
-//               Email Address
-//             </label>
-//             {isEditing ? (
-//               <input
-//                 type="email"
-//                 name="email"
-//                 value={localProfileData.email}
-//                 onChange={handleChange}
-//                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-//               />
-//             ) : (
-//               <div className="text-lg font-semibold text-gray-900">
-//                 {localProfileData.email}
-//               </div>
-//             )}
-//           </div>
-
-//           {isEditing && (
+//           {(isEditing || isEditingImage) && (
 //             <div className="md:col-span-2 mt-6 flex justify-end space-x-4">
 //               <button
 //                 type="button"
-//                 onClick={() => setIsEditing(false)}
-//                 className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+//                 onClick={() => {
+//                   setIsEditing(false);
+//                   setIsEditingImage(false);
+//                   setLocalProfileData(profileData);
+//                   setPreviewImage(profileData.profileImage || "");
+//                 }}
+//                 className="px-4 py-2 rounded-lg"
+//                 style={{
+//                   backgroundColor: 'var(--jean-white)',
+//                   border: '1px solid var(--jean-gray-300)',
+//                   color: 'var(--jean-gray-700)'
+//                 }}
 //               >
 //                 Cancel
 //               </button>
 //               <button
 //                 type="submit"
-//                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+//                 className="px-4 py-2 rounded-lg"
+//                 style={{
+//                   backgroundColor: 'var(--jean-blue-600)',
+//                   color: 'var(--jean-white)'
+//                 }}
+//                 onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'var(--jean-blue-700)'}
+//                 onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'var(--jean-blue-600)'}
 //               >
 //                 Save Changes
 //               </button>
@@ -225,18 +287,18 @@ export const ProfileSection = ({
   return (
     <div className="p-8">
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-gray-900 mb-2">
+        <h1 className="text-2xl font-semibold text-[var(--jean-gray-900)] mb-2">
           Manage Your Profile
         </h1>
-        <p className="text-gray-600">Update your profile information</p>
+        <p className="text-[var(--jean-gray-600)]">Update your profile information</p>
       </div>
 
       {/* Profile Header with Image */}
-      <div className="bg-gray-50 rounded-lg p-6 mb-8">
+      <div className="bg-[var(--jean-gray-50)] rounded-lg p-6 mb-8">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <div className="relative">
-              <div className="w-16 h-16 bg-gray-300 rounded-full flex items-center justify-center overflow-hidden">
+              <div className="w-16 h-16 bg-[var(--jean-gray-300)] rounded-full flex items-center justify-center overflow-hidden">
                 {previewImage ? (
                   <img 
                     src={previewImage} 
@@ -244,8 +306,8 @@ export const ProfileSection = ({
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <div className="w-full h-full bg-gradient-to-br from-pink-200 to-pink-300 flex items-center justify-center">
-                    <span className="text-2xl text-pink-800">
+                  <div className="w-full h-full bg-gradient-to-br from-[var(--jean-pink-200)] to-[var(--jean-pink-300)] flex items-center justify-center">
+                    <span className="text-2xl text-[var(--jean-pink-800)]">
                       {localProfileData.firstName.charAt(0)}
                     </span>
                   </div>
@@ -262,20 +324,18 @@ export const ProfileSection = ({
               )}
             </div>
             <div>
-              <h2 className="text-xl font-semibold text-gray-900">
+              <h2 className="text-xl font-semibold text-[var(--jean-gray-900)]">
                 {localProfileData.firstName} {localProfileData.lastName}
               </h2>
-              <p className="text-gray-600">Nigeria</p>
+              <p className="text-[var(--jean-gray-600)]">Nigeria</p>
             </div>
           </div>
           <button
             onClick={() => {
               setIsEditingImage(!isEditingImage);
-              if (!isEditingImage && !isEditing) {
-                setIsEditing(true);
-              }
+              if (!isEditingImage && !isEditing) setIsEditing(true);
             }}
-            className="flex items-center space-x-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors"
+            className="flex items-center space-x-2 px-4 py-2 bg-[var(--jean-teal-700)] text-[var(--jean-white)] rounded-lg hover:bg-[var(--jean-teal-800)] transition-colors"
           >
             <Edit size={16} />
             <span>{isEditingImage ? "Cancel" : "Edit"}</span>
@@ -285,7 +345,7 @@ export const ProfileSection = ({
           <div className="mt-4">
             <button
               onClick={triggerFileInput}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              className="px-4 py-2 bg-[var(--jean-green-600)] text-[var(--jean-white)] rounded-lg hover:bg-[var(--jean-green-700)]"
             >
               Upload New Image
             </button>
@@ -294,14 +354,14 @@ export const ProfileSection = ({
       </div>
 
       {/* Personal Information Section */}
-      <div className="bg-gray-50 rounded-lg p-6">
+      <div className="bg-[var(--jean-gray-50)] rounded-lg p-6">
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-lg font-semibold text-gray-900">
+          <h3 className="text-lg font-semibold text-[var(--jean-gray-900)]">
             Personal Information
           </h3>
           <button
             onClick={() => setIsEditing(!isEditing)}
-            className="flex items-center space-x-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors"
+            className="flex items-center space-x-2 px-4 py-2 bg-[var(--jean-teal-700)] text-[var(--jean-white)] rounded-lg hover:bg-[var(--jean-teal-800)] transition-colors"
           >
             <Edit size={16} />
             <span>{isEditing ? "Cancel" : "Edit"}</span>
@@ -309,8 +369,9 @@ export const ProfileSection = ({
         </div>
 
         <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* First Name */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-[var(--jean-gray-700)] mb-2">
               First name
             </label>
             {isEditing ? (
@@ -319,17 +380,18 @@ export const ProfileSection = ({
                 name="firstName"
                 value={localProfileData.firstName}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-[var(--jean-gray-300)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--jean-green-600)]"
               />
             ) : (
-              <div className="text-lg font-semibold text-gray-900">
+              <div className="text-lg font-semibold text-[var(--jean-gray-900)]">
                 {localProfileData.firstName}
               </div>
             )}
           </div>
 
+          {/* Last Name */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-[var(--jean-gray-700)] mb-2">
               Last name
             </label>
             {isEditing ? (
@@ -338,17 +400,18 @@ export const ProfileSection = ({
                 name="lastName"
                 value={localProfileData.lastName}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-[var(--jean-gray-300)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--jean-green-600)]"
               />
             ) : (
-              <div className="text-lg font-semibold text-gray-900">
+              <div className="text-lg font-semibold text-[var(--jean-gray-900)]">
                 {localProfileData.lastName}
               </div>
             )}
           </div>
 
+          {/* Phone */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-[var(--jean-gray-700)] mb-2">
               Phone
             </label>
             {isEditing ? (
@@ -357,17 +420,18 @@ export const ProfileSection = ({
                 name="phone"
                 value={localProfileData.phone}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-[var(--jean-gray-300)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--jean-green-600)]"
               />
             ) : (
-              <div className="text-lg font-semibold text-gray-900">
+              <div className="text-lg font-semibold text-[var(--jean-gray-900)]">
                 {localProfileData.phone}
               </div>
             )}
           </div>
 
+          {/* Email */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-[var(--jean-gray-700)] mb-2">
               Email Address
             </label>
             {isEditing ? (
@@ -376,15 +440,16 @@ export const ProfileSection = ({
                 name="email"
                 value={localProfileData.email}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-[var(--jean-gray-300)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--jean-green-600)]"
               />
             ) : (
-              <div className="text-lg font-semibold text-gray-900">
+              <div className="text-lg font-semibold text-[var(--jean-gray-900)]">
                 {localProfileData.email}
               </div>
             )}
           </div>
 
+          {/* Action Buttons */}
           {(isEditing || isEditingImage) && (
             <div className="md:col-span-2 mt-6 flex justify-end space-x-4">
               <button
@@ -395,13 +460,13 @@ export const ProfileSection = ({
                   setLocalProfileData(profileData);
                   setPreviewImage(profileData.profileImage || "");
                 }}
-                className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+                className="px-4 py-2 border border-[var(--jean-gray-300)] rounded-lg text-[var(--jean-gray-700)] hover:bg-[var(--jean-gray-100)]"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                className="px-4 py-2 bg-[var(--jean-green-600)] text-[var(--jean-white)] rounded-lg hover:bg-[var(--jean-green-700)]"
               >
                 Save Changes
               </button>
