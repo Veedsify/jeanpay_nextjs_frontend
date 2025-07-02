@@ -1,103 +1,157 @@
-
-
-
-// // src/app/transactions/page.tsx
 // 'use client';
 
-// import React, { useState } from 'react';
-// // Remove Calendar and Download as they are now in TransactionFilters
-// // import { Download, Calendar } from 'lucide-react';
-
-// import { useTransactionsData } from '@/app/hooks/UseTransactionsData';
-// import { categories, accounts } from '@/app/lib/data/utils/constants';
-
-// // UI Components
-// // import PageHeader from '../../components/ui/PageHeader';
-// // Remove SearchInput and Dropdown from here as they are used within TransactionFilters
-// // import SearchInput from '../../components/ui/SearchInput';
-// // import Dropdown from '../../components/ui/Dropdown';
+// import { useState } from 'react';
+// import { 
+//   DollarSign, 
+//   TrendingUp, 
+//   Wifi, 
+//   ShoppingCart, 
+//   Dumbbell, 
+//   Home, 
+//   Shield, 
+//   Smartphone, 
+//   Play, 
+//   Plane 
+// } from 'lucide-react';
+// // import TransactionTableHeader from '@/app/components/transactions/TransactionTableHeader';
+// import TransactionFilters from '@/app/components/transactions/TransactionFilters';
 // import TransactionTable from '@/app/components/transactions/TransactionTable';
-// import Pagination from '@/app/components/ui/Pagination';
-// import TransactionFilters from '@/app/components/transactions/TransactionFilters'; // Import the new filters component
+// import TransactionPagination from '@/app/components/transactions/Pagination';
 
-// const TransactionsPage: React.FC = () => {
-//   const [searchTerm, setSearchTerm] = useState<string>('');
-//   const [selectedCategory, setSelectedCategory] = useState<string>('All Category');
-//   const [selectedAccount, setSelectedAccount] = useState<string>('All Account');
-//   const [dateRange, setDateRange] = useState<string>('1-30 September 2028');
+// // Mock Data (to be replaced with API calls)
+// const mockTransactions = [
+//   {
+//     id: '4567890135',
+//     name: 'Bonus Payment',
+//     category: 'Income',
+//     account: 'Platinum Plus Visa',
+//     accountType: 'visa',
+//     date: '2024-09-25',
+//     time: '11:00 AM',
+//     amount: 1500.00,
+//     note: 'Annual performance bonus',
+//     status: 'Completed',
+//     icon: DollarSign
+//   },
+  
+//   {
+//     id: '4567890138',
+//     name: 'Bonus Payment',
+//     category: 'Income',
+//     account: 'Mastercard Platinum',
+//     accountType: 'mastercard',
+//     date: '2024-09-25',
+//     time: '11:00 AM',
+//     amount: 1500.00,
+//     note: 'Annual performance bonus',
+//     status: 'Pending',
+//     icon: DollarSign
+//   },
+//   {
+//     id: '4567890139',
+//     name: 'Bonus Payment',
+//     category: 'Utilities',
+//     account: 'Mastercard Platinum',
+//     accountType: 'mastercard',
+//     date: '2024-09-25',
+//     time: '11:00 AM',
+//     amount: 1500.00,
+//     note: 'Annual performance bonus',
+//     status: 'Pending',
+//     icon: DollarSign
+//   },
+// ] as const;
 
-//   const {
-//     paginatedTransactions,
-//     filteredTransactionsCount,
-//     currentPage,
-//     totalPages,
-//     setCurrentPage,
-//     itemsPerPage,
-//   } = useTransactionsData({ searchTerm, selectedCategory, selectedAccount });
+// export default function TransactionComponent() {
+//   const [searchTerm, setSearchTerm] = useState('');
+//   const [selectedCategory, setSelectedCategory] = useState('');
+//   const [selectedAccount, setSelectedAccount] = useState('All Account');
+//   const [selectedIds, setSelectedIds] = useState<string[]>([]);
+//   const [currentPage, setCurrentPage] = useState(1);
+//   const itemsPerPage = 12;
 
-//   // Handler for the download button
+//   // Get unique categories
+//   const categories = Array.from(new Set(mockTransactions.map(t => t.category)));
+
+//   // Filter transactions
+//   const filteredTransactions = mockTransactions.filter(transaction => {
+//     const matchesSearch = transaction.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+//                          transaction.note.toLowerCase().includes(searchTerm.toLowerCase()) ||
+//                          transaction.id.includes(searchTerm);
+//     const matchesCategory = !selectedCategory || transaction.category === selectedCategory;
+//     const matchesAccount = selectedAccount === 'All Account' || transaction.account === selectedAccount;
+//     return matchesSearch && matchesCategory && matchesAccount;
+//   });
+
+//   // Pagination
+//   const totalPages = Math.ceil(filteredTransactions.length / itemsPerPage);
+//   const paginatedTransactions = filteredTransactions.slice(
+//     (currentPage - 1) * itemsPerPage,
+//     currentPage * itemsPerPage
+//   );
+
+//   // Handlers
+//   const handleSelectTransaction = (id: string) => {
+//     setSelectedIds(prev => 
+//       prev.includes(id) 
+//         ? prev.filter(selectedId => selectedId !== id)
+//         : [...prev, id]
+//     );
+//   };
+
+//   const handleSelectAll = (checked: boolean) => {
+//     setSelectedIds(checked ? paginatedTransactions.map(t => t.id) : []);
+//   };
+
+//   const handlePageChange = (page: number) => {
+//     setCurrentPage(page);
+//     setSelectedIds([]);
+//   };
+
 //   const handleDownload = () => {
-//     // Implement your download logic here
-//     console.log('Downloading transactions...');
-//     // Example: Trigger an API call or generate a CSV
+//     console.log('Downloading transactions with filters:', {
+//       searchTerm,
+//       selectedCategory,
+//       selectedAccount,
+//       selectedIds
+//     });
+//     // API call for download would go here
 //   };
 
 //   return (
-//     <div className="min-h-screen bg-gray-50 p-6">
-//       <div className="max-w-7xl mx-auto">
-//         {/* Header */}
-
-//         {/* Filters and Controls */}
-//         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-//           <TransactionFilters
-//             searchTerm={searchTerm}
-//             setSearchTerm={setSearchTerm}
-//             selectedCategory={selectedCategory}
-//             setSelectedCategory={setSelectedCategory}
-//             selectedAccount={selectedAccount}
-//             setSelectedAccount={setSelectedAccount}
-//             dateRange={dateRange}
-//             setDateRange={setDateRange}
-//             onDownload={handleDownload} // Pass the handler
-//           />
-
-//           {/* Transaction Table */}
-//           <TransactionTable transactions={paginatedTransactions} />
-
-//           {/* Pagination */}
-//           <Pagination
-//             currentPage={currentPage}
-//             totalPages={totalPages}
-//             onPageChange={setCurrentPage}
-//             totalItems={filteredTransactionsCount}
-//             itemsPerPage={itemsPerPage}
-//           />
-//         </div>
-
-//         {/* Footer */}
-//         <div className="flex items-center justify-between text-sm text-gray-500">
-//           <div className="flex items-center gap-4">
-//             <span>Copyright © 2024 JeanCredit</span>
-//             <a href="#" className="hover:text-gray-700">Privacy Policy</a>
-//             <a href="#" className="hover:text-gray-700">Term and conditions</a>
-//             <a href="#" className="hover:text-gray-700">Contact</a>
-//           </div>
-
-//           <div className="flex items-center gap-4">
-//             <div className="w-6 h-6 bg-gray-300 rounded-full"></div>
-//             <div className="w-6 h-6 bg-gray-300 rounded-full"></div>
-//             <div className="w-6 h-6 bg-gray-300 rounded-full"></div>
-//             <div className="w-6 h-6 bg-gray-300 rounded-full"></div>
-//             <div className="w-6 h-6 bg-gray-300 rounded-full"></div>
-//           </div>
-//         </div>
-//       </div>
+//     <div className="max-w-7xl mx-auto p-6 space-y-6">
+//       {/* <TransactionHeader /> */}
+      
+//       <TransactionFilters
+//         search={searchTerm}
+//         onSearchChange={setSearchTerm}
+//         category={selectedCategory}
+//         onCategoryChange={setSelectedCategory}
+//         categories={categories}
+//         account={selectedAccount}
+//         onAccountChange={setSelectedAccount}
+//         onDownload={handleDownload}
+//       />
+      
+//       <TransactionTable
+//         transactions={paginatedTransactions}
+//         selectedIds={selectedIds}
+//         onSelectTransaction={handleSelectTransaction}
+//         onSelectAll={handleSelectAll}
+//       />
+      
+//       {filteredTransactions.length > 0 && (
+//         <TransactionPagination
+//           currentPage={currentPage}
+//           totalPages={totalPages}
+//           totalItems={filteredTransactions.length}
+//           itemsPerPage={itemsPerPage}
+//           onPageChange={handlePageChange}
+//         />
+//       )}
 //     </div>
 //   );
-// };
-
-// export default TransactionsPage;
-
+// }
 
 
 
@@ -116,12 +170,11 @@ import {
   Play, 
   Plane 
 } from 'lucide-react';
-// import TransactionTableHeader from '@/app/components/transactions/TransactionTableHeader';
 import TransactionFilters from '@/app/components/transactions/TransactionFilters';
 import TransactionTable from '@/app/components/transactions/TransactionTable';
 import TransactionPagination from '@/app/components/transactions/Pagination';
 
-// Mock Data (to be replaced with API calls)
+// Updated Mock Data with more realistic amounts and variety
 const mockTransactions = [
   {
     id: '4567890135',
@@ -136,20 +189,188 @@ const mockTransactions = [
     status: 'Completed',
     icon: DollarSign
   },
-  // ... (include all other transactions)
   {
-    id: '4567890135',
-    name: 'Bonus Payment',
+    id: '4567890136',
+    name: 'Stock Dividends',
+    category: 'Income',
+    account: 'Freedom Unlimited Mastercard',
+    accountType: 'mastercard',
+    date: '2024-09-24',
+    time: '09:00 AM',
+    amount: 300.00,
+    note: 'Quarterly stock dividend',
+    status: 'Completed',
+    icon: TrendingUp
+  },
+  {
+    id: '4567890123',
+    name: 'Comcast Bill Payment',
+    category: 'Utilities',
+    account: 'Platinum Plus Visa',
+    accountType: 'visa',
+    date: '2024-09-24',
+    time: '10:30 AM',
+    amount: -150.00,
+    note: 'Monthly internet and TV bill',
+    status: 'Completed',
+    icon: Wifi
+  },
+  {
+    id: '4567890137',
+    name: 'Freelance Project',
+    category: 'Income',
+    account: 'Platinum Plus Visa',
+    accountType: 'visa',
+    date: '2024-09-23',
+    time: '01:30 PM',
+    amount: 1200.00,
+    note: 'Payment for freelance design work',
+    status: 'Completed',
+    icon: DollarSign
+  },
+  {
+    id: '4567890124',
+    name: 'Amazon Purchase',
+    category: 'Food & Dining',
+    account: 'Freedom Unlimited Mastercard',
+    accountType: 'mastercard',
+    date: '2024-09-23',
+    time: '03:45 PM',
+    amount: -80.95,
+    note: 'Purchased kitchen appliances',
+    status: 'Completed',
+    icon: ShoppingCart
+  },
+  {
+    id: '567890123',
+    name: 'Gym Membership',
+    category: 'Healthcare',
+    account: 'Platinum Plus Visa',
+    accountType: 'visa',
+    date: '2024-09-22',
+    time: '07:00 AM',
+    amount: -45.00,
+    note: 'Monthly gym fee for health',
+    status: 'Pending',
+    icon: Dumbbell
+  },
+  {
+    id: '4567890138',
+    name: 'Rental Income',
+    category: 'Real Estate',
+    account: 'Freedom Unlimited Mastercard',
+    accountType: 'mastercard',
+    date: '2024-09-22',
+    time: '08:00 AM',
+    amount: 2500.00,
+    note: 'Monthly rent from property',
+    status: 'Completed',
+    icon: Home
+  },
+  {
+    id: '4567890126',
+    name: 'State Farm Insurance',
+    category: 'Investments',
+    account: 'Freedom Unlimited Mastercard',
+    accountType: 'mastercard',
+    date: '2024-09-21',
+    time: '02:15 PM',
+    amount: -325.00,
+    note: 'Car insurance premium investment',
+    status: 'Completed',
+    icon: Shield
+  },
+  {
+    id: '4567890127',
+    name: 'Verizon Bill',
+    category: 'Utilities',
+    account: 'Platinum Plus Visa',
+    accountType: 'visa',
+    date: '2024-09-20',
+    time: '11:00 AM',
+    amount: -160.00,
+    note: 'Mobile phone bill',
+    status: 'Pending',
+    icon: Smartphone
+  },
+  {
+    id: '4567890128',
+    name: 'Electricity Bill',
+    category: 'Utilities',
+    account: 'Freedom Unlimited Mastercard',
+    accountType: 'mastercard',
+    date: '2024-09-19',
+    time: '08:20 AM',
+    amount: -170.00,
+    note: 'Home electricity bill',
+    status: 'Completed',
+    icon: Home
+  },
+  {
+    id: '4567890129',
+    name: 'Netflix Subscription',
+    category: 'Entertainment',
+    account: 'Platinum Plus Visa',
+    accountType: 'visa',
+    date: '2024-09-18',
+    time: '05:45 PM',
+    amount: -17.99,
+    note: 'Monthly entertainment subscription',
+    status: 'Completed',
+    icon: Play
+  },
+  {
+    id: '4567890130',
+    name: 'Flight Booking',
+    category: 'Investments',
+    account: 'Elite Traveler Mastercard',
+    accountType: 'mastercard',
+    date: '2024-09-17',
+    time: '09:30 AM',
+    amount: -350.00,
+    note: 'Business trip expense',
+    status: 'Rejected',
+    icon: Plane
+  },
+  {
+    id: '4567890139',
+    name: 'Salary Payment',
     category: 'Income',
     account: 'Mastercard Platinum',
     accountType: 'mastercard',
-    date: '2024-09-25',
-    time: '11:00 AM',
-    amount: 1500.00,
-    note: 'Annual performance bonus',
-    status: 'Pending',
+    date: '2024-09-16',
+    time: '09:00 AM',
+    amount: 5000.00,
+    note: 'Monthly salary payment',
+    status: 'Completed',
     icon: DollarSign
   },
+  {
+    id: '4567890140',
+    name: 'Grocery Shopping',
+    category: 'Food & Dining',
+    account: 'Platinum Plus Visa',
+    accountType: 'visa',
+    date: '2024-09-15',
+    time: '06:30 PM',
+    amount: -120.50,
+    note: 'Weekly grocery shopping',
+    status: 'Completed',
+    icon: ShoppingCart
+  },
+  {
+    id: '4567890141',
+    name: 'Investment Return',
+    category: 'Investments',
+    account: 'Freedom Unlimited Mastercard',
+    accountType: 'mastercard',
+    date: '2024-09-14',
+    time: '10:15 AM',
+    amount: 750.00,
+    note: 'Monthly investment dividend',
+    status: 'Pending',
+    icon: TrendingUp
+  }
 ] as const;
 
 export default function TransactionComponent() {
@@ -195,7 +416,7 @@ export default function TransactionComponent() {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    setSelectedIds([]);
+    setSelectedIds([]); // Clear selections when changing pages
   };
 
   const handleDownload = () => {
@@ -210,8 +431,6 @@ export default function TransactionComponent() {
 
   return (
     <div className="max-w-7xl mx-auto p-6 space-y-6">
-      {/* <TransactionHeader /> */}
-      
       <TransactionFilters
         search={searchTerm}
         onSearchChange={setSearchTerm}

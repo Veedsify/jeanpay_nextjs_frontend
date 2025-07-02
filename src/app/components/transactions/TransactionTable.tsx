@@ -1,4 +1,80 @@
-// import { Check } from 'lucide-react';
+
+// 'use client';
+// import TransactionTableHeader from './TransactionTableHeader';
+// import PaymentCardIcon from '../commons/PaymentCardIcon';
+
+// import { Check, CreditCard, Banknote, Landmark, Wallet, ChevronsUpDown } from 'lucide-react';
+
+// // // Placeholder for PaymentCardIcon - Integrated directly for self-containment
+// // const PaymentCardIcon = ({ type, size = 'md' }: { type: string; size?: 'sm' | 'md' | 'lg' }) => {
+// //   const iconSize = {
+// //     sm: 'w-4 h-4',
+// //     md: 'w-5 h-5',
+// //     lg: 'w-6 h-6',
+// //   }[size];
+
+// //   let IconComponent;
+// //   switch (type.toLowerCase()) {
+// //     case 'credit card':
+// //     case 'debit card':
+// //       IconComponent = CreditCard;
+// //       break;
+// //     case 'bank account':
+// //       IconComponent = Banknote;
+// //       break;
+// //     case 'wallet':
+// //       IconComponent = Wallet;
+// //       break;
+// //     default:
+// //       IconComponent = Landmark; // Default icon
+// //   }
+
+// //   return <IconComponent className={`${iconSize} text-gray-500 dark:text-gray-400`} />;
+// // };
+
+// // // Placeholder for TransactionTableHeader - Integrated directly for self-containment
+// // interface HeaderProps {
+// //   allSelected: boolean;
+// //   onSelectAll: (checked: boolean) => void;
+// // }
+
+// // const TransactionTableHeader = ({ allSelected, onSelectAll }: HeaderProps) => {
+// //   return (
+// //     <thead className="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+// //       <tr>
+// //         <th className="w-12 px-4 py-3">
+// //           <input
+// //             type="checkbox"
+// //             checked={allSelected}
+// //             onChange={(e) => onSelectAll(e.target.checked)}
+// //             className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700"
+// //           />
+// //         </th>
+
+// //         {[
+// //           'Transaction Name',
+// //           'Account',
+// //           'Transaction ID',
+// //           'Date & Time',
+// //           'Amount',
+// //           'Note',
+// //           'Status',
+// //         ].map((title) => (
+// //           <th
+// //             key={title}
+// //             className="text-left px-4 py-3 text-sm font-medium text-gray-900 dark:text-white"
+// //           >
+// //             <div className={`flex items-center gap-1 ${['Transaction Name', 'Transaction ID', 'Date & Time'].includes(title) ? 'whitespace-nowrap' : ''}`}>
+// //               {title}
+// //               <ChevronsUpDown className="w-4 h-4 text-gray-400" />
+// //             </div>
+// //           </th>
+// //         ))}
+// //       </tr>
+// //     </thead>
+// //   );
+// // };
+
 
 // interface Transaction {
 //   id: string;
@@ -25,66 +101,76 @@
 //   transactions,
 //   selectedIds,
 //   onSelectTransaction,
-//   onSelectAll
+//   onSelectAll,
 // }: TransactionTableProps) {
 //   const getStatusColor = (status: string) => {
 //     switch (status) {
-//       case 'Completed': return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
-//       case 'Pending': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200';
-//       case 'Rejected': return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200';
-//       default: return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
-//     }
-//   };
-
-//   const getCardImage = (accountType: string) => {
-//     switch (accountType) {
-//       case 'visa': 
-//         return <div className="w-8 h-5 bg-blue-600 rounded text-white text-xs flex items-center justify-center font-bold">VISA</div>;
-//       case 'mastercard': 
-//         return <div className="w-8 h-5 bg-red-600 rounded text-white text-xs flex items-center justify-center font-bold">MC</div>;
-//       default: 
-//         return <div className="w-8 h-5 bg-gray-400 rounded text-white text-xs flex items-center justify-center">?</div>;
+//       case 'Completed':
+//         return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
+//       case 'Pending':
+//         return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200';
+//       case 'Rejected':
+//         return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200';
+//       default:
+//         return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
 //     }
 //   };
 
 //   const formatAmount = (amount: number) => {
 //     const isNegative = amount < 0;
+//     const absAmount = Math.abs(amount);
 //     return (
-//       <span className={isNegative ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-400'}>
-//         {isNegative ? '-' : '+'}₦{Math.abs(amount).toFixed(2)}
+//       <span
+//         className={
+//           isNegative
+//             ? 'text-red-600 dark:text-red-400 whitespace-nowrap'
+//             : 'text-green-600 dark:text-green-400 whitespace-nowrap'
+//         }
+//       >
+//         {isNegative ? '-' : '+'}₦
+//         {absAmount.toLocaleString('en-US', {
+//           minimumFractionDigits: 2,
+//           maximumFractionDigits: 2,
+//         })}
 //       </span>
 //     );
 //   };
 
 //   return (
 //     <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 overflow-hidden">
-//       <div className="overflow-x-auto">
+//         {/* Custom CSS for scrollbar styling */}
+//         <style jsx>{`
+//             .scrollbar-green::-webkit-scrollbar {
+//                 height: 8px; /* For horizontal scrollbar */
+//             }
+
+//             .scrollbar-green::-webkit-scrollbar-track {
+//                 background: #f1f1f1; /* Light track */
+//                 border-radius: 10px;
+//             }
+
+//             .scrollbar-green::-webkit-scrollbar-thumb {
+//                 background: #22c55e; /* Green thumb */
+//                 border-radius: 10px;
+//             }
+
+//             .scrollbar-green::-webkit-scrollbar-thumb:hover {
+//                 background: #16a34a; /* Darker green on hover */
+//             }
+//         `}</style>
+//       <div className="overflow-x-auto scrollbar-green"> {/* Added scrollbar-green class here */}
 //         <table className="w-full">
-//           <thead className="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-//             <tr>
-//               <th className="w-12 px-4 py-3">
-//                 <input
-//                   type="checkbox"
-//                   checked={selectedIds.length === transactions.length && transactions.length > 0}
-//                   onChange={(e) => onSelectAll(e.target.checked)}
-//                   className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700"
-//                 />
-//               </th>
-//               <th className="text-left px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">Transaction Name</th>
-//               <th className="text-left px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">Account</th>
-//               <th className="text-left px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">Transaction ID</th>
-//               <th className="text-left px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">Date & Time</th>
-//               <th className="text-left px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">Amount</th>
-//               <th className="text-left px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">Note</th>
-//               <th className="text-left px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">Status</th>
-//             </tr>
-//           </thead>
+//           <TransactionTableHeader
+//             allSelected={selectedIds.length === transactions.length && transactions.length > 0}
+//             onSelectAll={onSelectAll}
+//           />
+
 //           <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
 //             {transactions.map((transaction) => {
 //               const IconComponent = transaction.icon;
 //               return (
 //                 <tr key={transaction.id} className="hover:bg-gray-50 dark:hover:bg-gray-800">
-//                   <td className="px-4 py-4">
+//                   <td className="px-4 py-4 whitespace-nowrap">
 //                     <input
 //                       type="checkbox"
 //                       checked={selectedIds.includes(transaction.id)}
@@ -92,32 +178,41 @@
 //                       className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700"
 //                     />
 //                   </td>
-//                   <td className="px-4 py-4">
+
+//                   <td className="px-4 py-4 whitespace-nowrap">
 //                     <div className="flex items-center gap-3">
-//                       <div className="w-10 h-10 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
-//                         <IconComponent className="w-5 h-5 text-green-600 dark:text-green-300" />
+//                       <div className="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center">
+//                         <IconComponent className="w-5 h-5 text-gray-600 dark:text-gray-300" />
 //                       </div>
 //                       <div>
-//                         <div className="font-medium text-gray-900 dark:text-white">{transaction.name}</div>
-//                         <div className="text-sm text-gray-500 dark:text-gray-400">{transaction.category}</div>
+//                         <div className="font-medium text-gray-900 dark:text-white whitespace-nowrap">{transaction.name}</div>
+//                         <div className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">{transaction.category}</div>
 //                       </div>
 //                     </div>
 //                   </td>
-//                   <td className="px-4 py-4">
+
+//                   <td className="px-4 py-4 whitespace-nowrap">
 //                     <div className="flex items-center gap-2">
-//                       {getCardImage(transaction.accountType)}
-//                       <span className="text-sm text-gray-900 dark:text-white">{transaction.account}</span>
+//                       <PaymentCardIcon type={transaction.accountType} size="sm" />
+//                       <span className="text-sm text-gray-900 dark:text-white whitespace-nowrap">{transaction.account}</span>
 //                     </div>
 //                   </td>
-//                   <td className="px-4 py-4 text-sm text-gray-900 dark:text-white">{transaction.id}</td>
-//                   <td className="px-4 py-4">
-//                     <div className="text-sm text-gray-900 dark:text-white">{transaction.date}</div>
-//                     <div className="text-sm text-gray-500 dark:text-gray-400">{transaction.time}</div>
+
+//                   <td className="px-4 py-4 text-sm text-gray-900 dark:text-white whitespace-nowrap">{transaction.id}</td>
+
+//                   <td className="px-4 py-4 whitespace-nowrap">
+//                     <div className="text-sm text-gray-900 dark:text-white whitespace-nowrap">{transaction.date}</div>
+//                     <div className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">{transaction.time}</div>
 //                   </td>
+
 //                   <td className="px-4 py-4 font-medium">{formatAmount(transaction.amount)}</td>
-//                   <td className="px-4 py-4 text-sm text-gray-600 dark:text-gray-300 max-w-xs truncate">{transaction.note}</td>
-//                   <td className="px-4 py-4">
-//                     <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(transaction.status)}`}>
+
+//                   <td className="px-4 py-4 text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">
+//                     {transaction.note}
+//                   </td>
+
+//                   <td className="px-4 py-4 whitespace-nowrap">
+//                     <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(transaction.status)} whitespace-nowrap`}>
 //                       {transaction.status}
 //                     </span>
 //                   </td>
@@ -131,9 +226,83 @@
 //   );
 // }
 
-import { Check } from 'lucide-react';
-import React from 'react';
+
+
+'use client';
+import TransactionTableHeader from './TransactionTableHeader';
 import PaymentCardIcon from '../commons/PaymentCardIcon';
+import { Check, CreditCard, Banknote, Landmark, Wallet, ChevronsUpDown } from 'lucide-react';
+
+// // Placeholder for PaymentCardIcon - Integrated directly for self-containment
+// const PaymentCardIcon = ({ type, size = 'md' }: { type: string; size?: 'sm' | 'md' | 'lg' }) => {
+//   const iconSize = {
+//     sm: 'w-4 h-4',
+//     md: 'w-5 h-5',
+//     lg: 'w-6 h-6',
+//   }[size];
+
+//   let IconComponent;
+//   switch (type.toLowerCase()) {
+//     case 'credit card':
+//     case 'debit card':
+//       IconComponent = CreditCard;
+//       break;
+//     case 'bank account':
+//       IconComponent = Banknote;
+//       break;
+//     case 'wallet':
+//       IconComponent = Wallet;
+//       break;
+//     default:
+//       IconComponent = Landmark; // Default icon
+//   }
+
+//   return <IconComponent className={`${iconSize} text-gray-500 dark:text-gray-400`} />;
+// };
+
+// // Placeholder for TransactionTableHeader - Integrated directly for self-containment
+// interface HeaderProps {
+//   allSelected: boolean;
+//   onSelectAll: (checked: boolean) => void;
+// }
+
+// const TransactionTableHeader = ({ allSelected, onSelectAll }: HeaderProps) => {
+//   return (
+//     <thead className="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+//       <tr>
+//         <th className="w-12 px-4 py-3">
+//           <input
+//             type="checkbox"
+//             checked={allSelected}
+//             onChange={(e) => onSelectAll(e.target.checked)}
+//             className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700"
+//           />
+//         </th>
+
+//         {[
+//           'Transaction Name',
+//           'Account',
+//           'Transaction ID',
+//           'Date & Time',
+//           'Amount',
+//           'Note',
+//           'Status',
+//         ].map((title) => (
+//           <th
+//             key={title}
+//             className="text-left px-4 py-3 text-sm font-medium text-gray-900 dark:text-white"
+//           >
+//             <div className={`flex items-center gap-1 ${['Transaction Name', 'Transaction ID', 'Date & Time'].includes(title) ? 'whitespace-nowrap' : ''}`}>
+//               {title}
+//               <ChevronsUpDown className="w-4 h-4 text-gray-400" />
+//             </div>
+//           </th>
+//         ))}
+//       </tr>
+//     </thead>
+//   );
+// };
+
 
 interface Transaction {
   id: string;
@@ -160,55 +329,76 @@ export default function TransactionTable({
   transactions,
   selectedIds,
   onSelectTransaction,
-  onSelectAll
+  onSelectAll,
 }: TransactionTableProps) {
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'Completed': return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
-      case 'Pending': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200';
-      case 'Rejected': return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200';
-      default: return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
+      case 'Completed':
+        return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
+      case 'Pending':
+        return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200';
+      case 'Rejected':
+        return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200';
+      default:
+        return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
     }
   };
 
   const formatAmount = (amount: number) => {
     const isNegative = amount < 0;
+    const absAmount = Math.abs(amount);
     return (
-      <span className={isNegative ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-400'}>
-        {isNegative ? '-' : '+'}₦{Math.abs(amount).toFixed(2)}
+      <span
+        className={
+          isNegative
+            ? 'text-red-600 dark:text-red-400 whitespace-nowrap'
+            : 'text-green-600 dark:text-green-400 whitespace-nowrap'
+        }
+      >
+        {isNegative ? '-' : '+'}₦
+        {absAmount.toLocaleString('en-US', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })}
       </span>
     );
   };
 
   return (
     <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 overflow-hidden">
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead className="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-            <tr>
-              <th className="w-12 px-4 py-3">
-                <input
-                  type="checkbox"
-                  checked={selectedIds.length === transactions.length && transactions.length > 0}
-                  onChange={(e) => onSelectAll(e.target.checked)}
-                  className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700"
-                />
-              </th>
-              <th className="text-left px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">Transaction Name</th>
-              <th className="text-left px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">Account</th>
-              <th className="text-left px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">Transaction ID</th>
-              <th className="text-left px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">Date & Time</th>
-              <th className="text-left px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">Amount</th>
-              <th className="text-left px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">Note</th>
-              <th className="text-left px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">Status</th>
-            </tr>
-          </thead>
+        {/* Custom CSS for scrollbar styling */}
+        <style jsx>{`
+            .scrollbar-green::-webkit-scrollbar {
+                height: 8px; /* For horizontal scrollbar */
+            }
+
+            .scrollbar-green::-webkit-scrollbar-track {
+                background: #f1f1f1; /* Light track */
+                border-radius: 10px;
+            }
+
+            .scrollbar-green::-webkit-scrollbar-thumb {
+                background: #22c55e; /* Green thumb */
+                border-radius: 10px;
+            }
+
+            .scrollbar-green::-webkit-scrollbar-thumb:hover {
+                background: #16a34a; /* Darker green on hover */
+            }
+        `}</style>
+      <div className="overflow-x-auto scrollbar-green"> {/* Added scrollbar-green class here */}
+        <table className="min-w-max"> {/* Changed from w-full min-w-full to min-w-max */}
+          <TransactionTableHeader
+            allSelected={selectedIds.length === transactions.length && transactions.length > 0}
+            onSelectAll={onSelectAll}
+          />
+
           <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
             {transactions.map((transaction) => {
               const IconComponent = transaction.icon;
               return (
                 <tr key={transaction.id} className="hover:bg-gray-50 dark:hover:bg-gray-800">
-                  <td className="px-4 py-4">
+                  <td className="px-4 py-4 whitespace-nowrap">
                     <input
                       type="checkbox"
                       checked={selectedIds.includes(transaction.id)}
@@ -216,32 +406,41 @@ export default function TransactionTable({
                       className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700"
                     />
                   </td>
-                  <td className="px-4 py-4">
+
+                  <td className="px-4 py-4 whitespace-nowrap">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
-                        <IconComponent className="w-5 h-5 text-green-600 dark:text-green-300" />
+                      <div className="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center">
+                        <IconComponent className="w-5 h-5 text-gray-600 dark:text-gray-300" />
                       </div>
                       <div>
-                        <div className="font-medium text-gray-900 dark:text-white">{transaction.name}</div>
-                        <div className="text-sm text-gray-500 dark:text-gray-400">{transaction.category}</div>
+                        <div className="font-medium text-gray-900 dark:text-white whitespace-nowrap">{transaction.name}</div>
+                        <div className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">{transaction.category}</div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-4 py-4">
+
+                  <td className="px-4 py-4 whitespace-nowrap">
                     <div className="flex items-center gap-2">
-                      <PaymentCardIcon type={transaction.accountType} size="sm2" />
-                      <span className="text-sm text-gray-900 dark:text-white">{transaction.account}</span>
+                      <PaymentCardIcon type={transaction.accountType} size="sm" />
+                      <span className="text-sm text-gray-900 dark:text-white whitespace-nowrap">{transaction.account}</span>
                     </div>
                   </td>
-                  <td className="px-4 py-4 text-sm text-gray-900 dark:text-white">{transaction.id}</td>
-                  <td className="px-4 py-4">
-                    <div className="text-sm text-gray-900 dark:text-white">{transaction.date}</div>
-                    <div className="text-sm text-gray-500 dark:text-gray-400">{transaction.time}</div>
+
+                  <td className="px-4 py-4 text-sm text-gray-900 dark:text-white whitespace-nowrap">{transaction.id}</td>
+
+                  <td className="px-4 py-4 whitespace-nowrap">
+                    <div className="text-sm text-gray-900 dark:text-white whitespace-nowrap">{transaction.date}</div>
+                    <div className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">{transaction.time}</div>
                   </td>
+
                   <td className="px-4 py-4 font-medium">{formatAmount(transaction.amount)}</td>
-                  <td className="px-4 py-4 text-sm text-gray-600 dark:text-gray-300 max-w-xs truncate">{transaction.note}</td>
-                  <td className="px-4 py-4">
-                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(transaction.status)}`}>
+
+                  <td className="px-4 py-4 text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">
+                    {transaction.note}
+                  </td>
+
+                  <td className="px-4 py-4 whitespace-nowrap">
+                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(transaction.status)} whitespace-nowrap`}>
                       {transaction.status}
                     </span>
                   </td>
