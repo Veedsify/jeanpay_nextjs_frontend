@@ -137,6 +137,19 @@ const mockTransactions = [
     icon: DollarSign
   },
   // ... (include all other transactions)
+  {
+    id: '4567890135',
+    name: 'Bonus Payment',
+    category: 'Income',
+    account: 'Mastercard Platinum',
+    accountType: 'mastercard',
+    date: '2024-09-25',
+    time: '11:00 AM',
+    amount: 1500.00,
+    note: 'Annual performance bonus',
+    status: 'Pending',
+    icon: DollarSign
+  },
 ] as const;
 
 export default function TransactionComponent() {
