@@ -112,8 +112,8 @@ export default function TransactionTable({
 
                   <td className="px-4 py-4 whitespace-nowrap">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center">
-                        <IconComponent className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+                      <div className="w-10 h-10  dark:bg-gray-800 rounded-full flex items-center justify-center" style={{ backgroundColor: 'var(--color-cyan-dark)'}}>
+                        <IconComponent className="w-5 h-5 text-white dark:text-gray-300" />
                       </div>
                       <div>
                         <div className="font-medium text-gray-900 dark:text-white whitespace-nowrap">{transaction.name}</div>

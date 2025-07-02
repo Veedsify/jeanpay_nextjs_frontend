@@ -430,7 +430,7 @@ export default function TransactionComponent() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-6 space-y-6">
+    <div className="w-full mx-auto p-6 space-y-6">
       <TransactionFilters
         search={searchTerm}
         onSearchChange={setSearchTerm}
