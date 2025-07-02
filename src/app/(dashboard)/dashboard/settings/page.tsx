@@ -1212,7 +1212,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className=" border-2 border-red-400 max-w-8xl mx-auto p-6 bg-gray-50 min-h-screen">
+    <div className=" border-2 border-red-400 p-6 bg-gray-50 min-h-screen">
       <SettingsHeader
         activeTab={activeTab}
         tabs={tabs}
