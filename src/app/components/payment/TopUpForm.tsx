@@ -3,7 +3,7 @@
 
 export default function TopupForm() {
   return (
-    <div className="bg-[#EDF7ED] rounded-xl p-6">
+    <div className="bg-green-bg rounded-xl p-8">
       <h2 className="text-xl font-semibold mb-4">Topup</h2>
 
       <div className="grid gap-6">
@@ -21,7 +21,9 @@ export default function TopupForm() {
 
         {/* Top Up Wallet */}
         <div>
-          <label className="text-sm font-medium text-gray-600">Top Up Wallet</label>
+          <label className="text-sm font-medium text-gray-600">
+            Top Up Wallet
+          </label>
           <div className="bg-white p-3 mt-1 rounded-lg">
             <span className="font-medium">🇳🇬 Nigerian</span>
           </div>
@@ -40,7 +42,9 @@ export default function TopupForm() {
         {/* Buttons */}
         <div className="flex justify-end gap-4">
           <button className="text-gray-600 hover:underline">Cancel</button>
-          <button className="bg-green-900 text-white px-5 py-2 rounded-lg">Top Up</button>
+          <button className="bg-cyan-dark text-white px-5 py-2 rounded-lg">
+            Top Up
+          </button>
         </div>
       </div>
     </div>

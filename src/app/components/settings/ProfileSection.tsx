@@ -228,9 +228,9 @@
 //   );
 // };
 
-
 import { useState, useRef } from "react";
 import { Edit } from "lucide-react";
+import Image from "next/image";
 
 interface ProfileSectionProps {
   profileData: {
@@ -250,7 +250,9 @@ export const ProfileSection = ({
   const [isEditing, setIsEditing] = useState(false);
   const [isEditingImage, setIsEditingImage] = useState(false);
   const [localProfileData, setLocalProfileData] = useState(profileData);
-  const [previewImage, setPreviewImage] = useState(profileData.profileImage || "");
+  const [previewImage, setPreviewImage] = useState(
+    profileData.profileImage || ""
+  );
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -266,7 +268,7 @@ export const ProfileSection = ({
         setPreviewImage(reader.result as string);
         setLocalProfileData({
           ...localProfileData,
-          profileImage: reader.result as string
+          profileImage: reader.result as string,
         });
       };
       reader.readAsDataURL(file);
@@ -290,7 +292,9 @@ export const ProfileSection = ({
         <h1 className="text-2xl font-semibold text-[var(--jean-gray-900)] mb-2">
           Manage Your Profile
         </h1>
-        <p className="text-[var(--jean-gray-600)]">Update your profile information</p>
+        <p className="text-[var(--jean-gray-600)]">
+          Update your profile information
+        </p>
       </div>
 
       {/* Profile Header with Image */}
@@ -300,9 +304,11 @@ export const ProfileSection = ({
             <div className="relative">
               <div className="w-16 h-16 bg-[var(--jean-gray-300)] rounded-full flex items-center justify-center overflow-hidden">
                 {previewImage ? (
-                  <img 
-                    src={previewImage} 
-                    alt="Profile" 
+                  <Image
+                    width={64}
+                    height={64}
+                    src={previewImage}
+                    alt="Profile"
                     className="w-full h-full object-cover"
                   />
                 ) : (
@@ -335,7 +341,7 @@ export const ProfileSection = ({
               setIsEditingImage(!isEditingImage);
               if (!isEditingImage && !isEditing) setIsEditing(true);
             }}
-            className="flex items-center space-x-2 px-4 py-2 bg-[var(--jean-teal-700)] text-[var(--jean-white)] rounded-lg hover:bg-[var(--jean-teal-800)] transition-colors"
+            className="flex items-center space-x-2 px-4 py-2 bg-cyan-dark text-[var(--jean-white)] rounded-lg hover:bg-[var(--jean-teal-800)] transition-colors"
           >
             <Edit size={16} />
             <span>{isEditingImage ? "Cancel" : "Edit"}</span>
@@ -361,14 +367,17 @@ export const ProfileSection = ({
           </h3>
           <button
             onClick={() => setIsEditing(!isEditing)}
-            className="flex items-center space-x-2 px-4 py-2 bg-[var(--jean-teal-700)] text-[var(--jean-white)] rounded-lg hover:bg-[var(--jean-teal-800)] transition-colors"
+            className="flex items-center space-x-2 px-4 py-2 bg-cyan-dark text-[var(--jean-white)] rounded-lg hover:bg-[var(--jean-teal-800)] transition-colors"
           >
             <Edit size={16} />
             <span>{isEditing ? "Cancel" : "Edit"}</span>
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <form
+          onSubmit={handleSubmit}
+          className="grid grid-cols-1 md:grid-cols-2 gap-8"
+        >
           {/* First Name */}
           <div>
             <label className="block text-sm font-medium text-[var(--jean-gray-700)] mb-2">

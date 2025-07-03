@@ -45,21 +45,20 @@ const font = Instrument_Sans({
 
 export default function LayoutPage({
   children,
-  title = "Dashboard", // default title fallback
 }: {
   children: ReactNode;
   title?: string;
 }) {
   return (
     <html lang="en">
-      <body className={`${font.className}`}>
+      <body className={`${font.className} bg-green-bg`}>
         <div className="mx-auto flex min-h-screen">
           <div className="hidden lg:block">
             <SideBar />
           </div>
-          <div className="2xl:flex-1 px-7 py-4 w-full flex flex-col border-2 border-black">
-            <DashboardHeader title={title} />
-            <div className="flex-1">{children}</div>
+          <div className="2xl:flex-1 px-7 py-4 w-full flex flex-col bg-white rounded-tl-2xl">
+            <DashboardHeader />
+            <div className="flex-1 mt-2">{children}</div>
             <DashboardFooter />
           </div>
         </div>

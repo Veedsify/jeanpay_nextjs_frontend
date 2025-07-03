@@ -19,3 +19,25 @@
   --jean-teal-700: #0f766e;
   --jean-teal-800: #115e59;
 }
+
+.scrollbar-green::-webkit-scrollbar {
+  height: 8px;
+  /* For horizontal scrollbar */
+}
+
+.scrollbar-green::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  /* Light track */
+  border-radius: 10px;
+}
+
+.scrollbar-green::-webkit-scrollbar-thumb {
+  background: #22c55e;
+  /* Green thumb */
+  border-radius: 10px;
+}
+
+.scrollbar-green::-webkit-scrollbar-thumb:hover {
+  background: #16a34a;
+  /* Darker green on hover */
+}

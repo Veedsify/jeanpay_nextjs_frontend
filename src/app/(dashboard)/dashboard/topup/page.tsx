@@ -3,7 +3,7 @@ import TopupForm from "@/app/components/payment/TopUpForm";
 
 export default function TopupPage() {
   return (
-    <main className="p-4">
+    <main className="py-6">
       <TopupForm />
     </main>
   );

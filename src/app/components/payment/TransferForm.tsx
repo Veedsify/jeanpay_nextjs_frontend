@@ -3,7 +3,7 @@
 
 export default function TransferForm() {
   return (
-    <div className="bg-[#EDF7ED] rounded-xl p-6">
+    <div className="bg-green-bg rounded-xl p-8">
       <h2 className="text-xl font-semibold mb-4">Make a Payment</h2>
 
       <div className="grid gap-6">
@@ -32,14 +32,14 @@ export default function TransferForm() {
         </div>
 
         {/* Exchange Rate */}
-        <div className="text-sm text-gray-600">
-          Naira: 1 = Ghana:
-        </div>
+        <div className="text-sm text-gray-600">Naira: 1 = Ghana:</div>
 
         {/* Buttons */}
         <div className="flex justify-end gap-4">
           <button className="text-gray-600 hover:underline">Cancel</button>
-          <button className="bg-green-900 text-white px-5 py-2 rounded-lg">Proceed to Payment</button>
+          <button className="bg-cyan-dark text-white px-5 py-2 rounded-lg">
+            Proceed to Payment
+          </button>
         </div>
       </div>
     </div>

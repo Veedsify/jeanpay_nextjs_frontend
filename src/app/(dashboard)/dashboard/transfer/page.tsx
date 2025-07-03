@@ -3,7 +3,7 @@ import TransferForm from "@/app/components/payment/TransferForm";
 
 export default function TransferPage() {
   return (
-    <main className="p-4">
+    <main className="py-6">
       <TransferForm />
     </main>
   );
