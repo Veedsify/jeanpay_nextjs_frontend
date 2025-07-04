@@ -1212,14 +1212,14 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className=" p-6 bg-gray-50 min-h-screen">
+    <div className=" p-5 bg-white border border-black/30 rounded-xl lg:rounded-2xl ">
       <SettingsHeader
         activeTab={activeTab}
         tabs={tabs}
         onTabChange={setActiveTab}
       />
 
-      <div className="bg-white rounded-lg shadow-sm">
+      <div className="bg-white">
         {activeTab === "profile" && (
           <ProfileSection
             profileData={profileData}

@@ -1,4 +1,3 @@
-
 // "use client";
 
 // import { useState } from "react";
@@ -75,7 +74,7 @@
 
 //         {/* Buttons */}
 //         <div className="flex justify-end gap-4">
-//           <button 
+//           <button
 //             type="button"
 //             className="text-gray-600 hover:underline px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors"
 //           >
@@ -94,76 +93,131 @@
 //   );
 // }
 
-
-
-'use client';
-import React, { useState } from 'react';
-import { Plus, Repeat, ChevronDown } from 'lucide-react';
+"use client";
+import React, { useState } from "react";
+import {
+  ChevronDown,
+  ArrowDown,
+  DollarSignIcon,
+  EllipsisVertical,
+} from "lucide-react";
 import { CountryFlag } from "./CountryFlag";
-import NavigationButton from './NavigationButton';
+import Link from "next/link";
+import { QuickAction } from "@/types/commons";
+import { ClockIcon, PlusSquareIcon } from "@phosphor-icons/react";
+
+const quickActions: QuickAction[] = [
+  {
+    title: "Convert",
+    description: "NGN ↔ GHS",
+    href: "/dashboard/convert",
+    icon: PlusSquareIcon,
+  },
+  {
+    title: "TopUp",
+    description: "Add money via Paystack",
+    href: "/dashboard/wallet",
+    icon: ArrowDown,
+  },
+  {
+    title: "History",
+    description: "All transactions",
+    href: "/dashboard/history",
+    icon: ClockIcon,
+  },
+  {
+    title: "Virtual Accounts",
+    description: "View your virtual accounts",
+    href: "/dashboard/virtual-accounts",
+    icon: DollarSignIcon,
+  },
+];
 
 export default function TopupForm() {
-  const [selectedWallet, setSelectedWallet] = useState<'nigeria' | 'ghana'>('nigeria');
-  const [amount, setAmount] = useState('');
+  const [selectedWallet, setSelectedWallet] = useState<"nigeria" | "ghana">(
+    "nigeria"
+  );
+  const [amount, setAmount] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const wallets = {
-    nigeria: { name: 'Nigerian', balance: 'NGN90,000', currency: 'NGN' },
-    ghana: { name: 'Ghanaian', balance: 'GH₵53,000', currency: 'GHS' }
+    nigeria: { name: "Nigerian", balance: "NGN90,000", currency: "NGN" },
+    ghana: { name: "Ghanaian", balance: "GH₵53,000", currency: "GHS" },
   };
 
   const handleTopUp = () => {
     if (!amount) {
-      alert('Please enter an amount');
+      alert("Please enter an amount");
       return;
     }
     // Handle top-up logic here
-    console.log('Top up:', { wallet: selectedWallet, amount });
+    console.log("Top up:", { wallet: selectedWallet, amount });
     alert(`Top up ${amount} to ${wallets[selectedWallet].name} wallet`);
   };
 
   const handleCancel = () => {
-    setAmount('');
+    setAmount("");
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-6 bg-gray-50 min-h-screen">
-      {/* Navigation */}
-      <div className="bg-teal-50 rounded-lg p-4 mb-6">
-        <div className="flex justify-center gap-8">
-          <NavigationButton label="Transfer" icon="transfer" href="/transfer" />
-          <NavigationButton label="Payment" icon="transfer" href="/payment" />
-          <NavigationButton label="Virtual Acc" icon="transfer" href="/virtual" />
-          <NavigationButton label="Top Up" icon="topup" href="/topup" active={true} />
+    <div className="mx-auto p-3 md:p-6 bg-white border rounded-2xl border-black/30 space-y-4">
+      <div className="bg-green-bg rounded-2xl overflow-hidden">
+        <div className="grid lg:grid-cols-4 grid-cols-2 p-1 items-center overflow-scroll">
+          {quickActions.map((action, idx) => {
+            const IconComponent = action.icon;
+            return (
+              <Link
+                key={action.title}
+                href={action.href}
+                className={`p-1.5 md:p-4 group flex-1 text-center
+                   ${
+                     idx === quickActions.length - 1 ? "last:border-r-0" : ""
+                   } lg:${
+                  idx === 1 ? "border-r-0 lg:border-r-2" : " border-r-2"
+                }
+                   border-white`}
+              >
+                <div className="px-3 py-2.5 rounded-lg text-white transition-transform flex flex-col items-center justify-center">
+                  <IconComponent size={26} className="fill-cyan-dark h-5" />
+                  <p className="mt-1 md:mt-2 text-xs md:text-sm font-medium text-cyan-dark">
+                    {action.title}
+                  </p>
+                </div>
+              </Link>
+            );
+          })}
         </div>
       </div>
 
       {/* Main Form */}
-      <div className="bg-green-50 rounded-xl p-8">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-semibold">Topup</h2>
-          <button className="text-gray-400 hover:text-gray-600">
-            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
-            </svg>
-          </button>
-        </div>
+      <div className="flex justify-between py-4 md:py-6">
+        <h2 className="text-xl font-semibold">Topup</h2>
 
+        <button className="text-gray-400 hover:text-gray-600 ">
+          <EllipsisVertical />
+        </button>
+      </div>
+
+      <div className="bg-green-bg rounded-xl lg:rounded-2xl p-4 md:p-6 2xl:p-8">
         <div className="grid gap-6">
           {/* Payment Account Section */}
           <div>
-            <h3 className="text-sm font-medium text-gray-700 mb-4">Payment Account</h3>
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="bg-white rounded-lg p-4 flex items-center gap-3">
-                <div className="w-10 h-10 bg-teal-700 rounded-lg flex items-center justify-center text-white font-bold">
+            <h3 className="font-semibold text-gray-700 mb-4 text-lg md:text-lg lg:text-xl">
+              Payment Account
+            </h3>
+            <div className="grid md:grid-cols-2 gap-4 bg-white p-2 md:p-4 rounded-xl lg:rounded-2xl ">
+              <div className="bg-green-bg rounded-lg lg:rounded-2xl p-4 md:py-6 relative overflow-hidden">
+                <div className="w-[15%] h-[70%] md:w-[8%] md:h-[80%] bg-cyan-dark absolute bottom-0 left-0 flex items-center justify-center text-white font-bold rounded-tr-xl lg:rounded-tr-2xl">
                   N
                 </div>
-                <div>
-                  <p className="text-sm text-gray-500">Nigerian Wallet</p>
-                  <h3 className="text-lg font-bold">NGN90,000</h3>
+                <div className="flex items-center gap-3">
+                  <div className="ml-[20%] md:ml-20">
+                    <p className="text-sm text-gray-500">Nigerian Wallet</p>
+                    <h3 className="text-lg font-bold">NGN90,000</h3>
+                  </div>
                 </div>
               </div>
-              <div className="bg-white rounded-lg p-4 flex items-center gap-3">
+              <div className="bg-white border border-black/30 rounded-xl p-4 flex items-center gap-3">
                 <div className="w-10 h-10 rounded-lg overflow-hidden">
                   <CountryFlag country="ghana" size="lg" />
                 </div>
@@ -187,26 +241,39 @@ export default function TopupForm() {
               >
                 <div className="flex items-center gap-3">
                   <CountryFlag country={selectedWallet} size="md" />
-                  <span className="font-medium">{wallets[selectedWallet].name}</span>
-                  <span className="text-gray-500 ml-auto mr-4">{wallets[selectedWallet].balance}</span>
+                  <span className="font-medium">
+                    {wallets[selectedWallet].name}
+                  </span>
+                  <span className="text-gray-500 ml-auto mr-4">
+                    {wallets[selectedWallet].balance}
+                  </span>
                 </div>
-                <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                <ChevronDown
+                  className={`w-4 h-4 text-gray-400 transition-transform ${
+                    isDropdownOpen ? "rotate-180" : ""
+                  }`}
+                />
               </button>
 
               {isDropdownOpen && (
-                <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+                <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg z-10">
                   {Object.entries(wallets).map(([key, wallet]) => (
                     <button
                       key={key}
                       onClick={() => {
-                        setSelectedWallet(key as 'nigeria' | 'ghana');
+                        setSelectedWallet(key as "nigeria" | "ghana");
                         setIsDropdownOpen(false);
                       }}
                       className="w-full p-4 flex items-center gap-3 hover:bg-gray-50 transition-colors first:rounded-t-lg last:rounded-b-lg"
                     >
-                      <CountryFlag country={key as 'nigeria' | 'ghana'} size="md" />
+                      <CountryFlag
+                        country={key as "nigeria" | "ghana"}
+                        size="md"
+                      />
                       <span className="font-medium">{wallet.name}</span>
-                      <span className="text-gray-500 ml-auto">{wallet.balance}</span>
+                      <span className="text-gray-500 ml-auto">
+                        {wallet.balance}
+                      </span>
                     </button>
                   ))}
                 </div>
@@ -216,27 +283,42 @@ export default function TopupForm() {
 
           {/* Amount Input */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Amount</label>
-            <input
-              type="text"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              placeholder="$150.00"
-              className="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-colors"
-            />
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Amount
+            </label>
+            <div className="relative">
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg pointer-events-none select-none">
+                {selectedWallet === "nigeria" ? "₦" : "₵"}
+              </span>
+              <input
+                type="number"
+                min="0"
+                step="0.01"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+                placeholder={
+                  selectedWallet === "nigeria" ? "e.g. 15000" : "e.g. 500"
+                }
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-dark focus:border-cyan-dark outline-none transition-colors text-lg font-semibold bg-gray-50 hover:bg-white"
+              />
+            </div>
+            <p className="text-xs text-gray-500 mt-2">
+              Enter the amount you want to top up in{" "}
+              {wallets[selectedWallet].currency}.
+            </p>
           </div>
 
           {/* Action Buttons */}
-          <div className="flex justify-end gap-4 pt-4">
-            <button 
+          <div className="flex justify-end gap-4 lg:gap-8 pt-4">
+            <button
               onClick={handleCancel}
               className="text-gray-600 hover:text-gray-800 font-medium transition-colors"
             >
               Cancel
             </button>
-            <button 
+            <button
               onClick={handleTopUp}
-              className="bg-teal-700 text-white px-6 py-3 rounded-lg hover:bg-teal-800 transition-colors font-medium"
+              className="bg-cyan-dark text-white px-6 py-3 rounded-lg hover:bg-teal-800 transition-colors font-medium"
             >
               Top Up
             </button>

@@ -12,27 +12,10 @@ import ExpenseStat from "@/app/components/commons/ExpenseStat";
 import RecentActivityStat from "@/app/components/commons/RecentActivityStat";
 import Image from "next/image";
 import BalanceCard from "@/app/components/commons/BalanceCard";
+import { QuickAction } from "@/types/commons";
+import { Transaction } from "@/types/transactions";
 
-interface Transaction {
-  id: string;
-  type: "topup" | "withdraw" | "convert" | "send" | "receive";
-  amount: number;
-  currency: string;
-  toCurrency?: string;
-  status: "completed" | "pending" | "failed";
-  date: string;
-  time: string;
-  description: string;
-  recipient?: string;
-  transactionId: string;
-}
 
-interface QuickAction {
-  title: string;
-  description: string;
-  href: string;
-  icon: React.ComponentType<{ size: number; className?: string }>;
-}
 
 export default function DashBoardPage() {
   const [searchTerm] = useState("");

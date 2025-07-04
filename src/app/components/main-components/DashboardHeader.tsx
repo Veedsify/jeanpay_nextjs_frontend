@@ -37,7 +37,7 @@ export default function DashboardHeader() {
   const title = formatTitle(pathname);
 
   return (
-    <div className="flex items-center mt-2">
+    <div className="flex items-center mt-2 px-2">
       <h1 className="text-2xl font-bold text-cyan-dark">{title}</h1>
       <div className="ml-auto flex gap-5 items-center">
         <div className="lg:block hidden">

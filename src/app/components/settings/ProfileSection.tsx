@@ -4,15 +4,16 @@ import { useState, useRef } from "react";
 import { Edit } from "lucide-react";
 import Image from "next/image";
 
+interface  ProfileData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  profileImage?: string;
+};
 interface ProfileSectionProps {
-  profileData: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone: string;
-    profileImage?: string;
-  };
-  onProfileUpdate: (updatedData: typeof profileData) => void;
+  profileData: ProfileData;
+  onProfileUpdate: (updatedData: ProfileData) => void;
 }
 
 export const ProfileSection = ({
@@ -59,9 +60,9 @@ export const ProfileSection = ({
   };
 
   return (
-    <div className="p-8">
+    <div className="p-5">
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-[var(--jean-gray-900)] mb-2">
+        <h1 className="text-2xl font-semibold  text-[var(--jean-gray-900)] mb-2">
           Manage Your Profile
         </h1>
         <p className="text-[var(--jean-gray-600)]">
@@ -70,7 +71,7 @@ export const ProfileSection = ({
       </div>
 
       {/* Profile Header with Image */}
-      <div className="bg-[var(--jean-gray-50)] rounded-lg p-6 mb-8">
+      <div className="bg-white rounded-2xl border border-black/30 p-6 mb-8">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <div className="relative">
@@ -132,7 +133,7 @@ export const ProfileSection = ({
       </div>
 
       {/* Personal Information Section */}
-      <div className="bg-[var(--jean-gray-50)] rounded-lg p-6">
+      <div className="bg-white border border-black/30 rounded-2xl p-6">
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-lg font-semibold text-[var(--jean-gray-900)]">
             Personal Information
@@ -247,7 +248,7 @@ export const ProfileSection = ({
               </button>
               <button
                 type="submit"
-                className="px-4 py-2 bg-[var(--jean-green-600)] text-[var(--jean-white)] rounded-lg hover:bg-[var(--jean-green-700)]"
+                className="px-4 py-2 bg-cyan-dark text-[var(--jean-white)] rounded-lg hover:bg-cyan-900 cursor-pointer"
               >
                 Save Changes
               </button>

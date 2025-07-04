@@ -56,7 +56,7 @@ export default function LayoutPage({
           <div className="hidden lg:block">
             <SideBar />
           </div>
-          <div className="2xl:flex-1 px-7 py-4 w-full flex flex-col bg-white rounded-tl-2xl">
+          <div className="2xl:flex-1 lg:px-7 py-4 w-full flex flex-col bg-white rounded-tl-2xl">
             <DashboardHeader />
             <div className="flex-1 mt-2">{children}</div>
             <DashboardFooter />
