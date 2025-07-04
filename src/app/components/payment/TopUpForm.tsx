@@ -1,50 +1,246 @@
-// app/dashboard/payment/components/TopupForm.tsx
-"use client";
+
+// "use client";
+
+// import { useState } from "react";
+// import { CountryFlag } from "./CountryFlag";
+// import { Plus, Repeat } from "lucide-react";
+
+// export default function TopupForm() {
+//   const [amount, setAmount] = useState("$150.00");
+//   const [activeWallet, setActiveWallet] = useState("nigerian");
+
+//   const handleSubmit = (e: React.FormEvent) => {
+//     e.preventDefault();
+//     alert(`Topping up ${amount} to ${activeWallet} wallet`);
+//   };
+
+//   return (
+//     <div className="bg-[#EDF7F2] rounded-xl p-6 md:p-8 border-2 border-gray-400 max-w-2xl mx-auto">
+//       {/* Header */}
+//       <h1 className="text-xl font-bold mb-6">Topup</h1>
+
+//       {/* Payment Account Section */}
+//       <div className="mb-6">
+//         <h2 className="text-sm font-medium text-gray-700 mb-2">Payment Account</h2>
+//         <div className="bg-white rounded-lg p-4 flex items-center gap-3 shadow-sm">
+//           <CountryFlag country="nigeria" size="md" />
+//           <div>
+//             <p className="text-xs text-gray-500">Nigerian Wallet</p>
+//             <p className="text-lg font-bold">NGN90,000</p>
+//           </div>
+//         </div>
+//       </div>
+
+//       <div className="space-y-6">
+//         {/* Top Up Wallet Section */}
+//         <div>
+//           <h2 className="text-sm font-medium text-gray-700 mb-2">Top Up Wallet</h2>
+//           <div className="flex gap-3">
+//             <button
+//               onClick={() => setActiveWallet("nigerian")}
+//               className={`flex items-center gap-2 p-3 rounded-lg border ${activeWallet === "nigerian" ? "border-[#004741] bg-[#EDF7F2]" : "border-gray-300 bg-white"}`}
+//             >
+//               <CountryFlag country="nigeria" size="sm" />
+//               <span className="font-medium text-sm">Nigerian</span>
+//             </button>
+//             <button
+//               onClick={() => setActiveWallet("ghanaian")}
+//               className={`flex items-center gap-2 p-3 rounded-lg border ${activeWallet === "ghanaian" ? "border-[#004741] bg-[#EDF7F2]" : "border-gray-300 bg-white"}`}
+//             >
+//               <CountryFlag country="ghana" size="sm" />
+//               <span className="font-medium text-sm">Ghanaian</span>
+//             </button>
+//           </div>
+//         </div>
+
+//         {/* Amount Input */}
+//         <div>
+//           <label className="text-sm font-medium text-gray-700 mb-2 block">Amount</label>
+//           <input
+//             type="text"
+//             value={amount}
+//             onChange={(e) => setAmount(e.target.value)}
+//             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#004741]"
+//           />
+//         </div>
+
+//         {/* Ghana Wallet Display */}
+//         <div className="bg-white rounded-lg p-4 flex items-center gap-3 shadow-sm">
+//           <CountryFlag country="ghana" size="md" />
+//           <div>
+//             <p className="text-xs text-gray-500">Ghanaian Wallet</p>
+//             <p className="text-lg font-bold">GH₵53,000</p>
+//           </div>
+//         </div>
+
+//         {/* Buttons */}
+//         <div className="flex justify-end gap-4">
+//           <button 
+//             type="button"
+//             className="text-gray-600 hover:underline px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors"
+//           >
+//             Cancel
+//           </button>
+//           <button
+//             type="submit"
+//             onClick={handleSubmit}
+//             className="bg-[#004741] hover:bg-[#00332e] text-white px-6 py-2 rounded-lg transition-colors shadow-sm"
+//           >
+//             Top Up
+//           </button>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+
+
+'use client';
+import React, { useState } from 'react';
+import { Plus, Repeat, ChevronDown } from 'lucide-react';
+import { CountryFlag } from "./CountryFlag";
+import NavigationButton from './NavigationButton';
 
 export default function TopupForm() {
+  const [selectedWallet, setSelectedWallet] = useState<'nigeria' | 'ghana'>('nigeria');
+  const [amount, setAmount] = useState('');
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const wallets = {
+    nigeria: { name: 'Nigerian', balance: 'NGN90,000', currency: 'NGN' },
+    ghana: { name: 'Ghanaian', balance: 'GH₵53,000', currency: 'GHS' }
+  };
+
+  const handleTopUp = () => {
+    if (!amount) {
+      alert('Please enter an amount');
+      return;
+    }
+    // Handle top-up logic here
+    console.log('Top up:', { wallet: selectedWallet, amount });
+    alert(`Top up ${amount} to ${wallets[selectedWallet].name} wallet`);
+  };
+
+  const handleCancel = () => {
+    setAmount('');
+  };
+
   return (
-    <div className="bg-green-bg rounded-xl p-8">
-      <h2 className="text-xl font-semibold mb-4">Topup</h2>
-
-      <div className="grid gap-6">
-        {/* Wallets */}
-        <div className="grid md:grid-cols-2 gap-4">
-          <div className="bg-white rounded-lg p-4">
-            <p className="text-sm text-gray-500">Nigerian Wallet</p>
-            <h3 className="text-xl font-bold">NGN90,000</h3>
-          </div>
-          <div className="bg-white rounded-lg p-4">
-            <p className="text-sm text-gray-500">Ghanaian Wallet</p>
-            <h3 className="text-xl font-bold">GH₵53,000</h3>
-          </div>
+    <div className="max-w-7xl mx-auto p-6 bg-gray-50 min-h-screen">
+      {/* Navigation */}
+      <div className="bg-teal-50 rounded-lg p-4 mb-6">
+        <div className="flex justify-center gap-8">
+          <NavigationButton label="Transfer" icon="transfer" href="/transfer" />
+          <NavigationButton label="Payment" icon="transfer" href="/payment" />
+          <NavigationButton label="Virtual Acc" icon="transfer" href="/virtual" />
+          <NavigationButton label="Top Up" icon="topup" href="/topup" active={true} />
         </div>
+      </div>
 
-        {/* Top Up Wallet */}
-        <div>
-          <label className="text-sm font-medium text-gray-600">
-            Top Up Wallet
-          </label>
-          <div className="bg-white p-3 mt-1 rounded-lg">
-            <span className="font-medium">🇳🇬 Nigerian</span>
-          </div>
-        </div>
-
-        {/* Amount */}
-        <div>
-          <label className="text-sm font-medium text-gray-600">Amount</label>
-          <input
-            type="text"
-            placeholder="$150.00"
-            className="w-full p-3 mt-1 border border-gray-300 rounded-lg"
-          />
-        </div>
-
-        {/* Buttons */}
-        <div className="flex justify-end gap-4">
-          <button className="text-gray-600 hover:underline">Cancel</button>
-          <button className="bg-cyan-dark text-white px-5 py-2 rounded-lg">
-            Top Up
+      {/* Main Form */}
+      <div className="bg-green-50 rounded-xl p-8">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-xl font-semibold">Topup</h2>
+          <button className="text-gray-400 hover:text-gray-600">
+            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
+            </svg>
           </button>
+        </div>
+
+        <div className="grid gap-6">
+          {/* Payment Account Section */}
+          <div>
+            <h3 className="text-sm font-medium text-gray-700 mb-4">Payment Account</h3>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="bg-white rounded-lg p-4 flex items-center gap-3">
+                <div className="w-10 h-10 bg-teal-700 rounded-lg flex items-center justify-center text-white font-bold">
+                  N
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500">Nigerian Wallet</p>
+                  <h3 className="text-lg font-bold">NGN90,000</h3>
+                </div>
+              </div>
+              <div className="bg-white rounded-lg p-4 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg overflow-hidden">
+                  <CountryFlag country="ghana" size="lg" />
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500">Ghanaian Wallet</p>
+                  <h3 className="text-lg font-bold">GH₵53,000</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Top Up Wallet Selection */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Top Up Wallet
+            </label>
+            <div className="relative">
+              <button
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className="w-full bg-white p-4 rounded-lg flex items-center justify-between hover:bg-gray-50 transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <CountryFlag country={selectedWallet} size="md" />
+                  <span className="font-medium">{wallets[selectedWallet].name}</span>
+                  <span className="text-gray-500 ml-auto mr-4">{wallets[selectedWallet].balance}</span>
+                </div>
+                <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              {isDropdownOpen && (
+                <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+                  {Object.entries(wallets).map(([key, wallet]) => (
+                    <button
+                      key={key}
+                      onClick={() => {
+                        setSelectedWallet(key as 'nigeria' | 'ghana');
+                        setIsDropdownOpen(false);
+                      }}
+                      className="w-full p-4 flex items-center gap-3 hover:bg-gray-50 transition-colors first:rounded-t-lg last:rounded-b-lg"
+                    >
+                      <CountryFlag country={key as 'nigeria' | 'ghana'} size="md" />
+                      <span className="font-medium">{wallet.name}</span>
+                      <span className="text-gray-500 ml-auto">{wallet.balance}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Amount Input */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Amount</label>
+            <input
+              type="text"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              placeholder="$150.00"
+              className="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-colors"
+            />
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex justify-end gap-4 pt-4">
+            <button 
+              onClick={handleCancel}
+              className="text-gray-600 hover:text-gray-800 font-medium transition-colors"
+            >
+              Cancel
+            </button>
+            <button 
+              onClick={handleTopUp}
+              className="bg-teal-700 text-white px-6 py-3 rounded-lg hover:bg-teal-800 transition-colors font-medium"
+            >
+              Top Up
+            </button>
+          </div>
         </div>
       </div>
     </div>
