@@ -135,7 +135,7 @@ export default function SideBar() {
             <Link
               href="/dashboard/payment/topup"
               className={`flex items-center gap-3 px-3 py-2 border-l-2 ${
-                pathname === "/dashboard/topup"
+                pathname === "/dashboard/payment/topup"
                   ? "border-green-500 bg-cyan-dark text-white rounded"
                   : "border-green-500 text-cyan-dark hover:bg-gray-10 rounded"
               }`}
@@ -143,7 +143,7 @@ export default function SideBar() {
               <span className="font-medium">Topup</span>
             </Link>
             <Link
-              href="/dashboard/transfer"
+              href="/dashboard/payment/transfer"
               className={`flex items-center gap-3 px-3 py-2 border-l-2 ${
                 pathname === "/dashboard/payment/transfer"
                   ? "border-green-500 bg-cyan-dark text-white rounded"

@@ -1,97 +1,3 @@
-// "use client";
-
-// import { useState } from "react";
-// import { CountryFlag } from "./CountryFlag";
-// import { Plus, Repeat } from "lucide-react";
-
-// export default function TopupForm() {
-//   const [amount, setAmount] = useState("$150.00");
-//   const [activeWallet, setActiveWallet] = useState("nigerian");
-
-//   const handleSubmit = (e: React.FormEvent) => {
-//     e.preventDefault();
-//     alert(`Topping up ${amount} to ${activeWallet} wallet`);
-//   };
-
-//   return (
-//     <div className="bg-[#EDF7F2] rounded-xl p-6 md:p-8 border-2 border-gray-400 max-w-2xl mx-auto">
-//       {/* Header */}
-//       <h1 className="text-xl font-bold mb-6">Topup</h1>
-
-//       {/* Payment Account Section */}
-//       <div className="mb-6">
-//         <h2 className="text-sm font-medium text-gray-700 mb-2">Payment Account</h2>
-//         <div className="bg-white rounded-lg p-4 flex items-center gap-3 shadow-sm">
-//           <CountryFlag country="nigeria" size="md" />
-//           <div>
-//             <p className="text-xs text-gray-500">Nigerian Wallet</p>
-//             <p className="text-lg font-bold">NGN90,000</p>
-//           </div>
-//         </div>
-//       </div>
-
-//       <div className="space-y-6">
-//         {/* Top Up Wallet Section */}
-//         <div>
-//           <h2 className="text-sm font-medium text-gray-700 mb-2">Top Up Wallet</h2>
-//           <div className="flex gap-3">
-//             <button
-//               onClick={() => setActiveWallet("nigerian")}
-//               className={`flex items-center gap-2 p-3 rounded-lg border ${activeWallet === "nigerian" ? "border-[#004741] bg-[#EDF7F2]" : "border-gray-300 bg-white"}`}
-//             >
-//               <CountryFlag country="nigeria" size="sm" />
-//               <span className="font-medium text-sm">Nigerian</span>
-//             </button>
-//             <button
-//               onClick={() => setActiveWallet("ghanaian")}
-//               className={`flex items-center gap-2 p-3 rounded-lg border ${activeWallet === "ghanaian" ? "border-[#004741] bg-[#EDF7F2]" : "border-gray-300 bg-white"}`}
-//             >
-//               <CountryFlag country="ghana" size="sm" />
-//               <span className="font-medium text-sm">Ghanaian</span>
-//             </button>
-//           </div>
-//         </div>
-
-//         {/* Amount Input */}
-//         <div>
-//           <label className="text-sm font-medium text-gray-700 mb-2 block">Amount</label>
-//           <input
-//             type="text"
-//             value={amount}
-//             onChange={(e) => setAmount(e.target.value)}
-//             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#004741]"
-//           />
-//         </div>
-
-//         {/* Ghana Wallet Display */}
-//         <div className="bg-white rounded-lg p-4 flex items-center gap-3 shadow-sm">
-//           <CountryFlag country="ghana" size="md" />
-//           <div>
-//             <p className="text-xs text-gray-500">Ghanaian Wallet</p>
-//             <p className="text-lg font-bold">GH₵53,000</p>
-//           </div>
-//         </div>
-
-//         {/* Buttons */}
-//         <div className="flex justify-end gap-4">
-//           <button
-//             type="button"
-//             className="text-gray-600 hover:underline px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors"
-//           >
-//             Cancel
-//           </button>
-//           <button
-//             type="submit"
-//             onClick={handleSubmit}
-//             className="bg-[#004741] hover:bg-[#00332e] text-white px-6 py-2 rounded-lg transition-colors shadow-sm"
-//           >
-//             Top Up
-//           </button>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
 
 "use client";
 import React, { useState } from "react";
@@ -208,7 +114,7 @@ export default function TopupForm() {
             <div className="grid md:grid-cols-2 gap-4 bg-white p-2 md:p-4 rounded-xl lg:rounded-2xl ">
               <div className="bg-green-bg rounded-lg lg:rounded-2xl p-4 md:py-6 relative overflow-hidden">
                 <div className="w-[15%] h-[70%] md:w-[8%] md:h-[80%] bg-cyan-dark absolute bottom-0 left-0 flex items-center justify-center text-white font-bold rounded-tr-xl lg:rounded-tr-2xl">
-                  N
+                  <CountryFlag country="nigeria" size="lg" />
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="ml-[20%] md:ml-20">
@@ -217,15 +123,18 @@ export default function TopupForm() {
                   </div>
                 </div>
               </div>
-              <div className="bg-white border border-black/30 rounded-xl p-4 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg overflow-hidden">
+              <div className="bg-white border border-black/30 rounded-lg lg:rounded-2xl p-4 md:py-6 relative overflow-hidden">
+                <div className="w-[15%] h-[70%] md:w-[8%] md:h-[80%] bg-green-bg absolute bottom-0 left-0 flex items-center justify-center text-white font-bold rounded-tr-xl lg:rounded-tr-2xl">
                   <CountryFlag country="ghana" size="lg" />
                 </div>
-                <div>
-                  <p className="text-sm text-gray-500">Ghanaian Wallet</p>
-                  <h3 className="text-lg font-bold">GH₵53,000</h3>
+                <div className="flex items-center gap-3">
+                  <div className="ml-[20%] md:ml-20">
+                    <p className="text-sm text-gray-500">Ghanaian Wallet</p>
+                    <h3 className="text-lg font-bold">GH₵53,000</h3>
+                  </div>
                 </div>
               </div>
+           
             </div>
           </div>
 
