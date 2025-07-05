@@ -80,7 +80,7 @@ const navItems = [
   // Payment will be injected manually below
   { name: "Wallet", href: "/dashboard/wallet", icon: Wallet },
   { name: "Convert", href: "/dashboard/convert", icon: ArrowsClockwise },
-  { name: "Transcations", href: "/dashboard/transactions", icon: ArrowRightLeft },
+  { name: "Transactions", href: "/dashboard/transactions", icon: ArrowRightLeft },
   { name: "History", href: "/dashboard/history", icon: ClockCounterClockwise },
   { name: "Notifications", href: "/dashboard/notifications", icon: Bell },
   { name: "Settings", href: "/dashboard/settings", icon: Gear },

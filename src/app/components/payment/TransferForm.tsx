@@ -270,7 +270,7 @@ export default function TransferForm() {
     <>
       <form
         onSubmit={handleSubmit}
-        className="bg-white rounded-xl shadow-md border border-gray-200 p-4 sm:p-6 md:p-8 space-y-4 sm:space-y-6 mx-auto"
+        className="bg-white-bg rounded-xl shadow-md border border-black/30 p-2 sm:p-6 md:p-4 space-y-4 sm:space-y-6 mx-auto"
       >
         {/* Top Buttons */}
           <div className="bg-green-bg rounded-2xl overflow-hidden">
@@ -308,7 +308,7 @@ export default function TransferForm() {
             <h3 className="text-sm font-medium text-gray-700">Payment Account</h3>
           </div>
 
-          <div className="bg-[#EDF7F2] rounded-lg p-4 sm:p-5 mt-4 shadow-inner border border-gray-200">
+          <div className="bg-green-bg rounded-lg p-4 sm:p-5 mt-4 shadow-inner border border-gray-200">
             {/* Wallet Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               {currencyOptions.map((option) => (
@@ -333,7 +333,8 @@ export default function TransferForm() {
                 <span>Sending To</span>
               </div>
 
-              <div className="flex items-center gap-2 sm:gap-3">
+              {/* <div className="flex items-center gap-2 sm:gap-3"> */}
+              <div className="flex flex-col items-center gap-2 sm:flex-row sm:gap-3">
                 {/* From Currency Dropdown */}
                 <div className="relative flex-1" ref={fromDropdownRef}>
                   <div 
