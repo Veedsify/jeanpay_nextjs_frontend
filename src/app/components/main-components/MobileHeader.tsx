@@ -16,7 +16,7 @@ import {
   X,
   List,
 } from "@phosphor-icons/react";
-import { ArrowRightLeft, ChevronDown } from "lucide-react";
+import { ArrowRightLeft, ChevronDown, CreditCardIcon } from "lucide-react";
 
 const navItems = [
   { name: "Dashboard", href: "/dashboard", icon: House },
@@ -60,7 +60,7 @@ export default function MobileHeader() {
   return (
     <>
       {/* Mobile Header */}
-      <div className="bg-green-bg px-4 py-3 flex items-center justify-between border-b border-gray-200">
+      <div className="bg-green-bg px-4 py-3 flex items-center justify-between border-b border-red-700">
         <div className="flex items-center gap-3">
           <Logo variant="secondary" className="w-8 h-8" />
         </div>
@@ -80,7 +80,7 @@ export default function MobileHeader() {
       {/* Mobile Overlay */}
       {isMobileMenuOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-40"
+          className="fixed inset-0 bg-green-bg bg-opacity-50 z-40"
           onClick={closeMobileMenu}
         />
       )}
@@ -133,7 +133,7 @@ export default function MobileHeader() {
                 : "text-cyan-dark hover:bg-gray-10"
             }`}
           >
-            <span className="flex items-center gap-3 font-medium">Payment</span>
+            <span className="flex items-center gap-3 font-medium"><CreditCardIcon size={20} />Payment</span>
             <ChevronDown
               size={20}
               className={`transition-transform duration-200 ${

@@ -16,6 +16,7 @@ import {
   Gear,
 } from "@phosphor-icons/react";
 import { ArrowRightLeft, ChevronDown } from "lucide-react";
+import { CreditCardIcon } from "@phosphor-icons/react/dist/ssr";
 
 const navItems = [
   { name: "Dashboard", href: "/dashboard", icon: House },
@@ -63,7 +64,7 @@ export default function SideBar() {
             isPaymentActive ? "bg-cyan-dark text-white" : "text-cyan-dark hover:bg-gray-10"
           }`}
         >
-          <span className="flex items-center gap-3 font-medium">Payment</span>
+          <span className="flex items-center gap-3 font-medium"><CreditCardIcon size={20} /> Payment</span>
           <ChevronDown
             size={20}
             className={`transition-transform duration-200 ${

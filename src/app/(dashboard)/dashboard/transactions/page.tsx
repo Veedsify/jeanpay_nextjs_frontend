@@ -430,7 +430,7 @@ export default function TransactionComponent() {
   };
 
   return (
-    <div className="w-[98%] mx-auto border rounded-lg border-black/30 overflow-x-auto p-6 space-y-6">
+    <div className="w-[95%] lg:w-full mx-auto border rounded-lg border-black/30 overflow-x-auto p-2 md:p-6 space-y-6">
       <TransactionFilters
         search={searchTerm}
         onSearchChange={setSearchTerm}

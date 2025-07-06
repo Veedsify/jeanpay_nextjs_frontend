@@ -181,7 +181,7 @@
 
 'use client';
 
-import { Search, Calendar, Download, ChevronDown, Filter } from 'lucide-react';
+import { Search, Calendar, Download, ChevronDown, Filter, ArrowRightLeft } from 'lucide-react';
 import { useState } from 'react';
 
 interface TransactionFiltersProps {
@@ -229,7 +229,7 @@ export default function TransactionFilters({
             onClick={() => setShowFilters(!showFilters)}
             className="p-2.5 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-white"
           >
-            <Filter className="h-4 w-4" />
+            <ArrowRightLeft className="h-4 w-4" />
           </button>
           
           <button
