@@ -71,11 +71,11 @@ export default function TransactionTable({
   };
 
   return (
-    <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 overflow-hidden">
+    <div className="bg-white w-full dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 overflow-hidden">
       <div className="overflow-x-auto scrollbar-green">
         {" "}
         {/* Added scrollbar-green class here */}
-        <table className="min-w-max">
+        <table className="w-full min-w-[1024px]">
           <TransactionTableHeader
             allSelected={
               selectedIds.length === transactions.length &&
