@@ -172,7 +172,7 @@ export const SecuritySection = () => {
   );
 
   return (
-    <div className="w-full bg-[var(--jean-white)] px-4 md:px-6 pb-8 md:pb-16 relative">
+    <div className="w-full bg-[var(--jean-white)]  md:px-6 pb-8 md:pb-16 relative">
       {toast.show && (
         <Toast
           type={toast.type}
