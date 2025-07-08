@@ -113,7 +113,7 @@ export default function TopupForm() {
             </h3>
             <div className="grid md:grid-cols-2 gap-4 bg-white p-2 md:p-4 rounded-xl lg:rounded-2xl ">
               <div className="bg-green-bg rounded-lg lg:rounded-2xl p-4 md:py-6 relative overflow-hidden">
-                <div className="w-[15%] h-[70%] md:w-[8%] md:h-[80%] bg-cyan-dark absolute bottom-0 left-0 flex items-center justify-center text-white font-bold rounded-tr-xl lg:rounded-tr-2xl">
+                <div className="w-12 h-[75%] md:w-14 md:h-[80%]  bg-cyan-dark absolute bottom-0 left-0 flex items-center justify-center text-white font-bold rounded-tr-xl lg:rounded-tr-2xl">
                   <CountryFlag country="nigeria" size="lg" />
                 </div>
                 <div className="flex items-center gap-3">
@@ -124,7 +124,7 @@ export default function TopupForm() {
                 </div>
               </div>
               <div className="bg-white border border-black/30 rounded-lg lg:rounded-2xl p-4 md:py-6 relative overflow-hidden">
-                <div className="w-[15%] h-[70%] md:w-[8%] md:h-[80%] bg-green-bg absolute bottom-0 left-0 flex items-center justify-center text-white font-bold rounded-tr-xl lg:rounded-tr-2xl">
+                <div className="w-12 h-[75%] md:w-14 md:h-[80%] bg-green-bg absolute bottom-0 left-0 flex items-center justify-center text-white font-bold rounded-tr-xl lg:rounded-tr-2xl">
                   <CountryFlag country="ghana" size="lg" />
                 </div>
                 <div className="flex items-center gap-3">
