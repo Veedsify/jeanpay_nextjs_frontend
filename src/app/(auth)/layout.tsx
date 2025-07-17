@@ -1,8 +1,9 @@
 import { ReactNode } from "react";
-import { Instrument_Sans } from "next/font/google";
+import { Inter } from "next/font/google";
 import "../globals.css";
+import { Toaster } from "sonner";
 
-const font = Instrument_Sans({
+const font = Inter({
   weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
   variable: "--font-instrument-sans",
@@ -10,7 +11,10 @@ const font = Instrument_Sans({
 export default function LayoutPage({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body className={`${font.className}`}>{children}</body>
+      <body className={`${font.className}`}>
+        <Toaster position="top-center" richColors />
+        {children}
+      </body>
     </html>
   );
 }

@@ -1,8 +1,4 @@
-
-
-
 "use client";
-
 import { useState } from "react";
 import Logo from "@/app/components/ui/Logo";
 import Link from "next/link";
@@ -23,7 +19,11 @@ const navItems = [
   // Payment will be injected manually below
   { name: "Wallet", href: "/dashboard/wallet", icon: Wallet },
   { name: "Convert", href: "/dashboard/convert", icon: ArrowsClockwise },
-  { name: "Transactions", href: "/dashboard/transactions", icon: ArrowRightLeft },
+  {
+    name: "Transactions",
+    href: "/dashboard/transactions",
+    icon: ArrowRightLeft,
+  },
   { name: "History", href: "/dashboard/history", icon: ClockCounterClockwise },
   { name: "Notifications", href: "/dashboard/notifications", icon: Bell },
   { name: "Settings", href: "/dashboard/settings", icon: Gear },
@@ -39,8 +39,11 @@ export default function SideBar() {
 
   return (
     <nav className="bg-green-bg min-h-dvh h-full p-2 md:py-6 md:px-4 flex flex-col">
-      <div className="mb-8">
-        <Logo variant="primary"/>
+      <div className="mb-8 mr-auto flex items-center justify-center gap-4">
+        <Logo variant="primary" height={32} width={32} />
+        <h1 className="text-2xl font-bold text-cyan-dark">
+          Jean<span className="italic text-jean-orange">Pay</span>
+        </h1>
       </div>
 
       <div className="flex-1 space-y-2">
@@ -61,10 +64,14 @@ export default function SideBar() {
         <button
           onClick={() => setPaymentOpen((prev) => !prev)}
           className={`flex items-center justify-between w-full px-4 py-3 rounded-full transition-colors ${
-            isPaymentActive ? "bg-cyan-dark text-white" : "text-cyan-dark hover:bg-gray-10"
+            isPaymentActive
+              ? "bg-cyan-dark text-white"
+              : "text-cyan-dark hover:bg-gray-10"
           }`}
         >
-          <span className="flex items-center gap-3 font-medium"><CreditCardIcon size={20} /> Payment</span>
+          <span className="flex items-center gap-3 font-medium">
+            <CreditCardIcon size={20} /> Payment
+          </span>
           <ChevronDown
             size={20}
             className={`transition-transform duration-200 ${

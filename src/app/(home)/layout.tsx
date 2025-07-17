@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { Instrument_Sans } from "next/font/google";
+import { Inter } from "next/font/google";
 import "../globals.css";
 
-const font = Instrument_Sans({
+const font = Inter({
   weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
   variable: "--font-instrument-sans",
-})
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,11 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${font.className} antialiased`}
-      >
-        {children}
-      </body>
+      <body className={`${font.className} antialiased`}>{children}</body>
     </html>
   );
 }
