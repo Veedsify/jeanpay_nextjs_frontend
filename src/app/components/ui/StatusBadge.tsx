@@ -1,9 +1,8 @@
 // src/components/ui/StatusBadge.tsx
 import React from 'react';
-import { Transaction } from '../../types'; // Import Transaction type if needed for its 'status' property
 
 interface StatusBadgeProps {
-  status: Transaction['status']; // Use the specific type from Transaction interface
+  status: 'Completed' | 'Pending' | 'Rejected';
 }
 
 const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {

@@ -1,27 +1,17 @@
 "use client";
 import TransactionTableHeader from "./TransactionTableHeader";
 import PaymentCardIcon from "../commons/PaymentCardIcon";
-import {
-  Check,
-  CreditCard,
-  Banknote,
-  Landmark,
-  Wallet,
-  ChevronsUpDown,
-} from "lucide-react";
 
 interface Transaction {
   id: string;
   name: string;
-  category: string;
-  account: string;
   accountType: string;
   date: string;
   time: string;
   amount: number;
   note: string;
   status: "Completed" | "Pending" | "Rejected";
-  icon: React.ComponentType<any>;
+  icon: React.ElementType;
 }
 
 interface TransactionTableProps {
@@ -113,27 +103,21 @@ export default function TransactionTable({
                         <div className="font-medium text-gray-900 dark:text-white whitespace-nowrap">
                           {transaction.name}
                         </div>
-                        <div className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">
-                          {transaction.category}
-                        </div>
                       </div>
                     </div>
+                  </td>
+
+                  <td className="px-4 py-4 text-sm text-gray-900 dark:text-white whitespace-nowrap">
+                    {transaction.id}
                   </td>
 
                   <td className="px-4 py-4 whitespace-nowrap">
                     <div className="flex items-center gap-2">
                       <PaymentCardIcon
                         type={transaction.accountType}
-                        size="sm"
+                        size="md"
                       />
-                      <span className="text-sm text-gray-900 dark:text-white whitespace-nowrap">
-                        {transaction.account}
-                      </span>
                     </div>
-                  </td>
-
-                  <td className="px-4 py-4 text-sm text-gray-900 dark:text-white whitespace-nowrap">
-                    {transaction.id}
                   </td>
 
                   <td className="px-4 py-4 whitespace-nowrap">
@@ -156,7 +140,7 @@ export default function TransactionTable({
                   <td className="px-4 py-4 whitespace-nowrap">
                     <span
                       className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(
-                        transaction.status
+                        transaction.status,
                       )} whitespace-nowrap`}
                     >
                       {transaction.status}

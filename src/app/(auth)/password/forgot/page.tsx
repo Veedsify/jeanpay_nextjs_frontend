@@ -2,7 +2,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Eye, EyeSlash, GoogleLogoIcon } from "@phosphor-icons/react";
 import AuthPageHeader from "@/app/components/commons/AuthPageHeader";
 import AuthPageFooter from "@/app/components/commons/AuthPageFooter";
 import { LucideArrowLeft } from "lucide-react";

@@ -24,25 +24,28 @@ export const AccountSection = () => {
   });
 
   // Toast state
-  const [toast, setToast] = useState(null);
+  const [toast, setToast] = useState<{
+    type: "success" | "error" | "info" | "warning";
+    message: string;
+  } | null>();
 
-  const showToast = (type, message) => {
+const showToast = (type: 'success' | 'error' | 'info' | 'warning', message: string): void => {
     setToast({ type, message });
   };
 
-  const hideToast = () => {
+  const hideToast = (): void => {
     setToast(null);
   };
 
-  const handleEdit = (state, section) => {
+  const handleEdit = (state: keyof typeof editingSection, section: boolean): void => {
     setEditingSection((prev) => ({
       ...prev,
       [state]: section,
     }));
   };
 
-  const handleSave = (state, section) => {
-    console.log(`Saving ${state} data...`);
+  const handleSave = (state: keyof typeof editingSection, section: boolean): void => {
+    console.log(`Saving ${state} data...`, section);
     
     // Simulate save operation
     setTimeout(() => {
@@ -70,7 +73,7 @@ export const AccountSection = () => {
 
   return (
     <>
-      <div className="w-full md:p-6 bg-gray-50">
+      <div className="w-full md:p-6 ">
         {/* Toast Container */}
         {toast && (
           <Toast

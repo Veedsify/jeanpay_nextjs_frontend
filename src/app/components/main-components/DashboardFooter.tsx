@@ -41,7 +41,7 @@ export default function DashboardFooter() {
     <footer className="flex flex-col md:flex-row items-center justify-between text-sm text-gray-500 mt-10 gap-4 md:gap-0">
       {/* Left links */}
       <div className="flex items-center gap-4 flex-wrap text-center md:text-left">
-        <span>© 2024 JeanCredit</span>
+        <span>© 2024 JeanPay</span>
         <a href="#" className="hover:text-gray-700">Privacy Policy</a>
         <a href="#" className="hover:text-gray-700">Terms & Conditions</a>
         <a href="#" className="hover:text-gray-700">Contact</a>

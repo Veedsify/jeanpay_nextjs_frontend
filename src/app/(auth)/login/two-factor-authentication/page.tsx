@@ -1,7 +1,6 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import AuthPageHeader from "@/app/components/commons/AuthPageHeader";
 import AuthPageFooter from "@/app/components/commons/AuthPageFooter";
 import { LucideArrowLeft } from "lucide-react";
@@ -10,7 +9,7 @@ import { toast } from "sonner";
 export default function LoginPage() {
   const [code, setCode] = useState<string[]>(Array(6).fill(""));
   const [isLoading, setIsLoading] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  // const [_, setCurrentIndex] = useState(0);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   useEffect(() => {
@@ -28,14 +27,14 @@ export default function LoginPage() {
 
     if (value && index < 5) {
       inputRefs.current[index + 1]?.focus();
-      setCurrentIndex(index + 1);
+      // setCurrentIndex(index + 1);
     }
   };
 
   const handleKeyDown = (index: number, e: React.KeyboardEvent) => {
     if (e.key === "Backspace" && !code[index] && index > 0) {
       inputRefs.current[index - 1]?.focus();
-      setCurrentIndex(index - 1);
+      // setCurrentIndex(index - 1);
     }
   };
 
@@ -72,7 +71,7 @@ export default function LoginPage() {
     setCode(newCode);
     const nextIndex = Math.min(pastedData.length, 5);
     inputRefs.current[nextIndex]?.focus();
-    setCurrentIndex(nextIndex);
+    // setCurrentIndex(nextIndex);
   };
 
   return (

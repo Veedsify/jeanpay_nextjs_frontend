@@ -244,7 +244,7 @@ export const NotificationsSection = () => {
                 Push Notifications
               </h3>
               <p className="text-xs md:text-sm" style={{ color: 'var(--jean-gray-600)' }}>
-                We'll send you push notification on the app
+                We&apos;ll send you push notification on the app
               </p>
             </div>
             <div className="ml-2 md:ml-4">
@@ -271,7 +271,7 @@ export const NotificationsSection = () => {
                 Send Me Promotional Notifications
               </h3>
               <p className="text-xs md:text-sm" style={{ color: 'var(--jean-gray-600)' }}>
-                You'll receive updates, price and rate updates and more notifications in your inbox
+                You&apos;ll receive updates, price and rate updates and more notifications in your inbox
               </p>
             </div>
             <div className="ml-2 md:ml-4">

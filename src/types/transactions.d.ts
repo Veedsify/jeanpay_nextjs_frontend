@@ -4,6 +4,7 @@ export interface Transaction {
   amount: number;
   currency: string;
   toCurrency?: string;
+  accountType?:  string;
   status: "completed" | "pending" | "failed";
   date: string;
   time: string;

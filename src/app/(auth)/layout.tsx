@@ -1,19 +1,18 @@
 import { ReactNode } from "react";
-import { Inter } from "next/font/google";
 import "../globals.css";
-import { Toaster } from "sonner";
+import { Toaster } from "react-hot-toast";
+// Supports weights 300-800
+import "@fontsource-variable/host-grotesk";
+import { Hydration } from "../components/providers/Hydration";
 
-const font = Inter({
-  weight: ["400", "500", "600", "700"],
-  subsets: ["latin"],
-  variable: "--font-instrument-sans",
-});
 export default function LayoutPage({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body className={`${font.className}`}>
-        <Toaster position="top-center" richColors />
-        {children}
+      <body className={``} style={{ fontFamily: "Host Grotesk Variable" }}>
+        <Hydration>
+          <Toaster position="top-center" />
+          {children}
+        </Hydration>
       </body>
     </html>
   );

@@ -1,7 +1,6 @@
 // src/components/transactions/AccountIcon.tsx
+import { Transaction } from '@/types/transactions';
 import React from 'react';
-import { Transaction } from '../../types'; // Import Transaction type if needed for its 'accountType' property
-
 interface AccountIconProps {
   type: Transaction['accountType']; // Use the specific type from Transaction interface
 }

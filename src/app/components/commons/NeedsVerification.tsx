@@ -1,0 +1,38 @@
+import Link from "next/link";
+import AuthPageHeader from "./AuthPageHeader";
+import AuthPageFooter from "./AuthPageFooter";
+
+const NeedsVerification = ({ onVerify }: { onVerify: () => void }) => {
+  return (
+    <div className="min-h-screen bg-white flex items-center justify-center p-4">
+      <div className="max-w-[1200px] w-full bg-white rounded-2xl p-8">
+        <AuthPageHeader />
+        <div className="lg:flex relative items-center justify-center gap-32 my-16 lg:my-32 min-h-[30vh]">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold mb-4">Verification Required</h2>
+            <p className="text-gray-600 mb-4">
+              Please verify your email address to continue.
+            </p>
+            <button
+              onClick={onVerify}
+              className="bg-cyan-dark hover:bg-cyan-dark/80 text-white font-bold py-3 px-8 cursor-pointer rounded-lg"
+            >
+              Verify Account
+            </button>
+          </div>
+        </div>
+        <div className="py-5 text-center">
+          <Link
+            href={"/"}
+            className="font-semibold  underline text-jean-orange hover:text-cyan-dark hover:no-underline"
+          >
+            Can&apos;t Login?
+          </Link>
+          <AuthPageFooter />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default NeedsVerification;

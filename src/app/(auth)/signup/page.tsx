@@ -1,12 +1,16 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import Logo from "@/app/components/ui/Logo";
 import { Eye, EyeSlash } from "@phosphor-icons/react";
 import AuthPageHeader from "@/app/components/commons/AuthPageHeader";
 import Image from "next/image";
 import AuthPageFooter from "@/app/components/commons/AuthPageFooter";
+import useAuth from "@/funcs/hooks/AuthHook";
+import { toast } from "react-hot-toast";
+import { CheckCircleIcon, Loader2 } from "lucide-react";
+import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+import { form } from "framer-motion/m";
 
 export default function SignupPage() {
   const [formData, setFormData] = useState({
@@ -21,7 +25,15 @@ export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [createAccountSuccess, setCreateAccountSuccess] = useState(false);
+  const { createUser } = useAuth();
   const router = useRouter();
+
+  const getMailPlatform = (email: string) => {
+    if (!email) router.push("/login");
+    const domain = email.split("@")[1];
+    window.location.href = `https://${domain}/`;
+  };
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -42,12 +54,94 @@ export default function SignupPage() {
 
     setIsLoading(true);
 
-    // Simulate signup logic
-    setTimeout(() => {
-      setIsLoading(false);
-      router.push("/dashboard");
-    }, 1000);
+    const user = {
+      email: formData.email,
+      first_name: formData.firstName,
+      last_name: formData.lastName,
+      country: formData.country,
+      password: formData.password,
+    };
+
+    createUser.mutate(user, {
+      onSuccess: () => {
+        toast.success("Account created successfully", { id: "signup-toast" });
+        setCreateAccountSuccess(true);
+      },
+      onError: (error) => {
+        toast.error(
+          //@ts-expect-error create user failed
+          String(error.response.data.message) || "Something went wrong",
+          { id: "signup-toast" },
+        );
+      },
+      onSettled: () => {
+        setIsLoading(false);
+      },
+    });
   };
+
+  if (createAccountSuccess) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center p-4">
+        <div className="max-w-[1200px] w-full bg-white rounded-2xl p-2 md:p-4 lg:p-8">
+          <AuthPageHeader />
+          <div className="space-y-6 lg:flex relative items-center justify-center gap-32 my-16 lg:my-32">
+            <div className="flex-1">
+              <div className="flex flex-col items-center justify-center gap-4">
+                <motion.div
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <CheckCircleIcon className="h-16 w-16 text-green-500" />
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                >
+                  <h2 className="text-2xl font-bold text-cyan-dark mt-4">
+                    Account Created!
+                  </h2>
+                </motion.div>
+
+                <motion.p
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.4 }}
+                  className="text-gray-600 mt-2 text-center"
+                >
+                  You can now log in with your new account.
+                  <br />
+                  Please check your inbox for a verification link.
+                </motion.p>
+                <div>
+                  <motion.button
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.2, delay: 0.4 }}
+                    onClick={() => getMailPlatform(formData.email)}
+                    className="px-6 py-3 bg-cyan-dark text-white rounded-md block cursor-pointer"
+                  >
+                    {formData.email ? "Go to inbox" : "Login"}
+                  </motion.button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="py-5 text-center">
+            <Link
+              href={"/"}
+              className="font-semibold  underline text-jean-orange hover:text-cyan-dark hover:no-underline"
+            >
+              Can&apos;t Signup?
+            </Link>
+            <AuthPageFooter />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white flex items-center justify-center p-4">
@@ -138,25 +232,6 @@ export default function SignupPage() {
 
               <div>
                 <label
-                  htmlFor="phone"
-                  className="block text-sm font-medium text-cyan-dark mb-2"
-                >
-                  Phone Number
-                </label>
-                <input
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-dark focus:border-transparent"
-                  placeholder="+234 or +233"
-                  required
-                />
-              </div>
-
-              <div>
-                <label
                   htmlFor="password"
                   className="block text-sm font-medium text-cyan-dark mb-2"
                 >
@@ -218,9 +293,16 @@ export default function SignupPage() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-cyan-dark text-white py-3 px-4 rounded-lg font-medium hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-cyan-dark focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full flex items-center justify-center gap-2 bg-cyan-dark text-white py-3 px-4 rounded-lg font-medium hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-cyan-dark focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isLoading ? "Creating account..." : "Create Account"}
+                {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Creating account...
+                  </>
+                ) : (
+                  "Create Account"
+                )}
               </button>
             </form>
 

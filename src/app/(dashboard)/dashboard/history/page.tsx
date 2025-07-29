@@ -193,7 +193,7 @@ export default function HistoryPage() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-2xl p-6 shadow-sm border">
+      <div className="bg-white rounded-2xl p-6 shadow-sm border border-black/30">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-cyan-dark mb-2">
@@ -231,7 +231,7 @@ export default function HistoryPage() {
       </div>
 
       {/* Transaction List */}
-      <div className="bg-white rounded-2xl shadow-sm border overflow-hidden">
+      <div className="bg-white rounded-2xl shadow-sm border border-black/30 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gray-50 border-b">
@@ -255,7 +255,10 @@ export default function HistoryPage() {
             </thead>
             <tbody>
               {filteredTransactions.map((transaction) => (
-                <tr key={transaction.id} className="border-b hover:bg-gray-50">
+                <tr
+                  key={transaction.id}
+                  className="border-b border-black/30 hover:bg-gray-50"
+                >
                   <td className="py-4 px-6">
                     <div className="flex items-center gap-3">
                       <div className="p-2 bg-gray-100 rounded-lg">
@@ -281,7 +284,7 @@ export default function HistoryPage() {
                   <td className="py-4 px-6">
                     <span
                       className={`inline-block px-3 py-1 text-xs font-medium rounded-full ${getStatusColor(
-                        transaction.status
+                        transaction.status,
                       )}`}
                     >
                       {transaction.status.charAt(0).toUpperCase() +

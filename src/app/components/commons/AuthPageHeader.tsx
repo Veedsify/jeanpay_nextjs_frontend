@@ -3,7 +3,7 @@ import Logo from "../ui/Logo";
 const AuthPageHeader = ({
   text = "Sign in to your Account",
 }: {
-  text: string;
+  text?: string;
 }) => {
   return (
     <div className="text-center mb-8">

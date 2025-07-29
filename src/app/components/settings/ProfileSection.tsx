@@ -1,6 +1,3 @@
-
-
-
 import { useState, useRef } from "react";
 import { Edit, Camera } from "lucide-react";
 import Image from "next/image";
@@ -10,8 +7,8 @@ interface ProfileData {
   lastName: string;
   email: string;
   phone: string;
-  profileImage?: string;
-};
+  profileImage: string;
+}
 
 interface ProfileSectionProps {
   profileData: ProfileData;
@@ -23,10 +20,9 @@ export const ProfileSection = ({
   onProfileUpdate,
 }: ProfileSectionProps) => {
   const [isEditing, setIsEditing] = useState(false);
-
   const [localProfileData, setLocalProfileData] = useState(profileData);
   const [previewImage, setPreviewImage] = useState(
-    profileData.profileImage || ""
+    profileData.profileImage || "",
   );
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -80,7 +76,7 @@ export const ProfileSection = ({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3 md:gap-4">
             <div className="relative">
-              <div 
+              <div
                 className="w-12 h-12 md:w-16 md:h-16 bg-[var(--jean-gray-300)] rounded-full flex items-center justify-center overflow-hidden cursor-pointer hover:bg-[var(--jean-gray-400)] transition-colors"
                 onClick={triggerFileInput}
               >
@@ -94,7 +90,10 @@ export const ProfileSection = ({
                   />
                 ) : (
                   <div className="w-full h-full bg-gradient-to-br from-[var(--jean-pink-200)] to-[var(--jean-pink-300)] flex items-center justify-center">
-                    <Camera size={20} className="md:size-6 text-[var(--jean-gray-600)]" />
+                    <Camera
+                      size={20}
+                      className="md:size-6 text-[var(--jean-gray-600)]"
+                    />
                   </div>
                 )}
               </div>
@@ -110,7 +109,9 @@ export const ProfileSection = ({
               <h2 className="text-base md:text-xl font-semibold text-[var(--jean-gray-900)]">
                 {localProfileData.firstName} {localProfileData.lastName}
               </h2>
-              <p className="text-sm md:text-base text-[var(--jean-gray-600)]">Nigeria</p>
+              <p className="text-sm md:text-base text-[var(--jean-gray-600)]">
+                Nigeria
+              </p>
             </div>
           </div>
         </div>

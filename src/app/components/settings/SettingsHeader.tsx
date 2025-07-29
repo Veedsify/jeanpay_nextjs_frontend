@@ -1,6 +1,7 @@
-
-
-import { Tab } from "@/app/(dashboard)/dashboard/settings/page";
+type Tab = {
+  id: string;
+  label: string;
+}
 
 interface SettingsHeaderProps {
   activeTab: string;

@@ -23,9 +23,9 @@ const Dropdown: React.FC<DropdownProps> = ({ value, options, onChange, placehold
 
       {isOpen && (
         <div className="absolute top-full left-0 mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg z-10">
-          {options.map((option) => (
+          {options.map((option, index) => (
             <button
-              key={option}
+              key={index}
               onClick={() => {
                 onChange(option);
                 setIsOpen(false);

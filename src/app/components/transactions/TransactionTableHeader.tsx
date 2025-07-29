@@ -1,13 +1,16 @@
-'use client';
+"use client";
 
-import { ChevronsUpDown } from 'lucide-react';
+import { ChevronsUpDown } from "lucide-react";
 
 interface HeaderProps {
   allSelected: boolean;
   onSelectAll: (checked: boolean) => void;
 }
 
-export default function TransactionTableHeader({ allSelected, onSelectAll }: HeaderProps) {
+export default function TransactionTableHeader({
+  allSelected,
+  onSelectAll,
+}: HeaderProps) {
   return (
     <thead className="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
       <tr>
@@ -21,20 +24,21 @@ export default function TransactionTableHeader({ allSelected, onSelectAll }: Hea
         </th>
 
         {[
-          'Transaction Name', // Added to the list for whitespace-nowrap
-          'Account',
-          'Transaction ID',
-          'Date & Time',
-          'Amount',
-          'Note',
-          'Status',
+          "Transaction Name", // Added to the list for whitespace-nowrap
+          "Transaction ID",
+          "Account",
+          "Amount",
+          "Note",
+          "Status",
+          "Date & Time",
         ].map((title) => (
           <th
             key={title}
             className="text-left px-4 py-3 text-sm font-medium text-gray-900 dark:text-white"
           >
-            {/* Apply flex to an inner div and add whitespace-nowrap for specific titles */}
-            <div className={`flex items-center gap-1 ${['Transaction Name', 'Transaction ID', 'Date & Time'].includes(title) ? 'whitespace-nowrap' : ''}`}>
+            <div
+              className={`flex items-center gap-1 ${["Transaction Name", "Transaction ID", "Date & Time"].includes(title) ? "whitespace-nowrap" : ""}`}
+            >
               {title}
               <ChevronsUpDown className="w-4 h-4 text-gray-400" />
             </div>

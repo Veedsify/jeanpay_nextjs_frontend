@@ -1,47 +1,33 @@
-
 "use client";
 import React, { useState } from "react";
 import {
   ChevronDown,
   ArrowDown,
-  DollarSignIcon,
   EllipsisVertical,
 } from "lucide-react";
 import { CountryFlag } from "./CountryFlag";
 import Link from "next/link";
 import { QuickAction } from "@/types/commons";
-import { ClockIcon, PlusSquareIcon } from "@phosphor-icons/react";
+import { PlusSquareIcon } from "@phosphor-icons/react";
 
 const quickActions: QuickAction[] = [
   {
-    title: "Convert",
-    description: "NGN ↔ GHS",
-    href: "/dashboard/convert",
-    icon: PlusSquareIcon,
-  },
-  {
     title: "TopUp",
     description: "Add money via Paystack",
-    href: "/dashboard/wallet",
+    href: "/dashboard/payment/topup",
     icon: ArrowDown,
   },
   {
-    title: "History",
-    description: "All transactions",
-    href: "/dashboard/history",
-    icon: ClockIcon,
-  },
-  {
-    title: "Virtual Accounts",
-    description: "View your virtual accounts",
-    href: "/dashboard/virtual-accounts",
-    icon: DollarSignIcon,
+    title: "Exchange Currency",
+    description: "NGN ↔ GHS",
+    href: "/dashboard/payment/tranfer",
+    icon: PlusSquareIcon,
   },
 ];
 
 export default function TopupForm() {
   const [selectedWallet, setSelectedWallet] = useState<"nigeria" | "ghana">(
-    "nigeria"
+    "nigeria",
   );
   const [amount, setAmount] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -68,7 +54,7 @@ export default function TopupForm() {
   return (
     <div className="mx-auto p-3 md:p-6 bg-white border rounded-2xl border-black/30 space-y-4">
       <div className="bg-green-bg rounded-2xl overflow-hidden">
-        <div className="grid lg:grid-cols-4 grid-cols-2 p-1 items-center overflow-scroll">
+        <div className="grid lg:grid-cols-2 grid-cols-2 p-1 items-center">
           {quickActions.map((action, idx) => {
             const IconComponent = action.icon;
             return (
@@ -83,8 +69,10 @@ export default function TopupForm() {
                 }
                    border-white`}
               >
-                <div className="px-3 py-2.5 rounded-lg text-white transition-transform flex flex-col items-center justify-center">
-                  <IconComponent size={26} className="fill-cyan-dark h-5" />
+                <div className="px-3 py-2.5 rounded-lg transition-transform flex flex-col items-center justify-center">
+                  <div className="bg-white rounded-lg p-1 w-10 h-10">
+                    <IconComponent size={26} className="h-5 " />
+                  </div>
                   <p className="mt-1 md:mt-2 text-xs md:text-sm font-medium text-cyan-dark">
                     {action.title}
                   </p>
@@ -134,7 +122,6 @@ export default function TopupForm() {
                   </div>
                 </div>
               </div>
-           
             </div>
           </div>
 

@@ -15,8 +15,6 @@ import BalanceCard from "@/app/components/commons/BalanceCard";
 import { QuickAction } from "@/types/commons";
 import { Transaction } from "@/types/transactions";
 
-
-
 export default function DashBoardPage() {
   const [searchTerm] = useState("");
   const [statusFilter] = useState("all");
@@ -24,21 +22,21 @@ export default function DashBoardPage() {
 
   const quickActions: QuickAction[] = [
     {
-      title: "Convert",
+      title: "Exchange Currency",
       description: "NGN ↔ GHS",
-      href: "/dashboard/convert",
+      href: "/dashboard/payment/transfer",
       icon: PlusSquareIcon,
     },
     {
       title: "TopUp",
       description: "Add money via Paystack",
-      href: "/dashboard/wallet",
+      href: "/dashboard/payment/topup",
       icon: ArrowDown,
     },
     {
       title: "History",
       description: "All transactions",
-      href: "/dashboard/history",
+      href: "/dashboard/transactions",
       icon: ClockIcon,
     },
   ];
@@ -223,11 +221,11 @@ export default function DashBoardPage() {
           </div>
           <div className="bg-green-bg rounded-2xl shadow-sm">
             <div className="flex">
-              {quickActions.map((action) => {
+              {quickActions.map((action, index) => {
                 const IconComponent = action.icon;
                 return (
                   <Link
-                    key={action.title}
+                    key={index}
                     href={action.href}
                     className="p-4 group flex-1 text-center border-r last:border-r-0 border-white"
                   >
@@ -292,22 +290,22 @@ export default function DashBoardPage() {
                       </tr>
                     </thead>
                     <tbody>
-                      {filteredTransactions.map((transaction) => (
+                      {filteredTransactions.map((transaction, index) => (
                         <tr
-                          key={transaction.id}
+                          key={index}
                           className="border-b border-black/20 hover:bg-green-bg"
                         >
                           <td className="py-4 px-6">
                             <div className="flex items-center gap-3">
-                              <div className="p-2 bg-gray-100 rounded-lg">
+                              <div className="p-2 bg-gray-100 rounded-lg text-nowrap">
                                 {getTransactionIcon(transaction.type)}
                               </div>
                               <div>
-                                <p className="font-medium text-gray-900 text-base sm:text-sm">
+                                <p className="font-medium text-gray-900 text-base sm:text-sm text-nowrap">
                                   {transaction.description}
                                 </p>
                                 {transaction.recipient && (
-                                  <p className="text-sm sm:text-xs text-gray-600">
+                                  <p className="text-sm sm:text-xs text-gray-600 text-nowrap">
                                     {transaction.recipient}
                                   </p>
                                 )}
@@ -315,14 +313,14 @@ export default function DashBoardPage() {
                             </div>
                           </td>
                           <td className="py-4 px-6">
-                            <p className="font-semibold text-gray-900 text-base sm:text-sm">
+                            <p className="font-semibold text-gray-900 text-base sm:text-sm text-nowrap">
                               {getTransactionText(transaction)}
                             </p>
                           </td>
                           <td className="py-4 px-6">
                             <span
                               className={`inline-block px-3 py-1 text-xs font-medium rounded-full ${getStatusColor(
-                                transaction.status
+                                transaction.status,
                               )}`}
                             >
                               {transaction.status.charAt(0).toUpperCase() +
