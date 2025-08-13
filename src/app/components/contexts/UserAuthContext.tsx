@@ -27,6 +27,10 @@ export interface User {
   is_verified: boolean;
   created_at: string;
   updated_at: string;
+  setting: {
+    user_id: number;
+    default_currency: "NGN" | "GHS";
+  };
 }
 
 // Authentication state type
@@ -82,7 +86,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     try {
       // Replace with your API endpoint
       const response = await validateUser();
-      console.log(response.data);
       if (response.data) {
         const userData = response.data.user;
         setAuthState({

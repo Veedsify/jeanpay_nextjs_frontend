@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
-import Toast from "../ui/Toast";
 
 interface PasswordData {
   currentPassword: string;
@@ -34,7 +33,10 @@ export const SecuritySection = () => {
     setPasswordData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const showToast = (type: "success" | "error" | "info" | "warning", message: string) => {
+  const showToast = (
+    type: "success" | "error" | "info" | "warning",
+    message: string,
+  ) => {
     setToast({ show: true, type, message });
   };
 
@@ -61,15 +63,15 @@ export const SecuritySection = () => {
   const handleDeleteAccount = () => {
     showToast(
       "warning",
-      "Are you sure you want to delete your account? This action cannot be undone."
+      "Are you sure you want to delete your account? This action cannot be undone.",
     );
-    
+
     // Instead of using confirm(), show a toast and handle the confirmation logic
     // You might want to show a modal or additional confirmation step here
     setTimeout(() => {
       showToast(
         "info",
-        "Account deletion request submitted. Please check your email for confirmation."
+        "Account deletion request submitted. Please check your email for confirmation.",
       );
     }, 3000);
   };
@@ -90,7 +92,9 @@ export const SecuritySection = () => {
       />
       <div
         className={`w-10 h-6 md:w-12 md:h-7 rounded-full peer transition-colors duration-200 ease-in-out ${
-          checked ? "bg-[var(--color-jean-green-400)]" : "bg-[var(--jean-gray-200)]"
+          checked
+            ? "bg-[var(--color-jean-green-400)]"
+            : "bg-[var(--jean-gray-200)]"
         }`}
       >
         <div
@@ -145,22 +149,22 @@ export const SecuritySection = () => {
                   field === "currentPassword"
                     ? showCurrentPassword
                     : field === "newPassword"
-                    ? showNewPassword
-                    : showConfirmPassword;
+                      ? showNewPassword
+                      : showConfirmPassword;
 
                 const setShown =
                   field === "currentPassword"
                     ? setShowCurrentPassword
                     : field === "newPassword"
-                    ? setShowNewPassword
-                    : setShowConfirmPassword;
+                      ? setShowNewPassword
+                      : setShowConfirmPassword;
 
                 const labelText =
                   field === "currentPassword"
                     ? "Current Password"
                     : field === "newPassword"
-                    ? "New Password"
-                    : "Confirm New Password";
+                      ? "New Password"
+                      : "Confirm New Password";
 
                 return (
                   <div key={field}>
@@ -186,7 +190,7 @@ export const SecuritySection = () => {
                     </div>
                   </div>
                 );
-              }
+              },
             )}
 
             <div className="flex gap-2 md:gap-3 pt-3 md:pt-4">
@@ -261,8 +265,8 @@ export const SecuritySection = () => {
                 Deactivate Account
               </h3>
               <p className="text-xs md:text-sm text-[var(--jean-gray-600)]">
-                Deactivate Your Account To Prevent Unwanted Access. You&apos;ll need
-                to contact Support To re-enable account
+                Deactivate Your Account To Prevent Unwanted Access. You&apos;ll
+                need to contact Support To re-enable account
               </p>
             </div>
             <Toggle

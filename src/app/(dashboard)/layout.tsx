@@ -1,18 +1,18 @@
 import { ReactNode, Suspense } from "react";
-import { Instrument_Sans } from "next/font/google";
 import "../globals.css";
 import SideBar from "../components/main-components/SideBar";
 import DashboardHeader from "../components/main-components/DashboardHeader";
 import MobileHeader from "../components/main-components/MobileHeader";
 import DashboardFooter from "../components/main-components/DashboardFooter";
 import { Metadata } from "next";
+import { Geist } from "next/font/google";
 import { Hydration } from "../components/providers/Hydration";
 import { AuthProvider } from "../components/contexts/UserAuthContext";
 import FullLoader from "../components/ui/FullLoader";
+import { Toaster } from "react-hot-toast";
 
-const font = Instrument_Sans({
+const geist = Geist({
   subsets: ["latin"],
-  variable: "--font-instrument-sans",
 });
 
 export const metadata: Metadata = {
@@ -28,8 +28,14 @@ export default async function LayoutPage({
 }) {
   return (
     <html lang="en">
-      <body className={`${font.className} bg-green-bg`}>
+      <body
+        // style={{
+        //   fontFamily: "Host Grotesk Variable",
+        // }}
+        className={` ${geist.className} bg-green-bg`}
+      >
         <Hydration>
+          <Toaster position="top-center" containerClassName="text-center" />
           <Suspense fallback={<FullLoader shouldClose duration={1000} />}>
             <AuthProvider>
               <div className="mx-auto min-h-screen lg:grid grid-cols-7">

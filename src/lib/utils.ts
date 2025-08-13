@@ -60,7 +60,9 @@ export function truncateText(text: string, length: number) {
  * @param size - Spacing size (xs, sm, md, lg, xl, 2xl, 3xl)
  * @returns Tailwind spacing class
  */
-export function getSpacing(size: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl") {
+export function getSpacing(
+  size: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl",
+) {
   const spacingMap = {
     xs: "1",
     sm: "2",
@@ -178,7 +180,8 @@ export function isValidEmail(email: string): boolean {
  * @returns Random ID string
  */
 export function generateId(length: number = 8): string {
-  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const chars =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   let result = "";
   for (let i = 0; i < length; i++) {
     result += chars.charAt(Math.floor(Math.random() * chars.length));
@@ -206,4 +209,39 @@ export function formatDate(
   };
 
   return dateObj.toLocaleDateString("en-US", options[format]);
+}
+
+export function formatDateTime(
+  date: Date | string,
+  format: "short" | "medium" | "long" | "time" = "medium",
+): string {
+  const dateObj = typeof date === "string" ? new Date(date) : date;
+
+  const options: Record<string, Intl.DateTimeFormatOptions> = {
+    short: {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    },
+    medium: {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    },
+    long: {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    },
+    time: { hour: "2-digit", minute: "2-digit" },
+  };
+
+  return dateObj.toLocaleString("en-US", options[format]);
 }

@@ -5,7 +5,7 @@ import { Eye, EyeSlash } from "@phosphor-icons/react";
 import AuthPageHeader from "@/app/components/commons/AuthPageHeader";
 import Image from "next/image";
 import AuthPageFooter from "@/app/components/commons/AuthPageFooter";
-import useAuth from "@/funcs/hooks/AuthHook";
+import useAuth from "@/hooks/AuthHook";
 import { toast } from "react-hot-toast";
 import { CheckCircleIcon, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";

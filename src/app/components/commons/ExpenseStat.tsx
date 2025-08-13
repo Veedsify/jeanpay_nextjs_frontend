@@ -1,7 +1,24 @@
 import React from "react";
 
-const ExpenseStat = ({ className }: { className?: string }) => {
-  const expenses = [
+interface ExpenseCategory {
+  category: string;
+  amount: number;
+  percentage: number;
+  color: string;
+}
+
+interface ExpenseStatProps {
+  className?: string;
+  expenses?: ExpenseCategory[];
+  totalExpense?: number;
+  moneyIn?: number;
+  moneyOut?: number;
+  isLoading?: boolean;
+}
+
+const ExpenseStat: React.FC<ExpenseStatProps> = ({
+  className,
+  expenses = [
     {
       category: "Rent & Living",
       amount: 200000,
@@ -32,12 +49,12 @@ const ExpenseStat = ({ className }: { className?: string }) => {
       percentage: 5,
       color: "bg-gray-300",
     },
-  ];
-
-  const totalExpense = 15500;
-  const moneyIn = 14800;
-  const moneyOut = 13500;
-
+  ],
+  totalExpense = 15500,
+  moneyIn = 14800,
+  moneyOut = 13500,
+  isLoading = false,
+}) => {
   // Calculate the stroke-dasharray for each segment
   const radius = 90;
   const circumference = 2 * Math.PI * radius;
@@ -58,6 +75,37 @@ const ExpenseStat = ({ className }: { className?: string }) => {
   const formatCurrency = (amount: number) => {
     return `₦${amount.toLocaleString()}`;
   };
+
+  if (isLoading) {
+    return (
+      <div
+        className={`bg-white p-6 rounded-2xl border border-black/30 animate-pulse ${className}`}
+      >
+        <div className="flex justify-between items-center mb-6">
+          <div className="h-6 w-24 bg-gray-200 rounded"></div>
+          <div className="h-6 w-20 bg-gray-200 rounded"></div>
+        </div>
+        <div className="flex mb-6 p-1">
+          <div className="flex-1 h-8 bg-gray-200 rounded mr-2"></div>
+          <div className="flex-1 h-8 bg-gray-200 rounded"></div>
+        </div>
+        <div className="flex justify-center mb-8">
+          <div className="w-48 h-48 bg-gray-200 rounded-full"></div>
+        </div>
+        <div className="space-y-4">
+          {[1, 2, 3, 4, 5].map((i) => (
+            <div key={i} className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <div className="w-8 h-8 bg-gray-200 rounded"></div>
+                <div className="w-20 h-4 bg-gray-200 rounded"></div>
+              </div>
+              <div className="w-16 h-4 bg-gray-200 rounded"></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -109,12 +157,12 @@ const ExpenseStat = ({ className }: { className?: string }) => {
                   segment.color.includes("teal-700")
                     ? "#0f766e"
                     : segment.color.includes("green-400")
-                    ? "#4ade80"
-                    : segment.color.includes("gray-400")
-                    ? "#9ca3af"
-                    : segment.color.includes("orange-400")
-                    ? "#fb923c"
-                    : "#d1d5db"
+                      ? "#4ade80"
+                      : segment.color.includes("gray-400")
+                        ? "#9ca3af"
+                        : segment.color.includes("orange-400")
+                          ? "#fb923c"
+                          : "#d1d5db"
                 }
                 strokeWidth="20"
                 strokeDasharray={`${segment.segmentLength} ${circumference}`}
@@ -144,12 +192,12 @@ const ExpenseStat = ({ className }: { className?: string }) => {
                   expense.color.includes("teal-700")
                     ? "bg-teal-700"
                     : expense.color.includes("green-400")
-                    ? "bg-green-400"
-                    : expense.color.includes("gray-400")
-                    ? "bg-gray-400"
-                    : expense.color.includes("orange-400")
-                    ? "bg-orange-400"
-                    : "bg-gray-300"
+                      ? "bg-green-400"
+                      : expense.color.includes("gray-400")
+                        ? "bg-gray-400"
+                        : expense.color.includes("orange-400")
+                          ? "bg-orange-400"
+                          : "bg-gray-300"
                 }`}
               >
                 <span className="text-sm font-medium text-gray-900">

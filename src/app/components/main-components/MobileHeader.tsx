@@ -16,7 +16,11 @@ const navItems = [
     icon: CreditCardIcon,
     children: [
       { id: "topup", name: "Topup", href: "/dashboard/payment/topup" },
-      { id: "transfer", name: "Exchange Currency", href: "/dashboard/payment/transfer" },
+      {
+        id: "transfer",
+        name: "Exchange Currency",
+        href: "/dashboard/payment/convert",
+      },
     ],
   },
   {
@@ -69,7 +73,7 @@ function NavItemWithChildren({
   const handleOpenToggle = () => {
     setOpen(!open);
   };
-  
+
   return (
     <>
       <button

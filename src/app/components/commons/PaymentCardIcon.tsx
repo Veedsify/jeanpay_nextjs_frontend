@@ -62,8 +62,8 @@ const PaymentCardIcon: React.FC<PaymentCardIconProps> = ({
       case "momo":
         return <div className="text-yellow-500 font-bold text-xs">Momo</div>;
 
-      case "paystack":
-        return <div className="text-blue-600 font-bold text-xs">Paystack</div>;
+      case "bank":
+        return <div className="text-blue-600 font-bold text-xs">Bank</div>;
 
       default:
         return (

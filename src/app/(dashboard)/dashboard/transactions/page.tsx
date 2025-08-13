@@ -2,6 +2,8 @@
 
 import { useMemo, useState } from "react";
 import { RefreshCcw } from "lucide-react";
+import useTransactions from "@/hooks/TransactionsHook";
+
 import TransactionFilters from "@/app/components/transactions/TransactionFilters";
 import TransactionTable from "@/app/components/transactions/TransactionTable";
 import TransactionPagination from "@/app/components/transactions/Pagination";
@@ -14,203 +16,119 @@ interface Transaction {
   date: string;
   time: string;
   amount: number;
+  to_currency: string;
   note: string;
   status: "Completed" | "Pending" | "Rejected";
   icon: React.ElementType;
 }
 
-// Updated Mock Data with more realistic amounts and variety
-const mockTransactions: Transaction[] = [
-  {
-    id: "4567890135",
-    name: "NGN to GHS",
-    accountType: "momo",
-    date: "2024-09-25",
-    time: "11:00 AM",
-    amount: 1500.0,
-    note: "Annual performance bonus",
-    status: "Completed",
-    icon: RefreshCcw,
-  },
-  {
-    id: "4567890136",
-    name: "NGN - GHS",
-    accountType: "paystack",
-    date: "2024-09-24",
-    time: "09:00 AM",
-    amount: 300.0,
-    note: "Quarterly stock dividend",
-    status: "Completed",
-    icon: RefreshCcw,
-  },
-  {
-    id: "4567890123",
-    name: "GHS - NGN",
-    accountType: "momo",
-    date: "2024-09-24",
-    time: "10:30 AM",
-    amount: -150.0,
-    note: "Monthly internet and TV bill",
-    status: "Completed",
-    icon: RefreshCcw,
-  },
-  {
-    id: "4567890137",
-    name: "GHS - NGN",
-    accountType: "visa",
-    date: "2024-09-23",
-    time: "01:30 PM",
-    amount: 1200.0,
-    note: "Payment for freelance design work",
-    status: "Completed",
-    icon: RefreshCcw,
-  },
-  {
-    id: "4567890124",
-    name: "GHS - NGN",
-    accountType: "mastercard",
-    date: "2024-09-23",
-    time: "03:45 PM",
-    amount: -80.95,
-    note: "Purchased kitchen appliances",
-    status: "Completed",
-    icon: RefreshCcw,
-  },
-  {
-    id: "567890123",
-    name: "NGN - GHS",
-    accountType: "visa",
-    date: "2024-09-22",
-    time: "07:00 AM",
-    amount: -45.0,
-    note: "Monthly gym fee for health",
-    status: "Pending",
-    icon: RefreshCcw,
-  },
-  {
-    id: "4567890138",
-    name: "GHS - NGN",
-    accountType: "mastercard",
-    date: "2024-09-22",
-    time: "08:00 AM",
-    amount: 2500.0,
-    note: "Monthly rent from property",
-    status: "Completed",
-    icon: RefreshCcw,
-  },
-  {
-    id: "4567890126",
-    name: "NGN - GHS",
-    accountType: "mastercard",
-    date: "2024-09-21",
-    time: "02:15 PM",
-    amount: -325.0,
-    note: "Car insurance premium investment",
-    status: "Completed",
-    icon: RefreshCcw,
-  },
-  {
-    id: "4567890127",
-    name: "NGN - GHS",
-    accountType: "visa",
-    date: "2024-09-20",
-    time: "11:00 AM",
-    amount: -160.0,
-    note: "Mobile phone bill",
-    status: "Pending",
-    icon: RefreshCcw,
-  },
-  {
-    id: "4567890128",
-    name: "GHS - NGN",
-    accountType: "mastercard",
-    date: "2024-09-19",
-    time: "08:20 AM",
-    amount: -170.0,
-    note: "Home electricity bill",
-    status: "Completed",
-    icon: RefreshCcw,
-  },
-  {
-    id: "4567890129",
-    name: "NGN - GHS",
-    accountType: "visa",
-    date: "2024-09-18",
-    time: "05:45 PM",
-    amount: -17.99,
-    note: "Monthly entertainment subscription",
-    status: "Completed",
-    icon: RefreshCcw,
-  },
-  {
-    id: "4567890130",
-    name: "GHS - NGN",
-    accountType: "mastercard",
-    date: "2024-09-17",
-    time: "09:30 AM",
-    amount: -350.0,
-    note: "Business trip expense",
-    status: "Rejected",
-    icon: RefreshCcw,
-  },
-  {
-    id: "4567890139",
-    name: "GHS - NGN",
-    accountType: "mastercard",
-    date: "2024-09-16",
-    time: "09:00 AM",
-    amount: 5000.0,
-    note: "Monthly salary payment",
-    status: "Completed",
-    icon: RefreshCcw,
-  },
-  {
-    id: "4567890140",
-    name: "NGN - GHS",
-    accountType: "visa",
-    date: "2024-09-15",
-    time: "06:30 PM",
-    amount: -120.5,
-    note: "Weekly grocery shopping",
-    status: "Completed",
-    icon: RefreshCcw,
-  },
-  {
-    id: "4567890141",
-    name: "GHS - NGN",
-    accountType: "mastercard",
-    date: "2024-09-14",
-    time: "10:15 AM",
-    amount: 750.0,
-    note: "Monthly investment dividend",
-    status: "Pending",
-    icon: RefreshCcw,
-  },
-];
+const currencyDirection = {
+  "NGN-GHS": "Naira To Ghana Cedi Transfer",
+  "GHS-NGN": "Ghana Cedi To Naira Transfer",
+  "DEPOSIT-NGN": "Deposit To Naira Wallet",
+  "DEPOSIT-GHS": "Deposit To Ghana Cedi Wallet",
+  "WITHDRAWAL-NGN": "Withdrawal From Naira Wallet",
+  "WITHDRAWAL-GHS": "Withdrawal From Ghana Cedi Wallet",
+};
 
 export default function TransactionComponent() {
+  const { data } = useTransactions();
+
+  const transactionsData: Transaction[] = useMemo(() => {
+    const list = (Array.isArray(data) ? data : []) as Array<{
+      created_at?: string;
+      id?: string;
+      transaction_id?: string;
+      reference?: string;
+      status?: string;
+      payment_type?: string;
+      direction?: string;
+      transaction_details?: {
+        from_currency?: string;
+        to_currency?: string;
+        from_amount?: number | string;
+        to_amount?: number | string;
+        recipient_name?: string;
+        bank_name?: string;
+        account_number?: string;
+        network?: string;
+        phone_number?: string;
+        amount?: number | string;
+      };
+    }>;
+    return list.map((t) => {
+      const createdAt = t?.created_at;
+      const dateObj = createdAt ? new Date(createdAt) : null;
+      const date = dateObj ? dateObj.toISOString().slice(0, 10) : "";
+      const time = dateObj
+        ? dateObj.toLocaleTimeString("en-US", {
+            hour: "2-digit",
+            minute: "2-digit",
+          })
+        : "";
+
+      const details = t?.transaction_details || {};
+      const paymentType = t?.payment_type || "";
+      const statusRaw = String(t?.status || "pending").toLowerCase();
+
+      const status =
+        statusRaw === "completed"
+          ? "Completed"
+          : statusRaw === "failed" || statusRaw === "rejected"
+            ? "Rejected"
+            : "Pending";
+      const name =
+        currencyDirection[t.direction as keyof typeof currencyDirection] ||
+        "Unknown";
+      const amount = details?.to_amount || Number(details?.from_amount || 0);
+      const note = details?.recipient_name
+        ? `Transfer to ${details.recipient_name}`
+        : "Balance Top Up";
+
+      const id = t?.transaction_id || t?.id || t?.reference || "";
+
+      return {
+        id,
+        name,
+        accountType: paymentType || "paystack",
+        date,
+        time,
+        amount,
+        to_currency: details?.to_currency || "GHS",
+        note,
+        status,
+        icon: RefreshCcw,
+      } as Transaction;
+    });
+  }, [data]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedAccount, setSelectedAccount] = useState("All Account");
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 12;
+  const itemsPerPage = 10;
 
   const filteredTransactions = useMemo(() => {
-    return mockTransactions.filter((transaction) => {
+    setCurrentPage(1); // Reset to first page on filter change
+    const source = transactionsData || [];
+    return source.filter((transaction) => {
       const matchesSearch =
         transaction.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         transaction.note.toLowerCase().includes(searchTerm.toLowerCase()) ||
         transaction.id.includes(searchTerm);
-      return matchesSearch;
+      const matchesAccount =
+        selectedAccount === "All Account" ||
+        transaction.accountType?.toLowerCase() ===
+          selectedAccount.toLowerCase();
+      return matchesSearch && matchesAccount;
     });
-  }, [searchTerm]);
+  }, [searchTerm, selectedAccount, transactionsData]);
 
   // Pagination
   const totalPages = Math.ceil(filteredTransactions.length / itemsPerPage);
   const paginatedTransactions = filteredTransactions.slice(
     (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+    currentPage * itemsPerPage,
   );
 
   // Handlers
@@ -218,7 +136,7 @@ export default function TransactionComponent() {
     setSelectedIds((prev) =>
       prev.includes(id)
         ? prev.filter((selectedId) => selectedId !== id)
-        : [...prev, id]
+        : [...prev, id],
     );
   };
 

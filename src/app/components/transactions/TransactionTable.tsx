@@ -10,6 +10,7 @@ interface Transaction {
   time: string;
   amount: number;
   note: string;
+  to_currency: string;
   status: "Completed" | "Pending" | "Rejected";
   icon: React.ElementType;
 }
@@ -40,18 +41,11 @@ export default function TransactionTable({
     }
   };
 
-  const formatAmount = (amount: number) => {
-    const isNegative = amount < 0;
+  const formatAmount = (amount: number, currency: string) => {
     const absAmount = Math.abs(amount);
     return (
-      <span
-        className={
-          isNegative
-            ? "text-red-600 dark:text-red-400 whitespace-nowrap"
-            : "text-green-600 dark:text-green-400 whitespace-nowrap"
-        }
-      >
-        {isNegative ? "-" : "+"}₦
+      <span>
+        {currency} &nbsp;
         {absAmount.toLocaleString("en-US", {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
@@ -120,17 +114,8 @@ export default function TransactionTable({
                     </div>
                   </td>
 
-                  <td className="px-4 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900 dark:text-white whitespace-nowrap">
-                      {transaction.date}
-                    </div>
-                    <div className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">
-                      {transaction.time}
-                    </div>
-                  </td>
-
-                  <td className="px-4 py-4 font-medium">
-                    {formatAmount(transaction.amount)}
+                  <td className="px-4 py-4">
+                    {formatAmount(transaction.amount, transaction.to_currency)}
                   </td>
 
                   <td className="px-4 py-4 text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">
@@ -145,6 +130,14 @@ export default function TransactionTable({
                     >
                       {transaction.status}
                     </span>
+                  </td>
+                  <td className="px-4 py-4 whitespace-nowrap">
+                    <div className="text-sm text-gray-900 dark:text-white whitespace-nowrap">
+                      {transaction.date}
+                    </div>
+                    <div className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">
+                      {transaction.time}
+                    </div>
                   </td>
                 </tr>
               );

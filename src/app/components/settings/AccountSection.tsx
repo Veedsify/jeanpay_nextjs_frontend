@@ -1,6 +1,5 @@
 import { Edit, Save, Info } from "lucide-react";
 import { useState } from "react";
-import Toast from "../ui/Toast";
 
 export const AccountSection = () => {
   const [editingSection, setEditingSection] = useState({
@@ -29,7 +28,10 @@ export const AccountSection = () => {
     message: string;
   } | null>();
 
-const showToast = (type: 'success' | 'error' | 'info' | 'warning', message: string): void => {
+  const showToast = (
+    type: "success" | "error" | "info" | "warning",
+    message: string,
+  ): void => {
     setToast({ type, message });
   };
 
@@ -37,23 +39,29 @@ const showToast = (type: 'success' | 'error' | 'info' | 'warning', message: stri
     setToast(null);
   };
 
-  const handleEdit = (state: keyof typeof editingSection, section: boolean): void => {
+  const handleEdit = (
+    state: keyof typeof editingSection,
+    section: boolean,
+  ): void => {
     setEditingSection((prev) => ({
       ...prev,
       [state]: section,
     }));
   };
 
-  const handleSave = (state: keyof typeof editingSection, section: boolean): void => {
+  const handleSave = (
+    state: keyof typeof editingSection,
+    section: boolean,
+  ): void => {
     console.log(`Saving ${state} data...`, section);
-    
+
     // Simulate save operation
     setTimeout(() => {
       setEditingSection((prev) => ({
         ...prev,
         [state]: false,
       }));
-      
+
       // Show success toast based on section
       let message = "";
       switch (state) {
@@ -66,7 +74,7 @@ const showToast = (type: 'success' | 'error' | 'info' | 'warning', message: stri
         default:
           message = "Settings saved successfully!";
       }
-      
+
       showToast("success", message);
     }, 500); // Small delay to simulate API call
   };
@@ -97,10 +105,12 @@ const showToast = (type: 'success' | 'error' | 'info' | 'warning', message: stri
                   backgroundColor: "var(--color-green-save)",
                 }}
                 onMouseOver={(e) =>
-                  (e.currentTarget.style.backgroundColor = "var(--color-green-save-hover)")
+                  (e.currentTarget.style.backgroundColor =
+                    "var(--color-green-save-hover)")
                 }
                 onMouseOut={(e) =>
-                  (e.currentTarget.style.backgroundColor = "var(--color-green-save)")
+                  (e.currentTarget.style.backgroundColor =
+                    "var(--color-green-save)")
                 }
               >
                 <Save size={12} className="md:size-[14px]" />
@@ -114,10 +124,12 @@ const showToast = (type: 'success' | 'error' | 'info' | 'warning', message: stri
                   backgroundColor: "var(--color-teal-edit)",
                 }}
                 onMouseOver={(e) =>
-                  (e.currentTarget.style.backgroundColor = "var(--color-teal-edit-hover)")
+                  (e.currentTarget.style.backgroundColor =
+                    "var(--color-teal-edit-hover)")
                 }
                 onMouseOut={(e) =>
-                  (e.currentTarget.style.backgroundColor = "var(--color-teal-edit)")
+                  (e.currentTarget.style.backgroundColor =
+                    "var(--color-teal-edit)")
                 }
               >
                 <Edit size={12} className="md:size-[14px]" />
@@ -159,7 +171,10 @@ const showToast = (type: 'success' | 'error' | 'info' | 'warning', message: stri
                     type="text"
                     value={walletData.ngnWallet}
                     onChange={(e) =>
-                      setWalletData({ ...walletData, ngnWallet: e.target.value })
+                      setWalletData({
+                        ...walletData,
+                        ngnWallet: e.target.value,
+                      })
                     }
                     className="text-base md:text-lg font-semibold border border-gray-300 rounded-lg md:rounded-xl px-2 py-1 md:px-3 md:py-2 w-full text-gray-900 focus:border-teal-500 focus:outline-none"
                   />
@@ -200,7 +215,10 @@ const showToast = (type: 'success' | 'error' | 'info' | 'warning', message: stri
                     type="text"
                     value={walletData.ghsWallet}
                     onChange={(e) =>
-                      setWalletData({ ...walletData, ghsWallet: e.target.value })
+                      setWalletData({
+                        ...walletData,
+                        ghsWallet: e.target.value,
+                      })
                     }
                     className="text-base md:text-lg font-semibold border border-gray-300 rounded-lg md:rounded-xl px-2 py-1 md:px-3 md:py-2 w-full text-gray-900 focus:border-teal-500 focus:outline-none"
                   />
@@ -221,16 +239,20 @@ const showToast = (type: 'success' | 'error' | 'info' | 'warning', message: stri
               Account Verification & KYC
             </h2>
             <button
-              onClick={() => showToast("info", "KYC verification is already complete!")}
+              onClick={() =>
+                showToast("info", "KYC verification is already complete!")
+              }
               className="flex items-center gap-1 md:gap-2 px-2 md:px-3 py-1 md:py-1.5 text-xs md:text-sm rounded text-white transition-colors"
               style={{
                 backgroundColor: "var(--color-teal-edit)",
               }}
               onMouseOver={(e) =>
-                (e.currentTarget.style.backgroundColor = "var(--color-teal-edit-hover)")
+                (e.currentTarget.style.backgroundColor =
+                  "var(--color-teal-edit-hover)")
               }
               onMouseOut={(e) =>
-                (e.currentTarget.style.backgroundColor = "var(--color-teal-edit)")
+                (e.currentTarget.style.backgroundColor =
+                  "var(--color-teal-edit)")
               }
             >
               <Info size={12} className="md:size-[14px]" />
@@ -271,10 +293,12 @@ const showToast = (type: 'success' | 'error' | 'info' | 'warning', message: stri
                   backgroundColor: "var(--color-green-save)",
                 }}
                 onMouseOver={(e) =>
-                  (e.currentTarget.style.backgroundColor = "var(--color-green-save-hover)")
+                  (e.currentTarget.style.backgroundColor =
+                    "var(--color-green-save-hover)")
                 }
                 onMouseOut={(e) =>
-                  (e.currentTarget.style.backgroundColor = "var(--color-green-save)")
+                  (e.currentTarget.style.backgroundColor =
+                    "var(--color-green-save)")
                 }
               >
                 <Save size={12} className="md:size-[14px]" />
@@ -288,10 +312,12 @@ const showToast = (type: 'success' | 'error' | 'info' | 'warning', message: stri
                   backgroundColor: "var(--color-teal-edit)",
                 }}
                 onMouseOver={(e) =>
-                  (e.currentTarget.style.backgroundColor = "var(--color-teal-edit-hover)")
+                  (e.currentTarget.style.backgroundColor =
+                    "var(--color-teal-edit-hover)")
                 }
                 onMouseOut={(e) =>
-                  (e.currentTarget.style.backgroundColor = "var(--color-teal-edit)")
+                  (e.currentTarget.style.backgroundColor =
+                    "var(--color-teal-edit)")
                 }
               >
                 <Edit size={12} className="md:size-[14px]" />

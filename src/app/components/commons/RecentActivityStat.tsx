@@ -1,9 +1,28 @@
-
 import React from "react";
 import { MoreHorizontal } from "lucide-react";
 
-const RecentActivityStat = ({className}: {className?: string}) => {
-  const activities = [
+interface ActivityItem {
+  user: string;
+  action: string;
+  time: string;
+  avatar: string;
+}
+
+interface ActivityGroup {
+  id: number;
+  day: string;
+  items: ActivityItem[];
+}
+
+interface RecentActivityStatProps {
+  className?: string;
+  activities?: ActivityGroup[];
+  isLoading?: boolean;
+}
+
+const RecentActivityStat: React.FC<RecentActivityStatProps> = ({
+  className,
+  activities = [
     {
       id: 1,
       day: "Today",
@@ -46,8 +65,9 @@ const RecentActivityStat = ({className}: {className?: string}) => {
         },
       ],
     },
-  ];
-
+  ],
+  isLoading = false,
+}) => {
   const getAvatarColor = (letter: string) => {
     const colors: { [key: string]: string } = {
       T: "bg-green-400",
@@ -58,8 +78,41 @@ const RecentActivityStat = ({className}: {className?: string}) => {
     return colors[letter] || "bg-green-400";
   };
 
+  if (isLoading) {
+    return (
+      <div
+        className={`bg-white p-6 rounded-2xl border border-black/30 animate-pulse ${className}`}
+      >
+        <div className="flex justify-between items-center mb-6">
+          <div className="h-6 w-32 bg-gray-200 rounded"></div>
+          <div className="w-5 h-5 bg-gray-200 rounded"></div>
+        </div>
+        <div className="space-y-6">
+          {[1, 2].map((group) => (
+            <div key={group}>
+              <div className="h-6 w-20 bg-gray-200 rounded mb-4"></div>
+              <div className="space-y-4">
+                {[1, 2, 3].map((item) => (
+                  <div key={item} className="flex items-start space-x-3">
+                    <div className="w-8 h-8 bg-gray-200 rounded-full"></div>
+                    <div className="flex-1">
+                      <div className="h-4 w-3/4 bg-gray-200 rounded mb-1"></div>
+                      <div className="h-3 w-12 bg-gray-200 rounded"></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className={`bg-white p-6 rounded-2xl border border-black/30 ${className}`}>
+    <div
+      className={`bg-white p-6 rounded-2xl border border-black/30 ${className}`}
+    >
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-semibold text-gray-900">Recent Activity</h2>
@@ -82,7 +135,7 @@ const RecentActivityStat = ({className}: {className?: string}) => {
                   {/* Avatar */}
                   <div
                     className={`w-8 h-8 rounded-full ${getAvatarColor(
-                      activity.avatar
+                      activity.avatar,
                     )} flex items-center justify-center flex-shrink-0`}
                   >
                     <span className="text-white text-sm font-medium">

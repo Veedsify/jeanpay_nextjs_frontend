@@ -8,6 +8,8 @@ import { PreferencesSection } from "@/app/components/settings/PreferenceSection"
 import { NotificationsSection } from "@/app/components/settings/NotificationSection";
 import { SecuritySection } from "@/app/components/settings/SecuritySection";
 import { useAuthContext } from "@/app/components/contexts/UserAuthContext";
+import useSettings from "@/hooks/SettingsHook";
+import toast from "react-hot-toast";
 
 type Tab = {
   id: string;
@@ -18,27 +20,14 @@ type Tab = {
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState("profile");
   const { user } = useAuthContext();
-  const [profileData, setProfileData] = useState({
-    firstName: "Andrew",
-    lastName: "Forbeist",
-    email: "andrewforbeist@gmail.com",
-    phone: "+234 802 345 8890",
+  const { updateProfile } = useSettings();
+  const [profileData] = useState({
+    firstName: String(user?.first_name),
+    lastName: String(user?.last_name),
+    email: String(user?.email),
+    phone: user?.phone_number ?? "",
     profileImage: String(user?.profile_picture || "/images/defaults/user.jpg"),
   });
-
-  // const [passwordData, setPasswordData] = useState({
-  //   currentPassword: "",
-  //   newPassword: "",
-  //   confirmPassword: "",
-  // });
-
-  // const [notifications, setNotifications] = useState({
-  //   emailNotifications: true,
-  //   smsNotifications: false,
-  //   pushNotifications: true,
-  //   transactionAlerts: true,
-  //   marketingEmails: false,
-  // });
 
   const tabs: Tab[] = [
     { id: "profile", label: "Profile", icon: User },
@@ -49,8 +38,24 @@ export default function SettingsPage() {
   ];
 
   const handleProfileUpdate = (updatedData: typeof profileData) => {
-    setProfileData(updatedData);
-    alert("Profile updated successfully!");
+    updateProfile.mutate(
+      {
+        email: updatedData.email,
+        phone: updatedData.phone,
+        firstName: updatedData.firstName,
+        lastName: updatedData.lastName,
+        profileImage: updatedData.profileImage,
+      },
+      {
+        onError: (error) => {
+          console.log(error);
+          toast.error("Error updating profile:");
+        },
+        onSuccess: () => {
+          toast.success("Profile updated successfully!");
+        },
+      },
+    );
   };
 
   return (

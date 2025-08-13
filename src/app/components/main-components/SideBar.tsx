@@ -15,7 +15,7 @@ const navItems = [
     icon: CreditCardIcon,
     children: [
       { name: "Topup", href: "/dashboard/payment/topup" },
-      { name: "Exchange Currency", href: "/dashboard/payment/transfer" },
+      { name: "Exchange Currency", href: "/dashboard/payment/convert" },
     ],
   },
   {

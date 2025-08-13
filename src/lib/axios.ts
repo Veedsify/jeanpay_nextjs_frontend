@@ -1,20 +1,9 @@
+import { API_BASE } from "@/constants/api";
 import axios from "axios";
 
 const axiosClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL: API_BASE,
   withCredentials: true,
 });
-
-axiosClient.interceptors.request.use(
-  (config) => {
-    return config;
-  },
-  (error) => Promise.reject(error),
-);
-
-axiosClient.interceptors.response.use(
-  (response) => response,
-  (error) => Promise.reject(error),
-);
 
 export { axiosClient };

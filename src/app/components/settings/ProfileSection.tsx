@@ -1,6 +1,13 @@
 import { useState, useRef } from "react";
 import { Edit, Camera } from "lucide-react";
 import Image from "next/image";
+import { useAuthContext } from "../contexts/UserAuthContext";
+import useSettings from "@/hooks/SettingsHook";
+import toast from "react-hot-toast";
+import {
+  AcceptedImageTypes,
+  MaxFileSizeProfilePicture,
+} from "@/utils/constants";
 
 interface ProfileData {
   firstName: string;
@@ -21,6 +28,8 @@ export const ProfileSection = ({
 }: ProfileSectionProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [localProfileData, setLocalProfileData] = useState(profileData);
+  const { user } = useAuthContext();
+  const { updateProfilePicture } = useSettings();
   const [previewImage, setPreviewImage] = useState(
     profileData.profileImage || "",
   );
@@ -34,19 +43,43 @@ export const ProfileSection = ({
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      if (!AcceptedImageTypes.includes(file.type)) {
+        toast.error("Invalid file type. Please upload a valid image.");
+        return;
+      }
+      if (file.size > MaxFileSizeProfilePicture) {
+        toast.error("File size exceeds the limit. 3mb Max.");
+        return;
+      }
       const reader = new FileReader();
       reader.onloadend = () => {
         const newImageData = reader.result as string;
         setPreviewImage(newImageData);
-        const updatedProfileData = {
-          ...localProfileData,
-          profileImage: newImageData,
-        };
-        setLocalProfileData(updatedProfileData);
-        // Auto-save the image
-        onProfileUpdate(updatedProfileData);
       };
       reader.readAsDataURL(file);
+      toast.loading("Updating profile picture...", {
+        id: "profile-picture-update",
+      });
+      updateProfilePicture.mutate(file, {
+        onSuccess: () => {
+          const updatedProfileData = {
+            ...localProfileData,
+            profileImage: previewImage,
+          };
+          toast.success("Profile picture updated successfully!", {
+            id: "profile-picture-update",
+          });
+          setLocalProfileData(updatedProfileData);
+        },
+        onError: () => {
+          toast.error("Error updating profile picture:", {
+            id: "profile-picture-update",
+          });
+        },
+        onSettled: () => {
+          setIsEditing(false);
+        },
+      });
     }
   };
 
@@ -110,7 +143,7 @@ export const ProfileSection = ({
                 {localProfileData.firstName} {localProfileData.lastName}
               </h2>
               <p className="text-sm md:text-base text-[var(--jean-gray-600)]">
-                Nigeria
+                {user?.country}
               </p>
             </div>
           </div>

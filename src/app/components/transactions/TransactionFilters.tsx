@@ -64,18 +64,17 @@ export default function TransactionFilters({
         {showFilters && (
           <div className="space-y-2 pt-2 border-t border-gray-200 dark:border-gray-700">
             {/* Account */}
-            <div className="relative">
+            <div className="relative w-[120px] md:w-[140px] lg:w-[160px]">
               <select
                 value={account}
                 onChange={(e) => onAccountChange(e.target.value)}
-                className="w-full text-sm px-3 py-2.5 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-white appearance-none pr-8"
+                className="w-full text-sm px-3 py-2 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-white appearance-none pr-8"
               >
                 <option>All Account</option>
-                <option>Platinum Plus Visa</option>
-                <option>Freedom Unlimited Mastercard</option>
-                <option>Elite Traveler Mastercard</option>
+                <option>Momo</option>
+                <option>Bank</option>
               </select>
-              <ChevronDown className="absolute right-3 top-3 h-4 w-4 text-gray-500 dark:text-gray-400 pointer-events-none" />
+              <ChevronDown className="absolute right-3 top-2.5 h-4 w-4 text-gray-500 dark:text-gray-400 pointer-events-none" />
             </div>
 
             {/* Date */}
@@ -115,8 +114,8 @@ export default function TransactionFilters({
                 className="w-full text-sm px-3 py-2 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-white appearance-none pr-8"
               >
                 <option>All Account</option>
-                <option>MOMO</option>
-                <option>Paystack</option>
+                <option>Momo</option>
+                <option>Bank</option>
               </select>
               <ChevronDown className="absolute right-3 top-2.5 h-4 w-4 text-gray-500 dark:text-gray-400 pointer-events-none" />
             </div>

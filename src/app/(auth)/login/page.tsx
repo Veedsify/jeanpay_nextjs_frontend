@@ -6,7 +6,7 @@ import { Eye, EyeSlash } from "@phosphor-icons/react";
 import Image from "next/image";
 import AuthPageHeader from "@/app/components/commons/AuthPageHeader";
 import AuthPageFooter from "@/app/components/commons/AuthPageFooter";
-import useAuth from "@/funcs/hooks/AuthHook";
+import useAuth from "@/hooks/AuthHook";
 import toast from "react-hot-toast";
 import NeedsVerification from "@/app/components/commons/NeedsVerification";
 import { validateUser } from "@/funcs/user/UserFuncs";
@@ -62,7 +62,6 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-
     try {
       loginUser.mutate(
         { email, password },
