@@ -1,73 +1,78 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { MoreHorizontal } from "lucide-react";
-
-interface ActivityItem {
-  user: string;
-  action: string;
-  time: string;
-  avatar: string;
-}
-
-interface ActivityGroup {
-  id: number;
-  day: string;
-  items: ActivityItem[];
-}
 
 interface RecentActivityStatProps {
   className?: string;
-  activities?: ActivityGroup[];
+  recentActivity:
+    | {
+        created_at: string;
+        activity: string;
+        id: number;
+      }[]
+    | undefined;
   isLoading?: boolean;
 }
 
 const RecentActivityStat: React.FC<RecentActivityStatProps> = ({
   className,
-  activities = [
-    {
-      id: 1,
-      day: "Today",
-      items: [
-        {
-          user: "Tim",
-          action: "funded 10,000 naira to Naira Wallet",
-          time: "16:05",
-          avatar: "T",
-        },
-        {
-          user: "Alex Johnson",
-          action: "logged in",
-          time: "13:05",
-          avatar: "A",
-        },
-        {
-          user: "Morgan Lee",
-          action: "added a new savings goal for vacation",
-          time: "02:08",
-          avatar: "M",
-        },
-      ],
-    },
-    {
-      id: 2,
-      day: "Yesterday",
-      items: [
-        {
-          user: "Taylor Green",
-          action: "reviewed recent transactions",
-          time: "21:05",
-          avatar: "T",
-        },
-        {
-          user: "Wilson Baptista",
-          action: "transferred funds to emergency fund",
-          time: "09:05",
-          avatar: "W",
-        },
-      ],
-    },
-  ],
+  recentActivity,
   isLoading = false,
 }) => {
+  const activities = useMemo(() => {
+    if (!recentActivity) {
+      return [];
+    }
+
+    // Sort activities by created_at in descending order (newest first)
+    const sortedActivities = [...recentActivity].sort(
+      (a, b) =>
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    );
+
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+
+    const todayActivities = sortedActivities.filter((activity) => {
+      const activityDate = new Date(activity.created_at);
+      return activityDate.toDateString() === today.toDateString();
+    });
+
+    const yesterdayActivities = sortedActivities.filter((activity) => {
+      const activityDate = new Date(activity.created_at);
+      return activityDate.toDateString() === yesterday.toDateString();
+    });
+
+    return [
+      {
+        id: 1,
+        day: "Today",
+        items: todayActivities.slice(0, 3).map((activity) => ({
+          user: activity.activity.split(" ")[0] || "User",
+          action: activity.activity,
+          time: new Date(activity.created_at).toLocaleTimeString("en-US", {
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
+          avatar: "A",
+        })),
+      },
+      {
+        id: 2,
+        day: "Yesterday",
+        items: yesterdayActivities.slice(0, 3).map((activity) => ({
+          user: activity.activity.split(" ")[0] || "User",
+          action: activity.activity,
+          time: new Date(activity.created_at).toLocaleTimeString("en-US", {
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
+          avatar: "A",
+        })),
+      },
+    ];
+  }, [recentActivity]);
+
   const getAvatarColor = (letter: string) => {
     const colors: { [key: string]: string } = {
       T: "bg-green-400",
@@ -135,7 +140,7 @@ const RecentActivityStat: React.FC<RecentActivityStatProps> = ({
                   {/* Avatar */}
                   <div
                     className={`w-8 h-8 rounded-full ${getAvatarColor(
-                      activity.avatar,
+                      activity.avatar
                     )} flex items-center justify-center flex-shrink-0`}
                   >
                     <span className="text-white text-sm font-medium">

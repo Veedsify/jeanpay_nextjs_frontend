@@ -1,13 +1,6 @@
 "use client";
 import Link from "next/link";
-import {
-  ArrowUp,
-  ArrowDown,
-  ArrowsClockwise,
-  ClockIcon,
-  PlusSquareIcon,
-} from "@phosphor-icons/react";
-import { ArrowsCounterClockwise } from "@phosphor-icons/react";
+import { ClockIcon, PlusSquareIcon } from "@phosphor-icons/react";
 import ExpenseStat from "@/app/components/commons/ExpenseStat";
 import RecentActivityStat from "@/app/components/commons/RecentActivityStat";
 import Image from "next/image";
@@ -18,11 +11,16 @@ import { useAuthContext } from "@/app/components/contexts/UserAuthContext";
 import { CurrencyType } from "@/types/global";
 import useDashboard from "@/hooks/DashboardHook";
 import { formatDateTime } from "@/lib/utils";
-import { LucideLoader } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowDownIcon,
+  ArrowUpIcon,
+  LucideLoader,
+  LucideRepeat,
+} from "lucide-react";
 
 export default function DashBoardPage() {
   const { user } = useAuthContext();
-
   // Use dashboard hooks
   const {
     summary,
@@ -75,13 +73,13 @@ export default function DashBoardPage() {
   const getTransactionIcon = (type: string) => {
     switch (type) {
       case "deposit":
-        return <ArrowDown className="text-green-600" size={20} />;
+        return <ArrowDownIcon className="text-green-600" size={20} />;
       case "withdraw":
-        return <ArrowUp className="text-red-600" size={20} />;
+        return <ArrowUpIcon className="text-red-600" size={20} />;
       case "tranfer":
-        return <ArrowsClockwise className="text-blue-600" size={20} />;
+        return <LucideRepeat className="text-blue-600" size={20} />;
       default:
-        return <ArrowsClockwise className="text-gray-600" size={20} />;
+        return <LucideRepeat className="text-gray-600" size={20} />;
     }
   };
 
@@ -158,7 +156,7 @@ export default function DashBoardPage() {
                     {formatCurrency(
                       totalBalance,
                       0,
-                      user?.setting?.default_currency as CurrencyType,
+                      user?.setting?.default_currency as CurrencyType
                     )}
                   </span>
                 </h2>
@@ -178,8 +176,8 @@ export default function DashBoardPage() {
                     href={action.href}
                     className="p-4 group flex-1 text-center border-r last:border-r-0 border-white"
                   >
-                    <div className="p-3 rounded-lg text-white transition-transform flex flex-col items-center justify-center">
-                      <IconComponent size={26} className="fill-cyan-dark" />
+                    <div className="p-3 rounded-lg text-cyan-dark transition-transform flex flex-col items-center justify-center">
+                      <IconComponent size={26} />
                       <p className="mt-2 text-sm font-medium text-cyan-dark">
                         {action.title}
                       </p>
@@ -219,7 +217,7 @@ export default function DashBoardPage() {
                   Recent Transactions
                 </h2>
                 <Link
-                  href="/dashboard/history"
+                  href="/dashboard/transactions"
                   className="text-cyan-dark text-sm font-medium hover:underline"
                 >
                   View all
@@ -276,14 +274,14 @@ export default function DashBoardPage() {
                               {formatCurrency(
                                 transaction.toAmount || 0,
                                 0,
-                                transaction.toCurrency! as CurrencyType,
+                                transaction.toCurrency! as CurrencyType
                               )}
                             </p>
                           </td>
                           <td className="py-4 px-6">
                             <span
                               className={`inline-block px-3 py-1 text-xs font-medium rounded-full ${getStatusColor(
-                                transaction.status,
+                                transaction.status
                               )}`}
                             >
                               {transaction.status.charAt(0).toUpperCase() +
@@ -303,23 +301,6 @@ export default function DashBoardPage() {
                   </table>
                 </div>
               </div>
-
-              <div className="flex justify-center mt-4">
-                <div className="flex items-center gap-2">
-                  <button
-                    className="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50"
-                    disabled
-                  >
-                    Previous
-                  </button>
-                  <span className="px-3 py-2 bg-cyan-dark text-white rounded-lg">
-                    1
-                  </span>
-                  <button className="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
-                    Next
-                  </button>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -336,48 +317,7 @@ export default function DashBoardPage() {
           </div>
           <div className="flex-1">
             <RecentActivityStat
-              activities={
-                recentActivity.data?.data
-                  ? [
-                      {
-                        id: 1,
-                        day: "Today",
-                        items: recentActivity.data.data
-                          .slice(0, 3)
-                          .map((activity) => ({
-                            user: activity.description.split(" ")[0] || "User",
-                            action: activity.description,
-                            time: new Date(
-                              activity.timestamp,
-                            ).toLocaleTimeString("en-US", {
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            }),
-                            avatar: (activity.description.split(" ")[0] ||
-                              "U")[0].toUpperCase(),
-                          })),
-                      },
-                      {
-                        id: 2,
-                        day: "Yesterday",
-                        items: recentActivity.data.data
-                          .slice(3, 6)
-                          .map((activity) => ({
-                            user: activity.description.split(" ")[0] || "User",
-                            action: activity.description,
-                            time: new Date(
-                              activity.timestamp,
-                            ).toLocaleTimeString("en-US", {
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            }),
-                            avatar: (activity.description.split(" ")[0] ||
-                              "U")[0].toUpperCase(),
-                          })),
-                      },
-                    ]
-                  : undefined
-              }
+              recentActivity={recentActivity.data?.data}
               isLoading={recentActivity.isLoading}
             />
           </div>

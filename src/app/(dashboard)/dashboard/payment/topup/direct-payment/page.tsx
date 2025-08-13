@@ -76,12 +76,10 @@ export default function DirectTopupPaymentPage() {
           // Clear stored data
           localStorage.removeItem("topupData");
           setTopupData(null);
-          // Show success message and redirect
-          toast.success("Topup request submitted successfully!");
-          router.push(
-            `/dashboard/payment/topup/success/${result.transactionId}`,
-          );
           setIsConfirming(false);
+          router.push(
+            `/dashboard/payment/topup/success/${result.transactionId}`
+          );
         },
         onError: (error) => {
           console.error("Topup error:", error);
@@ -92,7 +90,7 @@ export default function DirectTopupPaymentPage() {
           toast.error(errorMessage);
           setIsConfirming(false);
         },
-      },
+      }
     );
   };
 
@@ -229,13 +227,17 @@ export default function DirectTopupPaymentPage() {
                     onClick={() =>
                       copyToClipboard(
                         accountDetails.accountName,
-                        "Account Name",
+                        "Account Name"
                       )
                     }
                     className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
                   >
                     <Copy
-                      className={`w-4 h-4 ${copiedField === "Account Name" ? "text-green-600" : "text-gray-600"}`}
+                      className={`w-4 h-4 ${
+                        copiedField === "Account Name"
+                          ? "text-green-600"
+                          : "text-gray-600"
+                      }`}
                     />
                   </button>
                 </div>
@@ -251,13 +253,17 @@ export default function DirectTopupPaymentPage() {
                     onClick={() =>
                       copyToClipboard(
                         accountDetails.accountNumber || "",
-                        "Account Number",
+                        "Account Number"
                       )
                     }
                     className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
                   >
                     <Copy
-                      className={`w-4 h-4 ${copiedField === "Account Number" ? "text-green-600" : "text-gray-600"}`}
+                      className={`w-4 h-4 ${
+                        copiedField === "Account Number"
+                          ? "text-green-600"
+                          : "text-gray-600"
+                      }`}
                     />
                   </button>
                 </div>
@@ -273,13 +279,17 @@ export default function DirectTopupPaymentPage() {
                     onClick={() =>
                       copyToClipboard(
                         accountDetails.bankName || "",
-                        "Bank Name",
+                        "Bank Name"
                       )
                     }
                     className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
                   >
                     <Copy
-                      className={`w-4 h-4 ${copiedField === "Bank Name" ? "text-green-600" : "text-gray-600"}`}
+                      className={`w-4 h-4 ${
+                        copiedField === "Bank Name"
+                          ? "text-green-600"
+                          : "text-gray-600"
+                      }`}
                     />
                   </button>
                 </div>
@@ -297,13 +307,17 @@ export default function DirectTopupPaymentPage() {
                     onClick={() =>
                       copyToClipboard(
                         accountDetails.accountName,
-                        "Account Name",
+                        "Account Name"
                       )
                     }
                     className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
                   >
                     <Copy
-                      className={`w-4 h-4 ${copiedField === "Account Name" ? "text-green-600" : "text-gray-600"}`}
+                      className={`w-4 h-4 ${
+                        copiedField === "Account Name"
+                          ? "text-green-600"
+                          : "text-gray-600"
+                      }`}
                     />
                   </button>
                 </div>
@@ -319,13 +333,17 @@ export default function DirectTopupPaymentPage() {
                     onClick={() =>
                       copyToClipboard(
                         accountDetails.phoneNumber || "",
-                        "Phone Number",
+                        "Phone Number"
                       )
                     }
                     className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
                   >
                     <Copy
-                      className={`w-4 h-4 ${copiedField === "Phone Number" ? "text-green-600" : "text-gray-600"}`}
+                      className={`w-4 h-4 ${
+                        copiedField === "Phone Number"
+                          ? "text-green-600"
+                          : "text-gray-600"
+                      }`}
                     />
                   </button>
                 </div>
@@ -344,7 +362,11 @@ export default function DirectTopupPaymentPage() {
                     className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
                   >
                     <Copy
-                      className={`w-4 h-4 ${copiedField === "Network" ? "text-green-600" : "text-gray-600"}`}
+                      className={`w-4 h-4 ${
+                        copiedField === "Network"
+                          ? "text-green-600"
+                          : "text-gray-600"
+                      }`}
                     />
                   </button>
                 </div>

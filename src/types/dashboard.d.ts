@@ -91,13 +91,9 @@ export interface DashboardSummary {
 }
 
 export interface RecentActivity {
-  id: string;
-  type: string;
-  description: string;
-  amount: number;
-  currency: string;
-  timestamp: string;
-  status: string;
+  id: number;
+  activity: string;
+  created_at: string;
 }
 
 export interface WalletOverview extends WalletBalance {
