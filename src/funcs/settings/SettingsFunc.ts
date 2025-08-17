@@ -9,6 +9,8 @@ import {
   SettingsApiResponse,
   UpdateSettingsResponse,
   TwoFactorSetup,
+  WalletData,
+  WithdrawalData,
 } from "@/types/settings";
 
 const path = {
@@ -23,11 +25,13 @@ const path = {
   SettingsTwoFactorQR: "/security/two-factor/qr",
   SettingsTwoFactorEnable: "/security/two-factor/enable",
   SettingsTwoFactorDisable: "/security/two-factor/disable",
+  SettingsWallet: "/wallet",
+  SettingsWithdrawal: "/withdrawal",
 };
 
 // Get user settings
 async function getUserSettings(): Promise<SettingsApiResponse<UserSettings>> {
-  const response = await axiosClient.get(path.SettingsBase);
+  const response = await axiosClient.get(path.SettingsBase + "/");
   return response.data;
 }
 
@@ -144,6 +148,28 @@ async function updateNotificationSettings(
   return response.data;
 }
 
+// Wallet Section Functions
+async function updateWalletInfo(
+  walletData: WalletData,
+): Promise<SettingsApiResponse<UpdateSettingsResponse>> {
+  const response = await axiosClient.put(
+    path.SettingsBase + path.SettingsWallet,
+    walletData,
+  );
+  return response.data;
+}
+
+// Withdrawal Methods Section Functions
+async function updateWithdrawalMethods(
+  withdrawalData: WithdrawalData,
+): Promise<SettingsApiResponse<UpdateSettingsResponse>> {
+  const response = await axiosClient.put(
+    path.SettingsBase + path.SettingsWithdrawal,
+    withdrawalData,
+  );
+  return response.data;
+}
+
 export {
   getUserSettings,
   updateUserSettings,
@@ -156,5 +182,7 @@ export {
   disableTwoFactor,
   updatePreferences,
   updateNotificationSettings,
+  updateWalletInfo,
+  updateWithdrawalMethods,
   path as SettingsPath,
 };

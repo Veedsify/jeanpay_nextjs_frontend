@@ -11,6 +11,8 @@ import {
   updatePreferences,
   updateNotificationSettings,
   updateProfilePicture,
+  updateWalletInfo,
+  updateWithdrawalMethods,
 } from "@/funcs/settings/SettingsFunc";
 import {
   ProfileUpdateData,
@@ -22,6 +24,8 @@ import {
   SettingsApiResponse,
   UpdateSettingsResponse,
   TwoFactorSetup,
+  WalletData,
+  WithdrawalData,
 } from "@/types/settings";
 
 export default function useSettings() {
@@ -152,6 +156,31 @@ export default function useSettings() {
     },
   });
 
+  // Wallet update mutation
+  const updateWalletInfoMutation = useMutation<
+    SettingsApiResponse<UpdateSettingsResponse>,
+    Error,
+    WalletData
+  >({
+    mutationFn: (walletData: WalletData) => updateWalletInfo(walletData),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["userSettings"] });
+    },
+  });
+
+  // Withdrawal methods update mutation
+  const updateWithdrawalMethodsMutation = useMutation<
+    SettingsApiResponse<UpdateSettingsResponse>,
+    Error,
+    WithdrawalData
+  >({
+    mutationFn: (withdrawalData: WithdrawalData) =>
+      updateWithdrawalMethods(withdrawalData),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["userSettings"] });
+    },
+  });
+
   return {
     // Queries
     useUserSettings,
@@ -167,5 +196,7 @@ export default function useSettings() {
     updatePreferences: updatePreferencesMutation,
     updateProfilePicture: updateProfilePictureMutation,
     updateNotificationSettings: updateNotificationSettingsMutation,
+    updateWalletInfo: updateWalletInfoMutation,
+    updateWithdrawalMethods: updateWithdrawalMethodsMutation,
   };
 }

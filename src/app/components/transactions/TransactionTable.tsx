@@ -10,8 +10,8 @@ interface Transaction {
   time: string;
   amount: number;
   note: string;
-  to_currency: string;
-  status: "Completed" | "Pending" | "Rejected";
+  from_currency: string;
+  status: "Completed" | "Pending" | "Failed";
   icon: React.ElementType;
 }
 
@@ -34,7 +34,7 @@ export default function TransactionTable({
         return "bg-green-100 text-green-800 dark:bg-cyan-dark dark:text-green-200";
       case "Pending":
         return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200";
-      case "Rejected":
+      case "Failed":
         return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200";
       default:
         return "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300";
@@ -115,7 +115,10 @@ export default function TransactionTable({
                   </td>
 
                   <td className="px-4 py-4">
-                    {formatAmount(transaction.amount, transaction.to_currency)}
+                    {formatAmount(
+                      transaction.amount,
+                      transaction.from_currency,
+                    )}
                   </td>
 
                   <td className="px-4 py-4 text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">

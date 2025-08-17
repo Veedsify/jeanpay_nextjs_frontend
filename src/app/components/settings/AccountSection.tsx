@@ -1,7 +1,23 @@
-import { Edit, Save, Info } from "lucide-react";
-import { useState } from "react";
+import { Edit, Save } from "lucide-react";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import useSettings from "@/hooks/SettingsHook";
+import useWallet from "@/hooks/WalletHook";
+import { formatIntoSpace } from "@/lib/textformat";
+import { useAuthContext } from "../contexts/UserAuthContext";
+import { cn } from "@/lib/utils";
 
 export const AccountSection = () => {
+  const { updateWalletInfo, useUserSettings } = useSettings();
+  const { data, isError, isLoading } = useUserSettings();
+  const { user } = useAuthContext();
+  const { useWalletBalance } = useWallet();
+  const {
+    data: wallet,
+    isError: isWalletError,
+    isLoading: isWalletLoading,
+  } = useWalletBalance();
+
   const [editingSection, setEditingSection] = useState({
     wallet: false,
     verification: false,
@@ -9,34 +25,45 @@ export const AccountSection = () => {
   });
 
   const [walletData, setWalletData] = useState({
-    currency: "NGN",
-    ngnWallet: "0292909089",
-    username: "@andrew22",
-    ghsWallet: "0122893487",
+    currency: "",
+    username: "",
+    ngnWallet: "",
+    ghsWallet: "",
   });
 
-  const [withdrawalData, setWithdrawalData] = useState({
-    ngnAccount: "Opay",
-    ngnDetails: "Andrew Forbist ( 8028289900 )",
-    ghsAccount: "Momo",
-    ghsDetails: "Andrew Forbist ( 8028289900 )",
-  });
+  // const [withdrawalData, setWithdrawalData] = useState({
+  //   ngnAccount: "Opay",
+  //   ngnDetails: "Andrew Forbist ( 8028289900 )",
+  //   ghsAccount: "Momo",
+  //   ghsDetails: "Andrew Forbist ( 8028289900 )",
+  // });
 
-  // Toast state
-  const [toast, setToast] = useState<{
-    type: "success" | "error" | "info" | "warning";
-    message: string;
-  } | null>();
+  useEffect(() => {
+    if (data) {
+      setWalletData((prev) => {
+        return {
+          ...prev,
+          currency: data.data.setting.default_currency,
+          username: data.data.setting.username,
+        };
+      });
+    }
+    if (wallet) {
+      setWalletData((prev) => ({
+        ...prev,
+        ngnWallet:
+          wallet.data.find((w) => w.currency === "NGN")?.walletId || "",
+        ghsWallet:
+          wallet.data.find((w) => w.currency === "GHS")?.walletId || "",
+      }));
+    }
+  }, [data, wallet]);
 
-  const showToast = (
-    type: "success" | "error" | "info" | "warning",
-    message: string,
-  ): void => {
-    setToast({ type, message });
-  };
-
-  const hideToast = (): void => {
-    setToast(null);
+  const handleUserNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setWalletData((prev) => ({
+      ...prev,
+      username: e.target.value,
+    }));
   };
 
   const handleEdit = (
@@ -55,44 +82,46 @@ export const AccountSection = () => {
   ): void => {
     console.log(`Saving ${state} data...`, section);
 
-    // Simulate save operation
-    setTimeout(() => {
+    if (state === "wallet") {
+      updateWalletInfo.mutate(walletData, {
+        onSuccess: () => {
+          setEditingSection((prev) => ({
+            ...prev,
+            wallet: false,
+          }));
+          toast.success("Wallet information saved successfully!");
+        },
+        onError: (error) => {
+          console.error("Failed to save wallet info:", error);
+          toast.error("Failed to save wallet information. Please try again.");
+        },
+      });
+    } else {
+      // Fallback for other sections
       setEditingSection((prev) => ({
         ...prev,
         [state]: false,
       }));
-
-      // Show success toast based on section
-      let message = "";
-      switch (state) {
-        case "wallet":
-          message = "Wallet information saved successfully!";
-          break;
-        case "withdraw":
-          message = "Withdrawal methods updated successfully!";
-          break;
-        default:
-          message = "Settings saved successfully!";
-      }
-
-      showToast("success", message);
-    }, 500); // Small delay to simulate API call
+      toast.success("Settings saved successfully!");
+    }
   };
+
+  if (isError || isWalletError) {
+    return <div className="p-6">Error loading settings or wallet data.</div>;
+  }
 
   return (
     <>
       <div className="w-full md:p-6 ">
         {/* Toast Container */}
-        {toast && (
-          <Toast
-            type={toast.type}
-            message={toast.message}
-            onClose={hideToast}
-          />
-        )}
 
         {/* Wallet Info Section */}
         <div className="rounded-lg p-4 md:p-6 mb-6 bg-white border border-gray-200">
+          {isLoading && isWalletLoading && (
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-500">Loading...</span>
+            </div>
+          )}
           <div className="flex justify-between items-center mb-4 md:mb-6">
             <h2 className="text-base md:text-lg font-semibold text-gray-900">
               Wallet Info
@@ -100,37 +129,18 @@ export const AccountSection = () => {
             {editingSection.wallet ? (
               <button
                 onClick={() => handleSave("wallet", false)}
-                className="flex items-center gap-1 md:gap-2 px-2 md:px-3 py-1 md:py-1.5 text-xs md:text-sm rounded text-white transition-colors"
-                style={{
-                  backgroundColor: "var(--color-green-save)",
-                }}
-                onMouseOver={(e) =>
-                  (e.currentTarget.style.backgroundColor =
-                    "var(--color-green-save-hover)")
-                }
-                onMouseOut={(e) =>
-                  (e.currentTarget.style.backgroundColor =
-                    "var(--color-green-save)")
-                }
+                disabled={updateWalletInfo.isPending}
+                className="flex items-center justify-center gap-1 md:gap-2 px-3 py-1.5 md:px-4 md:py-2 bg-cyan-dark text-[var(--jean-white)] rounded-lg hover:bg-[var(--jean-teal-800)] transition-colors text-sm md:text-base"
               >
                 <Save size={12} className="md:size-[14px]" />
-                <span className="hidden sm:inline">Save</span>
+                <span className="hidden sm:inline">
+                  {updateWalletInfo.isPending ? "Saving..." : "Save"}
+                </span>
               </button>
             ) : (
               <button
                 onClick={() => handleEdit("wallet", true)}
-                className="flex items-center gap-1 md:gap-2 px-2 md:px-3 py-1 md:py-1.5 text-xs md:text-sm rounded text-white transition-colors"
-                style={{
-                  backgroundColor: "var(--color-teal-edit)",
-                }}
-                onMouseOver={(e) =>
-                  (e.currentTarget.style.backgroundColor =
-                    "var(--color-teal-edit-hover)")
-                }
-                onMouseOut={(e) =>
-                  (e.currentTarget.style.backgroundColor =
-                    "var(--color-teal-edit)")
-                }
+                className="flex items-center justify-center gap-1 md:gap-2 px-3 py-1.5 md:px-4 md:py-2 bg-cyan-dark text-[var(--jean-white)] rounded-lg hover:bg-[var(--jean-teal-800)] transition-colors text-sm md:text-base"
               >
                 <Edit size={12} className="md:size-[14px]" />
                 <span className="hidden sm:inline">Edit</span>
@@ -153,7 +163,6 @@ export const AccountSection = () => {
                     className="text-base md:text-lg font-semibold border border-gray-300 rounded-lg md:rounded-xl px-2 py-1 md:px-3 md:py-2 w-full text-gray-900 focus:border-teal-500 focus:outline-none"
                   >
                     <option value="NGN">NGN</option>
-                    <option value="USD">USD</option>
                     <option value="GHS">GHS</option>
                   </select>
                 ) : (
@@ -166,23 +175,11 @@ export const AccountSection = () => {
                 <p className="text-xs md:text-sm mb-1 text-gray-600">
                   NGN Wallet Number
                 </p>
-                {editingSection.wallet ? (
-                  <input
-                    type="text"
-                    value={walletData.ngnWallet}
-                    onChange={(e) =>
-                      setWalletData({
-                        ...walletData,
-                        ngnWallet: e.target.value,
-                      })
-                    }
-                    className="text-base md:text-lg font-semibold border border-gray-300 rounded-lg md:rounded-xl px-2 py-1 md:px-3 md:py-2 w-full text-gray-900 focus:border-teal-500 focus:outline-none"
-                  />
-                ) : (
-                  <p className="text-base md:text-lg font-semibold text-gray-900">
-                    {walletData.ngnWallet}
-                  </p>
-                )}
+                <p className="text-base md:text-lg font-semibold text-gray-900">
+                  {walletData.ngnWallet
+                    ? formatIntoSpace(walletData.ngnWallet, 4, " ")
+                    : "(Not Assigned)"}
+                </p>
               </div>
             </div>
 
@@ -195,9 +192,7 @@ export const AccountSection = () => {
                   <input
                     type="text"
                     value={walletData.username}
-                    onChange={(e) =>
-                      setWalletData({ ...walletData, username: e.target.value })
-                    }
+                    onChange={handleUserNameChange}
                     className="text-base md:text-lg font-semibold border border-gray-300 rounded-lg md:rounded-xl px-2 py-1 md:px-3 md:py-2 w-full text-gray-900 focus:border-teal-500 focus:outline-none"
                   />
                 ) : (
@@ -210,23 +205,11 @@ export const AccountSection = () => {
                 <p className="text-xs md:text-sm mb-1 text-gray-600">
                   GHS Wallet Number
                 </p>
-                {editingSection.wallet ? (
-                  <input
-                    type="text"
-                    value={walletData.ghsWallet}
-                    onChange={(e) =>
-                      setWalletData({
-                        ...walletData,
-                        ghsWallet: e.target.value,
-                      })
-                    }
-                    className="text-base md:text-lg font-semibold border border-gray-300 rounded-lg md:rounded-xl px-2 py-1 md:px-3 md:py-2 w-full text-gray-900 focus:border-teal-500 focus:outline-none"
-                  />
-                ) : (
-                  <p className="text-base md:text-lg font-semibold text-gray-900">
-                    {walletData.ghsWallet}
-                  </p>
-                )}
+                <p className="text-base md:text-lg font-semibold text-gray-900">
+                  {walletData.ghsWallet
+                    ? formatIntoSpace(walletData.ghsWallet, 4, " ")
+                    : "(Not Assigned)"}
+                </p>
               </div>
             </div>
           </div>
@@ -238,49 +221,28 @@ export const AccountSection = () => {
             <h2 className="text-base md:text-lg font-semibold text-gray-900">
               Account Verification & KYC
             </h2>
-            <button
-              onClick={() =>
-                showToast("info", "KYC verification is already complete!")
-              }
-              className="flex items-center gap-1 md:gap-2 px-2 md:px-3 py-1 md:py-1.5 text-xs md:text-sm rounded text-white transition-colors"
-              style={{
-                backgroundColor: "var(--color-teal-edit)",
-              }}
-              onMouseOver={(e) =>
-                (e.currentTarget.style.backgroundColor =
-                  "var(--color-teal-edit-hover)")
-              }
-              onMouseOut={(e) =>
-                (e.currentTarget.style.backgroundColor =
-                  "var(--color-teal-edit)")
-              }
-            >
-              <Info size={12} className="md:size-[14px]" />
-              <span className="hidden sm:inline">Edit</span>
-            </button>
           </div>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-8">
             <div>
-              <p className="text-xs md:text-sm mb-1 text-gray-600">
+              <p className="md:text-base text-gray-600 mb-3">
                 Email Verification Status
               </p>
-              <p className="text-base md:text-lg font-semibold text-gray-900">
-                Verified
-              </p>
-            </div>
-            <div>
-              <p className="text-xs md:text-sm mb-1 text-gray-600">
-                Phone Number Verification
-              </p>
-              <p className="text-base md:text-lg font-semibold text-gray-900">
-                Verified
+              <p
+                className={cn(
+                  ` font-semibold text-gray-900 p-2 rounded-full inline-block text-xs px-4`,
+                  user?.is_verified
+                    ? "bg-green-100 text-green-800"
+                    : "bg-red-100 text-red-800",
+                )}
+              >
+                {user?.is_verified ? "Verified" : "Not Verified"}
               </p>
             </div>
           </div>
         </div>
 
         {/* Withdrawal Section */}
-        <div className="rounded-lg p-4 md:p-6 bg-white border border-gray-200">
+        {/*<div className="rounded-lg p-4 md:p-6 bg-white border border-gray-200">
           <div className="flex justify-between items-center mb-4 md:mb-6">
             <h2 className="text-base md:text-lg font-semibold text-gray-900">
               Default Withdrawal Method
@@ -288,37 +250,18 @@ export const AccountSection = () => {
             {editingSection.withdraw ? (
               <button
                 onClick={() => handleSave("withdraw", false)}
-                className="flex items-center gap-1 md:gap-2 px-2 md:px-3 py-1 md:py-1.5 text-xs md:text-sm rounded text-white transition-colors"
-                style={{
-                  backgroundColor: "var(--color-green-save)",
-                }}
-                onMouseOver={(e) =>
-                  (e.currentTarget.style.backgroundColor =
-                    "var(--color-green-save-hover)")
-                }
-                onMouseOut={(e) =>
-                  (e.currentTarget.style.backgroundColor =
-                    "var(--color-green-save)")
-                }
+                disabled={updateWithdrawalMethods.isPending}
+                className="flex items-center justify-center gap-1 md:gap-2 px-3 py-1.5 md:px-4 md:py-2 bg-cyan-dark text-[var(--jean-white)] rounded-lg hover:bg-[var(--jean-teal-800)] transition-colors text-sm md:text-base"
               >
                 <Save size={12} className="md:size-[14px]" />
-                <span className="hidden sm:inline">Save</span>
+                <span className="hidden sm:inline">
+                  {updateWithdrawalMethods.isPending ? "Saving..." : "Save"}
+                </span>
               </button>
             ) : (
               <button
                 onClick={() => handleEdit("withdraw", true)}
-                className="flex items-center gap-1 md:gap-2 px-2 md:px-3 py-1 md:py-1.5 text-xs md:text-sm rounded text-white transition-colors"
-                style={{
-                  backgroundColor: "var(--color-teal-edit)",
-                }}
-                onMouseOver={(e) =>
-                  (e.currentTarget.style.backgroundColor =
-                    "var(--color-teal-edit-hover)")
-                }
-                onMouseOut={(e) =>
-                  (e.currentTarget.style.backgroundColor =
-                    "var(--color-teal-edit)")
-                }
+                className="flex items-center justify-center gap-1 md:gap-2 px-3 py-1.5 md:px-4 md:py-2 bg-cyan-dark text-[var(--jean-white)] rounded-lg hover:bg-[var(--jean-teal-800)] transition-colors text-sm md:text-base"
               >
                 <Edit size={12} className="md:size-[14px]" />
                 <span className="hidden sm:inline">Edit</span>
@@ -418,7 +361,7 @@ export const AccountSection = () => {
               )}
             </div>
           </div>
-        </div>
+        </div>*/}
       </div>
     </>
   );

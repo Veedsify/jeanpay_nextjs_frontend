@@ -26,7 +26,7 @@ const RecentActivityStat: React.FC<RecentActivityStatProps> = ({
     // Sort activities by created_at in descending order (newest first)
     const sortedActivities = [...recentActivity].sort(
       (a, b) =>
-        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
     );
 
     const today = new Date();
@@ -47,8 +47,7 @@ const RecentActivityStat: React.FC<RecentActivityStatProps> = ({
       {
         id: 1,
         day: "Today",
-        items: todayActivities.slice(0, 3).map((activity) => ({
-          user: activity.activity.split(" ")[0] || "User",
+        items: todayActivities.slice(0, 5).map((activity) => ({
           action: activity.activity,
           time: new Date(activity.created_at).toLocaleTimeString("en-US", {
             hour: "2-digit",
@@ -60,8 +59,7 @@ const RecentActivityStat: React.FC<RecentActivityStatProps> = ({
       {
         id: 2,
         day: "Yesterday",
-        items: yesterdayActivities.slice(0, 3).map((activity) => ({
-          user: activity.activity.split(" ")[0] || "User",
+        items: yesterdayActivities.slice(0, 5).map((activity) => ({
           action: activity.activity,
           time: new Date(activity.created_at).toLocaleTimeString("en-US", {
             hour: "2-digit",
@@ -140,7 +138,7 @@ const RecentActivityStat: React.FC<RecentActivityStatProps> = ({
                   {/* Avatar */}
                   <div
                     className={`w-8 h-8 rounded-full ${getAvatarColor(
-                      activity.avatar
+                      activity.avatar,
                     )} flex items-center justify-center flex-shrink-0`}
                   >
                     <span className="text-white text-sm font-medium">
@@ -151,7 +149,6 @@ const RecentActivityStat: React.FC<RecentActivityStatProps> = ({
                   {/* Content */}
                   <div className="flex-1 min-w-0">
                     <div className="text-sm text-gray-900">
-                      <span className="font-medium">{activity.user}</span>
                       <span className="text-gray-600"> {activity.action}</span>
                     </div>
                     <div className="text-xs text-gray-500 mt-1">

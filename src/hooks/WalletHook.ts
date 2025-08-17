@@ -1,3 +1,4 @@
+import { getWalletBalance } from "@/funcs/wallet/WalletFunc";
 import { axiosClient } from "@/lib/axios";
 import {
   ApiResponse,
@@ -21,16 +22,10 @@ const useWallet = () => {
   // Get wallet balance
   const useWalletBalance = () => {
     return useQuery({
+      enabled: true,
       queryKey: ["walletBalance"],
-      queryFn: async (): Promise<WalletBalance[]> => {
-        const response = await axiosClient.post(
-          path.WalletBase + path.WalletBalance,
-        );
-        const result: ApiResponse<WalletBalance[]> = await response.data;
-        return result.data;
-      },
-      staleTime: 5 * 60 * 1000, // 5 minutes
-      gcTime: 10 * 60 * 1000, // 10 minutes
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      queryFn: getWalletBalance,
     });
   };
 

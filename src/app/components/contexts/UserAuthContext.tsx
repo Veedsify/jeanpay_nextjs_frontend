@@ -1,5 +1,4 @@
 "use client";
-
 import { validateUser } from "@/funcs/user/UserFuncs";
 import { useRouter } from "next/navigation";
 import {
@@ -128,29 +127,23 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const logout = async () => {
     setAuthState((prev) => ({ ...prev, isLoading: true }));
 
-    try {
-      const token = localStorage.getItem("authToken");
-
-      if (token) {
-        // Replace with your API endpoint
-        await fetch("/api/auth/logout", {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
+    if (typeof window !== "undefined") {
+      try {
+        document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 GMT;";
+        document.cookie =
+          "admin_token=; expires=Thu, 01 Jan 1970 00:00:00 GMT;";
+        document.cookie =
+          "refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 GMT;";
+        setAuthState({
+          user: null,
+          isAuthenticated: false,
+          isLoading: false,
+          error: null,
         });
+        router.push("/login");
+      } catch (error) {
+        console.error("Logout error:", error);
       }
-    } catch (error) {
-      console.error("Logout error:", error);
-    } finally {
-      localStorage.removeItem("authToken");
-      setAuthState({
-        user: null,
-        isAuthenticated: false,
-        isLoading: false,
-        error: null,
-      });
     }
   };
 

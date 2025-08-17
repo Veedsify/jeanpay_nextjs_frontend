@@ -1,13 +1,18 @@
 // User Settings Types
 export interface UserSettings {
-  id: string;
-  userId: string;
-  profile: ProfileSettings;
-  security: SecuritySettings;
-  preferences: PreferencesSettings;
-  notifications: NotificationSettings;
-  createdAt: string;
-  updatedAt: string;
+  setting: Partial<{
+    id: string;
+    created_at: string;
+    updated_at: string;
+    default_currency: string;
+    username: string;
+    fees_breakdown: boolean;
+    save_recipient: boolean;
+    email_notifications: boolean;
+    push_notifications: boolean;
+    promotional_notifications: boolean;
+    two_factor_auth: boolean;
+  }>;
 }
 
 // Profile Settings Types
@@ -192,6 +197,20 @@ export interface SettingsFormErrors {
   newPassword?: string;
   confirmPassword?: string;
   [key: string]: string | undefined;
+}
+
+// Wallet Settings Types
+export interface WalletData {
+  currency: string;
+  username: string;
+}
+
+// Withdrawal Settings Types
+export interface WithdrawalData {
+  ngnAccount: string;
+  ngnDetails: string;
+  ghsAccount: string;
+  ghsDetails: string;
 }
 
 // Settings tabs type

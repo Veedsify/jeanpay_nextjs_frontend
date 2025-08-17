@@ -33,17 +33,13 @@ export default function TransferSuccessPage() {
     queryFn: async () => getTransactionDetails({ transactionID }),
     enabled: true,
     refetchInterval: false,
+    staleTime: 0,
     refetchOnWindowFocus: false,
   });
 
   useEffect(() => {
-    // Redirect back if no transfer details
-    if (transferDetails) {
-      // Clear transfer data to reset state
-      clearTransferData();
-      return;
-    }
-  }, [transferDetails, clearTransferData]);
+    clearTransferData();
+  }, [clearTransferData]);
 
   const handleCopy = async (text: string, fieldName: string) => {
     try {
@@ -92,8 +88,6 @@ export default function TransferSuccessPage() {
   const handleDownloadReceipt = () => {
     toast.error("Receipt download will be available soon");
   };
-
-  console.log(transferDetails);
 
   const handleShareReceipt = () => {
     if (navigator.share && transferDetails) {
@@ -180,7 +174,7 @@ export default function TransferSuccessPage() {
             >
               Your transfer to &nbsp;
               {transferDetails?.transaction.transaction_details.recipient_name}
-              &nbsp; has been processed and is currently being processed. We
+              &nbsp; has been submitted and is currently being processed. We
               will notify you once it is completed.
             </motion.p>
 

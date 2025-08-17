@@ -23,7 +23,8 @@ export default function VerifyTransferPage() {
   const [confirmationStep, setConfirmationStep] = useState(1);
   // Zustand store
   const transferDetails = useTransferDetails();
-  const { setProcessing, setTransferDetails } = useTransferActions();
+  const { setProcessing, setTransferDetails, setTransferError, clearError } =
+    useTransferActions();
   const { createTransactionMutation } = useTransaction();
   const handleMethodOfPaymentChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -34,11 +35,12 @@ export default function VerifyTransferPage() {
   };
 
   useEffect(() => {
+    clearError();
     // Redirect back if no transfer details
     if (!transferDetails) {
       router.push("/dashboard/payment/convert/confirm");
     }
-  }, [transferDetails, router]);
+  }, [transferDetails, router, clearError]);
 
   const handleConfirmTransfer = async () => {
     if (!transferDetails?.method_of_payment) {
@@ -71,13 +73,12 @@ export default function VerifyTransferPage() {
             `/dashboard/payment/convert/confirm/success/${trx.data.transaction.transactionId}`,
           );
         },
-        onError: (error) => {
-          console.log(error);
-          const errorMessage =
-            error instanceof Error ? error.message : "Transfer failed";
-          toast.error(errorMessage);
-          // router.push("/dashboard/payment/convert/confirm/error");
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        onError: (error: any) => {
           setProcessing(false);
+          const err = JSON.parse(error.response?.data?.code);
+          setTransferError(err);
+          router.push("/dashboard/payment/convert/confirm/error");
         },
       },
     );
@@ -387,7 +388,7 @@ export default function VerifyTransferPage() {
             transition={{ duration: 0.3 }}
             className="text-center py-12"
           >
-            <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
               <Check className="w-10 h-10 text-green-600" />
             </div>
             <h3 className="text-xl font-semibold text-gray-900 mb-2">

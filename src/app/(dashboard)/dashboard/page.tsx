@@ -156,7 +156,7 @@ export default function DashBoardPage() {
                     {formatCurrency(
                       totalBalance,
                       0,
-                      user?.setting?.default_currency as CurrencyType
+                      user?.setting?.default_currency as CurrencyType,
                     )}
                   </span>
                 </h2>
@@ -272,16 +272,16 @@ export default function DashBoardPage() {
                           <td className="py-4 px-6">
                             <p className="font-semibold text-gray-900 text-base sm:text-sm text-nowrap">
                               {formatCurrency(
-                                transaction.toAmount || 0,
+                                transaction.fromAmount || 0,
                                 0,
-                                transaction.toCurrency! as CurrencyType
+                                transaction.fromCurrency! as CurrencyType,
                               )}
                             </p>
                           </td>
                           <td className="py-4 px-6">
                             <span
                               className={`inline-block px-3 py-1 text-xs font-medium rounded-full ${getStatusColor(
-                                transaction.status
+                                transaction.status,
                               )}`}
                             >
                               {transaction.status.charAt(0).toUpperCase() +

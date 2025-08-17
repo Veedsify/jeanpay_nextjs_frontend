@@ -16,9 +16,9 @@ interface Transaction {
   date: string;
   time: string;
   amount: number;
-  to_currency: string;
+  from_currency: string;
   note: string;
-  status: "Completed" | "Pending" | "Rejected";
+  status: "Completed" | "Pending" | "Failed";
   icon: React.ElementType;
 }
 
@@ -74,13 +74,13 @@ export default function TransactionComponent() {
       const status =
         statusRaw === "completed"
           ? "Completed"
-          : statusRaw === "failed" || statusRaw === "rejected"
-            ? "Rejected"
+          : statusRaw === "failed" || statusRaw === "failed"
+            ? "Failed"
             : "Pending";
       const name =
         currencyDirection[t.direction as keyof typeof currencyDirection] ||
         "Unknown";
-      const amount = details?.to_amount || Number(details?.from_amount || 0);
+      const amount = details?.from_amount || Number(details?.from_amount || 0);
       const note = details?.recipient_name
         ? `Transfer to ${details.recipient_name}`
         : "Balance Top Up";
@@ -94,7 +94,7 @@ export default function TransactionComponent() {
         date,
         time,
         amount,
-        to_currency: details?.to_currency || "GHS",
+        from_currency: details?.from_currency || "NGN",
         note,
         status,
         icon: RefreshCcw,
