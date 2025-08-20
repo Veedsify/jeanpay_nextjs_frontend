@@ -156,7 +156,7 @@ export interface ContactForm {
 export interface AppError {
   message: string;
   code?: string;
-  details?: any;
+  details?: Record<string, unknown>;
 }
 
 // Loading states
@@ -189,7 +189,7 @@ export interface SEOData {
 // Analytics types
 export interface AnalyticsEvent {
   name: string;
-  properties?: Record<string, any>;
+  properties?: Record<string, unknown>;
   timestamp?: Date;
 }
 
@@ -241,7 +241,7 @@ export type Status = 'pending' | 'processing' | 'completed' | 'failed' | 'cancel
 export type Priority = 'low' | 'medium' | 'high' | 'urgent';
 
 // Generic API response type
-export interface APIResponse<T = any> {
+export interface APIResponse<T = unknown> {
   data: T;
   message?: string;
   success: boolean;

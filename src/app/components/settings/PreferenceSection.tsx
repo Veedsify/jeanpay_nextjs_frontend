@@ -9,7 +9,6 @@ export const PreferencesSection = () => {
   const [feesBreakdown, setFeesBreakdown] = useState(false);
   const [saveRecipients, setSaveRecipients] = useState(false);
   const [theme, setTheme] = useState(true);
-  const [grayscale, setGrayscale] = useState(false);
   const { updateUserSettings } = useSettings();
 
   useEffect(() => {
@@ -32,7 +31,7 @@ export const PreferencesSection = () => {
         onError: (error) => {
           console.error("Error updating fees breakdown:", error);
         },
-      },
+      }
     );
   };
 
@@ -51,7 +50,7 @@ export const PreferencesSection = () => {
         onError: (error) => {
           console.error("Error updating fees breakdown:", error);
         },
-      },
+      }
     );
   };
 

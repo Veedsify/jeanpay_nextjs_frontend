@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import toast from "react-hot-toast";
 
 interface PasswordData {
   currentPassword: string;
@@ -22,36 +23,23 @@ export const SecuritySection = () => {
   const [showPasswordForm, setShowPasswordForm] = useState(false);
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
   const [accountDeactivated, setAccountDeactivated] = useState(false);
-  const [toast, setToast] = useState<{
-    show: boolean;
-    type: "success" | "error" | "info" | "warning";
-    message: string;
-  }>({ show: false, type: "info", message: "" });
-
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setPasswordData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const showToast = (
-    type: "success" | "error" | "info" | "warning",
-    message: string,
-  ) => {
-    setToast({ show: true, type, message });
-  };
-
   const handlePasswordSave = () => {
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      showToast("error", "New passwords do not match!");
+      toast.error("New passwords do not match!");
       return;
     }
 
     if (passwordData.newPassword.length < 6) {
-      showToast("error", "Password must be at least 6 characters long!");
+      toast.error("Password must be at least 6 characters long!");
       return;
     }
 
-    showToast("success", "Password updated successfully!");
+    toast.success("Password updated successfully!");
     setPasswordData({
       currentPassword: "",
       newPassword: "",
@@ -61,17 +49,25 @@ export const SecuritySection = () => {
   };
 
   const handleDeleteAccount = () => {
-    showToast(
-      "warning",
+    toast.custom(
       "Are you sure you want to delete your account? This action cannot be undone.",
+      {
+        duration: 5000,
+        position: "top-center",
+        style: {
+          background: "#f8d7da",
+          color: "#721c24",
+          borderRadius: "8px",
+          padding: "16px",
+        },
+      }
     );
 
     // Instead of using confirm(), show a toast and handle the confirmation logic
     // You might want to show a modal or additional confirmation step here
     setTimeout(() => {
-      showToast(
-        "info",
-        "Account deletion request submitted. Please check your email for confirmation.",
+      toast.success(
+        "Account deletion request submitted. Please check your email for confirmation."
       );
     }, 3000);
   };
@@ -108,14 +104,6 @@ export const SecuritySection = () => {
 
   return (
     <div className="w-full bg-[var(--jean-white)]  md:px-6 pb-8 md:pb-16 relative">
-      {toast.show && (
-        <Toast
-          type={toast.type}
-          message={toast.message}
-          onClose={() => setToast({ ...toast, show: false })}
-        />
-      )}
-
       {/* Header */}
       <div className="mb-6 md:mb-8">
         <h1 className="text-xl md:text-2xl font-semibold text-[var(--jean-gray-900)] mb-1 md:mb-2">
@@ -149,22 +137,22 @@ export const SecuritySection = () => {
                   field === "currentPassword"
                     ? showCurrentPassword
                     : field === "newPassword"
-                      ? showNewPassword
-                      : showConfirmPassword;
+                    ? showNewPassword
+                    : showConfirmPassword;
 
                 const setShown =
                   field === "currentPassword"
                     ? setShowCurrentPassword
                     : field === "newPassword"
-                      ? setShowNewPassword
-                      : setShowConfirmPassword;
+                    ? setShowNewPassword
+                    : setShowConfirmPassword;
 
                 const labelText =
                   field === "currentPassword"
                     ? "Current Password"
                     : field === "newPassword"
-                      ? "New Password"
-                      : "Confirm New Password";
+                    ? "New Password"
+                    : "Confirm New Password";
 
                 return (
                   <div key={field}>
@@ -190,7 +178,7 @@ export const SecuritySection = () => {
                     </div>
                   </div>
                 );
-              },
+              }
             )}
 
             <div className="flex gap-2 md:gap-3 pt-3 md:pt-4">

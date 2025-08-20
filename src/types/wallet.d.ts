@@ -1,3 +1,15 @@
+export type WalletDetailsPage = {
+  user_id: number;
+  balance_ngn: number;
+  balance_ghs: number;
+  total_deposits: number;
+  total_withdrawals: number;
+  total_conversions: number;
+  is_active: boolean;
+  wallet_id_ngn: number;
+  wallet_id_ghs: number;
+};
+
 export interface GetWalletBalanceResponse {
   balance: number;
   currency: string;

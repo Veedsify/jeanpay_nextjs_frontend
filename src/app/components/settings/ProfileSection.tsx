@@ -28,7 +28,7 @@ export const ProfileSection = ({
 }: ProfileSectionProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [localProfileData, setLocalProfileData] = useState(profileData);
-  const { user } = useAuthContext();
+  const { refreshUser, user } = useAuthContext();
   const { updateProfilePicture } = useSettings();
   const [previewImage, setPreviewImage] = useState(
     profileData.profileImage || "",
@@ -69,6 +69,7 @@ export const ProfileSection = ({
           toast.success("Profile picture updated successfully!", {
             id: "profile-picture-update",
           });
+          refreshUser();
           setLocalProfileData(updatedProfileData);
         },
         onError: () => {

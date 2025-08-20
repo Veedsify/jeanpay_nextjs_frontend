@@ -31,20 +31,22 @@ export const AccountSection = () => {
     ghsWallet: "",
   });
 
-  // const [withdrawalData, setWithdrawalData] = useState({
-  //   ngnAccount: "Opay",
-  //   ngnDetails: "Andrew Forbist ( 8028289900 )",
-  //   ghsAccount: "Momo",
-  //   ghsDetails: "Andrew Forbist ( 8028289900 )",
-  // });
-
   useEffect(() => {
     if (data) {
+      if (!data.data.setting) {
+        setWalletData({
+          currency: "NGN",
+          username: user?.username || "",
+          ngnWallet: "",
+          ghsWallet: "",
+        });
+        return;
+      }
       setWalletData((prev) => {
         return {
           ...prev,
-          currency: data.data.setting.default_currency,
-          username: data.data.setting.username,
+          currency: data.data.setting.default_currency as string,
+          username: data.data.setting.username as string,
         };
       });
     }
@@ -57,7 +59,7 @@ export const AccountSection = () => {
           wallet.data.find((w) => w.currency === "GHS")?.walletId || "",
       }));
     }
-  }, [data, wallet]);
+  }, [data, user, wallet]);
 
   const handleUserNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setWalletData((prev) => ({
@@ -68,7 +70,7 @@ export const AccountSection = () => {
 
   const handleEdit = (
     state: keyof typeof editingSection,
-    section: boolean,
+    section: boolean
   ): void => {
     setEditingSection((prev) => ({
       ...prev,
@@ -78,7 +80,7 @@ export const AccountSection = () => {
 
   const handleSave = (
     state: keyof typeof editingSection,
-    section: boolean,
+    section: boolean
   ): void => {
     console.log(`Saving ${state} data...`, section);
 
@@ -232,7 +234,7 @@ export const AccountSection = () => {
                   ` font-semibold text-gray-900 p-2 rounded-full inline-block text-xs px-4`,
                   user?.is_verified
                     ? "bg-green-100 text-green-800"
-                    : "bg-red-100 text-red-800",
+                    : "bg-red-100 text-red-800"
                 )}
               >
                 {user?.is_verified ? "Verified" : "Not Verified"}

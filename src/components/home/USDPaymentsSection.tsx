@@ -1,6 +1,6 @@
 "use client";
 
-import { memo } from "react";
+import { ElementType, memo } from "react";
 import { motion } from "framer-motion";
 import {
   BanknotesIcon,
@@ -13,12 +13,12 @@ interface USDPaymentsSectionProps {
 }
 
 const FeatureIcon = memo(
-  ({ icon: Icon, title }: { icon: any; title: string }) => (
+  ({ icon: Icon, title }: { icon: ElementType; title: string }) => (
     <div className="flex items-center space-x-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm">
       <Icon className="w-5 h-5 text-orange-500" />
       <span className="text-sm font-medium text-gray-700">{title}</span>
     </div>
-  ),
+  )
 );
 
 FeatureIcon.displayName = "FeatureIcon";
@@ -311,7 +311,7 @@ const USDPaymentsSection = memo(
         </div>
       </section>
     );
-  },
+  }
 );
 
 USDPaymentsSection.displayName = "USDPaymentsSection";

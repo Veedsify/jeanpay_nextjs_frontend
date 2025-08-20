@@ -1,22 +1,11 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
-/**
- * Utility function to merge class names with Tailwind CSS class deduplication
- * @param inputs - Class names to merge
- * @returns Merged class names string
- */
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-/**
- * Utility function to conditionally apply classes
- * @param condition - Boolean condition
- * @param trueClasses - Classes to apply when condition is true
- * @param falseClasses - Classes to apply when condition is false
- * @returns Conditional class names
- */
 export function conditionalClass(
   condition: boolean,
   trueClasses: string,
@@ -25,12 +14,6 @@ export function conditionalClass(
   return condition ? trueClasses : falseClasses;
 }
 
-/**
- * Utility function to format currency
- * @param amount - Amount to format
- * @param currency - Currency code (NGN, GHS, etc.)
- * @returns Formatted currency string
- */
 export function formatCurrency(amount: number, currency: string = "NGN") {
   const symbols = {
     NGN: "₦",
@@ -44,22 +27,12 @@ export function formatCurrency(amount: number, currency: string = "NGN") {
   return `${symbol}${amount.toLocaleString()}`;
 }
 
-/**
- * Utility function to truncate text
- * @param text - Text to truncate
- * @param length - Maximum length
- * @returns Truncated text
- */
+
 export function truncateText(text: string, length: number) {
   if (text.length <= length) return text;
   return `${text.slice(0, length)}...`;
 }
 
-/**
- * Utility function to generate consistent spacing classes
- * @param size - Spacing size (xs, sm, md, lg, xl, 2xl, 3xl)
- * @returns Tailwind spacing class
- */
 export function getSpacing(
   size: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl",
 ) {
@@ -76,11 +49,7 @@ export function getSpacing(
   return spacingMap[size];
 }
 
-/**
- * Utility function to generate consistent border radius classes
- * @param size - Border radius size (sm, md, lg, xl, full)
- * @returns Tailwind border radius class
- */
+
 export function getBorderRadius(size: "sm" | "md" | "lg" | "xl" | "full") {
   const radiusMap = {
     sm: "rounded-sm",
@@ -93,11 +62,6 @@ export function getBorderRadius(size: "sm" | "md" | "lg" | "xl" | "full") {
   return radiusMap[size];
 }
 
-/**
- * Utility function to generate consistent shadow classes
- * @param size - Shadow size (sm, md, lg)
- * @returns Tailwind shadow class
- */
 export function getShadow(size: "sm" | "md" | "lg") {
   const shadowMap = {
     sm: "shadow-sm",
@@ -107,13 +71,6 @@ export function getShadow(size: "sm" | "md" | "lg") {
 
   return shadowMap[size];
 }
-
-/**
- * Utility function to debounce function calls
- * @param func - Function to debounce
- * @param wait - Wait time in milliseconds
- * @returns Debounced function
- */
 
 export function debounce<T extends (...args: unknown[]) => unknown>(
   func: T,
@@ -126,11 +83,6 @@ export function debounce<T extends (...args: unknown[]) => unknown>(
   };
 }
 
-/**
- * Utility function to copy text to clipboard
- * @param text - Text to copy
- * @returns Promise that resolves when text is copied
- */
 export async function copyToClipboard(text: string): Promise<void> {
   try {
     await navigator.clipboard.writeText(text);
@@ -150,11 +102,6 @@ export async function copyToClipboard(text: string): Promise<void> {
   }
 }
 
-/**
- * Utility function to generate initials from name
- * @param name - Full name
- * @returns Initials (max 2 characters)
- */
 export function getInitials(name: string): string {
   return name
     .split(" ")
@@ -164,21 +111,12 @@ export function getInitials(name: string): string {
     .toUpperCase();
 }
 
-/**
- * Utility function to validate email format
- * @param email - Email to validate
- * @returns Boolean indicating if email is valid
- */
+
 export function isValidEmail(email: string): boolean {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
 }
 
-/**
- * Utility function to generate random ID
- * @param length - Length of ID
- * @returns Random ID string
- */
 export function generateId(length: number = 8): string {
   const chars =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -189,12 +127,6 @@ export function generateId(length: number = 8): string {
   return result;
 }
 
-/**
- * Utility function to format date
- * @param date - Date to format
- * @param format - Format type
- * @returns Formatted date string
- */
 export function formatDate(
   date: Date | string,
   format: "short" | "medium" | "long" | "time" = "medium",
@@ -245,3 +177,17 @@ export function formatDateTime(
 
   return dateObj.toLocaleString("en-US", options[format]);
 }
+
+
+export const getStatusColor = (status: string) => {
+  switch (status) {
+    case "Completed":
+      return "bg-green-100 text-green-800 dark:bg-cyan-dark dark:text-green-200";
+    case "Pending":
+      return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200";
+    case "Failed":
+      return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200";
+    default:
+      return "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300";
+  }
+};

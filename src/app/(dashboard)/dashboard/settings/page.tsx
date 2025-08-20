@@ -19,7 +19,7 @@ type Tab = {
 
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState("profile");
-  const { user } = useAuthContext();
+  const { user, refreshUser } = useAuthContext();
   const { updateProfile } = useSettings();
   const [profileData] = useState({
     firstName: String(user?.first_name),
@@ -53,6 +53,7 @@ export default function SettingsPage() {
         },
         onSuccess: () => {
           toast.success("Profile updated successfully!");
+          refreshUser();
         },
       },
     );

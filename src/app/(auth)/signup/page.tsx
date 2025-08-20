@@ -10,7 +10,6 @@ import { toast } from "react-hot-toast";
 import { CheckCircleIcon, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { form } from "framer-motion/m";
 
 export default function SignupPage() {
   const [formData, setFormData] = useState({

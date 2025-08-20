@@ -1,6 +1,7 @@
 "use client";
 import TransactionTableHeader from "./TransactionTableHeader";
 import PaymentCardIcon from "../commons/PaymentCardIcon";
+import { getStatusColor } from "@/lib/utils";
 
 interface Transaction {
   id: string;
@@ -28,18 +29,7 @@ export default function TransactionTable({
   onSelectTransaction,
   onSelectAll,
 }: TransactionTableProps) {
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "Completed":
-        return "bg-green-100 text-green-800 dark:bg-cyan-dark dark:text-green-200";
-      case "Pending":
-        return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200";
-      case "Failed":
-        return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200";
-      default:
-        return "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300";
-    }
-  };
+ 
 
   const formatAmount = (amount: number, currency: string) => {
     const absAmount = Math.abs(amount);

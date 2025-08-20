@@ -4,7 +4,6 @@ import {
   ApiResponse,
   TopUpRequest,
   TopUpResponse,
-  WalletBalance,
 } from "@/types/wallet";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
@@ -48,7 +47,7 @@ const useWallet = () => {
       queryFn: async (): Promise<TopUpResponse> => {
         const response = await axiosClient.get(
           path.WalletBase +
-            path.WalletTopUpDetails.replace(":id", transactionId),
+          path.WalletTopUpDetails.replace(":id", transactionId),
         );
         const result: ApiResponse<TopUpResponse> = await response.data;
         if (result.error) {

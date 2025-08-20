@@ -43,6 +43,9 @@ export default function TransactionComponent() {
       status?: string;
       payment_type?: string;
       direction?: string;
+      description?: string;
+      currency?: string;
+      amount?: number | string;
       transaction_details?: {
         from_currency?: string;
         to_currency?: string;
@@ -67,7 +70,6 @@ export default function TransactionComponent() {
           })
         : "";
 
-      const details = t?.transaction_details || {};
       const paymentType = t?.payment_type || "";
       const statusRaw = String(t?.status || "pending").toLowerCase();
 
@@ -80,10 +82,8 @@ export default function TransactionComponent() {
       const name =
         currencyDirection[t.direction as keyof typeof currencyDirection] ||
         "Unknown";
-      const amount = details?.from_amount || Number(details?.from_amount || 0);
-      const note = details?.recipient_name
-        ? `Transfer to ${details.recipient_name}`
-        : "Balance Top Up";
+      const amount = t?.amount || Number(t?.amount || 0);
+      const note = t?.description || "";
 
       const id = t?.transaction_id || t?.id || t?.reference || "";
 
@@ -94,7 +94,7 @@ export default function TransactionComponent() {
         date,
         time,
         amount,
-        from_currency: details?.from_currency || "NGN",
+        from_currency: t?.currency || "NGN",
         note,
         status,
         icon: RefreshCcw,

@@ -45,6 +45,7 @@ export interface AuthContextType extends AuthState {
   logout: () => Promise<void>;
   updateUser: (userData: Partial<User>) => Promise<void>;
   clearError: () => void;
+  refreshUser: () => Promise<void>;
   refreshToken: () => Promise<void>;
 }
 
@@ -231,12 +232,17 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setAuthState((prev) => ({ ...prev, error: null }));
   };
 
+  const refreshUser = async () => {
+    initializeAuth();
+  };
+
   const contextValue: AuthContextType = {
     ...authState,
     logout,
     updateUser,
     clearError,
     refreshToken,
+    refreshUser,
   };
 
   if (!authState.isAuthenticated && !authState.user) {
