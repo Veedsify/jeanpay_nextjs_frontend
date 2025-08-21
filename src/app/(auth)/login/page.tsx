@@ -66,7 +66,12 @@ export default function LoginPage() {
       loginUser.mutate(
         { email, password },
         {
-          onSuccess: () => {
+          onSuccess: (data) => {
+            if (data?.data?.token?.is_two_factor_enabled) {
+              setIsLoading(false);
+              router.push("/login/two-factor-authentication");
+              return;
+            }
             setIsLoading(false);
             router.push("/dashboard");
           },

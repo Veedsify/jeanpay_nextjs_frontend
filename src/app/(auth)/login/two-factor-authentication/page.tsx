@@ -5,10 +5,14 @@ import AuthPageHeader from "@/app/components/commons/AuthPageHeader";
 import AuthPageFooter from "@/app/components/commons/AuthPageFooter";
 import { LucideArrowLeft } from "lucide-react";
 import { toast } from "sonner";
+import useAuth from "@/hooks/AuthHook";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const [code, setCode] = useState<string[]>(Array(6).fill(""));
+  const { twofactorAuth } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
   // const [_, setCurrentIndex] = useState(0);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
@@ -50,11 +54,22 @@ export default function LoginPage() {
 
     setIsLoading(true);
 
-    // // Simulate verification logic
-    setTimeout(() => {
-      setIsLoading(false);
-      //   router.push("/dashboard");
-    }, 1000);
+    twofactorAuth.mutate(fullCode, {
+      onSuccess: () => {
+        toast.success("Verification successful!", {
+          id: "two-factor-auth",
+        });
+        router.push("/dashboard");
+      },
+      onError: (error) => {
+        toast.error(error.message || "Verification failed", {
+          id: "two-factor-auth",
+        });
+      },
+      onSettled: () => {
+        setIsLoading(false);
+      },
+    });
   };
 
   const handlePaste = (e: React.ClipboardEvent) => {
@@ -71,13 +86,12 @@ export default function LoginPage() {
     setCode(newCode);
     const nextIndex = Math.min(pastedData.length, 5);
     inputRefs.current[nextIndex]?.focus();
-    // setCurrentIndex(nextIndex);
   };
 
   return (
     <div className="min-h-screen bg-white flex items-center justify-center p-4">
       <div className="max-w-[512px] w-full bg-white rounded-2xl p-8">
-        <AuthPageHeader text="Reset your account password" />
+        <AuthPageHeader text="Two-Factor Authentication Required" />
         <div className="space-y-6 lg:flex relative items-center justify-center gap-32 my-16 lg:my-32">
           <div className="flex-1">
             <form onSubmit={handleSubmit} className="space-y-6">
