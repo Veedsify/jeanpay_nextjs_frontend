@@ -4,14 +4,16 @@ import Link from "next/link";
 import AuthPageHeader from "@/app/components/commons/AuthPageHeader";
 import AuthPageFooter from "@/app/components/commons/AuthPageFooter";
 import { LucideArrowLeft } from "lucide-react";
-import { toast } from "sonner";
 import useAuth from "@/hooks/AuthHook";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import { AxiosError } from "axios";
 
 export default function LoginPage() {
   const [code, setCode] = useState<string[]>(Array(6).fill(""));
   const { twofactorAuth } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   // const [_, setCurrentIndex] = useState(0);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
@@ -53,6 +55,7 @@ export default function LoginPage() {
     }
 
     setIsLoading(true);
+    setError(null);
 
     twofactorAuth.mutate(fullCode, {
       onSuccess: () => {
@@ -62,11 +65,14 @@ export default function LoginPage() {
         router.push("/dashboard");
       },
       onError: (error) => {
-        toast.error(error.message || "Verification failed", {
-          id: "two-factor-auth",
-        });
+        if (error instanceof AxiosError) {
+          console.error("Verification error:", error.message);
+          setError(error.response?.data.message || error.message);
+        }
       },
       onSettled: () => {
+        setCode(Array(6).fill(""));
+        inputRefs.current[0]?.focus();
         setIsLoading(false);
       },
     });
@@ -122,6 +128,10 @@ export default function LoginPage() {
                 </div>
               </div>
 
+              {error && (
+                <div className="text-red-600 text-sm text-center">{error}</div>
+              )}
+
               <button
                 type="submit"
                 disabled={isLoading || code.join("").length !== 6}
@@ -130,8 +140,8 @@ export default function LoginPage() {
                 {isLoading
                   ? "Verifying..."
                   : code.join("").length === 6
-                    ? "Verify"
-                    : `${6 - code.join("").length} digits remaining`}
+                  ? "Verify"
+                  : `${6 - code.join("").length} digits remaining`}
               </button>
             </form>
 

@@ -28,12 +28,7 @@ export default async function LayoutPage({
 }) {
   return (
     <html lang="en">
-      <body
-        // style={{
-        //   fontFamily: "Host Grotesk Variable",
-        // }}
-        className={` ${geist.className} bg-green-bg`}
-      >
+      <body className={` ${geist.className} bg-green-bg`}>
         <Hydration>
           <Toaster position="top-center" containerClassName="text-center" />
           <Suspense fallback={<FullLoader shouldClose duration={1000} />}>

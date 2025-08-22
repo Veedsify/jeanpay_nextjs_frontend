@@ -14,7 +14,7 @@ async function verifyAccount(email: string) {
 }
 
 async function verifyToken(code: string) {
-  return axiosClient.post("/auth/verify-token", { code });
+  return axiosClient.post("/auth/verify-otp", { code });
 }
 
 export { createUser, loginUser, verifyAccount, verifyToken };

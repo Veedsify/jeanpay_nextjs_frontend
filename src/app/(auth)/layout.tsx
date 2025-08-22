@@ -10,7 +10,7 @@ export default function LayoutPage({ children }: { children: ReactNode }) {
     <html lang="en">
       <body className={``} style={{ fontFamily: "Host Grotesk Variable" }}>
         <Hydration>
-          <Toaster position="top-center" />
+          <Toaster position="top-center" containerClassName="text-center" />
           {children}
         </Hydration>
       </body>

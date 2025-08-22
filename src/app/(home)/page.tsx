@@ -15,7 +15,7 @@ const TrustedBySection = dynamic(
   {
     loading: () => <LoadingSpinner />,
     ssr: true,
-  },
+  }
 );
 
 const USDPaymentsSection = dynamic(
@@ -23,7 +23,7 @@ const USDPaymentsSection = dynamic(
   {
     loading: () => <LoadingSpinner />,
     ssr: true,
-  },
+  }
 );
 
 const CrossBorderSection = dynamic(
@@ -31,7 +31,7 @@ const CrossBorderSection = dynamic(
   {
     loading: () => <LoadingSpinner />,
     ssr: true,
-  },
+  }
 );
 
 const VirtualCardSection = dynamic(
@@ -39,7 +39,7 @@ const VirtualCardSection = dynamic(
   {
     loading: () => <LoadingSpinner />,
     ssr: true,
-  },
+  }
 );
 
 const SavingsSection = dynamic(
@@ -47,7 +47,7 @@ const SavingsSection = dynamic(
   {
     loading: () => <LoadingSpinner />,
     ssr: true,
-  },
+  }
 );
 
 const InstantTransferSection = dynamic(
@@ -55,7 +55,7 @@ const InstantTransferSection = dynamic(
   {
     loading: () => <LoadingSpinner />,
     ssr: true,
-  },
+  }
 );
 
 const FAQSection = dynamic(() => import("@/components/home/FAQSection"), {

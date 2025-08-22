@@ -1,6 +1,7 @@
 "use client";
 import { validateUser } from "@/funcs/user/UserFuncs";
 import { useRouter } from "next/navigation";
+import { deleteCookie } from "cookies-next";
 import {
   createContext,
   useContext,
@@ -130,11 +131,28 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     if (typeof window !== "undefined") {
       try {
-        document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 GMT;";
-        document.cookie =
-          "admin_token=; expires=Thu, 01 Jan 1970 00:00:00 GMT;";
-        document.cookie =
-          "refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 GMT;";
+        // Clear cookies - don't specify domain for localhost compatibility
+        deleteCookie("token", { path: "/" });
+        deleteCookie("admin_token", { path: "/" });
+        deleteCookie("refresh_token", { path: "/" });
+
+        // Also try clearing cookies without path specification as fallback
+        deleteCookie("token");
+        deleteCookie("admin_token");
+        deleteCookie("refresh_token");
+
+        // Reset auth state first
+        setAuthState({
+          user: null,
+          isAuthenticated: false,
+          isLoading: false,
+          error: null,
+        });
+
+        // Then navigate
+        router.push("/login");
+      } catch (error) {
+        console.error("Logout error:", error);
         setAuthState({
           user: null,
           isAuthenticated: false,
@@ -142,8 +160,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           error: null,
         });
         router.push("/login");
-      } catch (error) {
-        console.error("Logout error:", error);
       }
     }
   };
