@@ -1,7 +1,7 @@
 "use client";
 import { validateUser } from "@/funcs/user/UserFuncs";
 import { useRouter } from "next/navigation";
-import { deleteCookie } from "cookies-next";
+
 import {
   createContext,
   useContext,
@@ -10,6 +10,7 @@ import {
   ReactNode,
   useCallback,
 } from "react";
+import { logoutUser } from "@/funcs/auth/AuthFuncs";
 
 // User type definition
 export interface User {
@@ -131,15 +132,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     if (typeof window !== "undefined") {
       try {
-        // Clear cookies - don't specify domain for localhost compatibility
-        deleteCookie("token", { path: "/" });
-        deleteCookie("admin_token", { path: "/" });
-        deleteCookie("refresh_token", { path: "/" });
+        const response = await logoutUser();
 
-        // Also try clearing cookies without path specification as fallback
-        deleteCookie("token");
-        deleteCookie("admin_token");
-        deleteCookie("refresh_token");
+        console.log("Logout response:", response);
 
         // Reset auth state first
         setAuthState({
