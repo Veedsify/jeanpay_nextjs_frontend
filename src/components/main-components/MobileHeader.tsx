@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import Logo from "@/app/components/ui/Logo";
+import Logo from "@/components/ui/Logo";
 import { AnimatePresence, motion } from "framer-motion";
 import { House, Bell, Gear, X, List } from "@phosphor-icons/react";
 import { ArrowRightLeft, ChevronDown, CreditCardIcon } from "lucide-react";

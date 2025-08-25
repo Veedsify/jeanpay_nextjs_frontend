@@ -1,15 +1,15 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import AuthPageHeader from "@/app/components/commons/AuthPageHeader";
-import AuthPageFooter from "@/app/components/commons/AuthPageFooter";
+import AuthPageHeader from "@/components/commons/AuthPageHeader";
+import AuthPageFooter from "@/components/commons/AuthPageFooter";
 import { LucideArrowLeft } from "lucide-react";
 import useAuth from "@/hooks/AuthHook";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { AxiosError } from "axios";
 
-export default function LoginPage() {
+export default function TwoFactorAuthPage() {
   const [code, setCode] = useState<string[]>(Array(6).fill(""));
   const { twofactorAuth } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
@@ -140,8 +140,8 @@ export default function LoginPage() {
                 {isLoading
                   ? "Verifying..."
                   : code.join("").length === 6
-                  ? "Verify"
-                  : `${6 - code.join("").length} digits remaining`}
+                    ? "Verify"
+                    : `${6 - code.join("").length} digits remaining`}
               </button>
             </form>
 

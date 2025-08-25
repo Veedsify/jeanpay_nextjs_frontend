@@ -31,6 +31,7 @@ export default function TransactionTableHeader({
           "Note",
           "Status",
           "Date & Time",
+          "Actions",
         ].map((title) => (
           <th
             key={title}

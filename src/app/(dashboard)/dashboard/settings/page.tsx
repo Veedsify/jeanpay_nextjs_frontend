@@ -1,13 +1,13 @@
 "use client";
 import { useState } from "react";
 import { User, Lock, Bell } from "lucide-react";
-import { SettingsHeader } from "@/app/components/settings/SettingsHeader";
-import { ProfileSection } from "@/app/components/settings/ProfileSection";
-import { AccountSection } from "@/app/components/settings/AccountSection";
-import { PreferencesSection } from "@/app/components/settings/PreferenceSection";
-import { NotificationsSection } from "@/app/components/settings/NotificationSection";
-import { SecuritySection } from "@/app/components/settings/SecuritySection";
-import { useAuthContext } from "@/app/components/contexts/UserAuthContext";
+import { SettingsHeader } from "@/components/settings/SettingsHeader";
+import { ProfileSection } from "@/components/settings/ProfileSection";
+import { AccountSection } from "@/components/settings/AccountSection";
+import { PreferencesSection } from "@/components/settings/PreferenceSection";
+import { NotificationsSection } from "@/components/settings/NotificationSection";
+import { SecuritySection } from "@/components/settings/SecuritySection";
+import { useAuthContext } from "@/components/contexts/UserAuthContext";
 import useSettings from "@/hooks/SettingsHook";
 import toast from "react-hot-toast";
 

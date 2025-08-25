@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { CountryFlag } from "@/app/components/payment/CountryFlag";
+import { CountryFlag } from "@/components/payment/CountryFlag";
 import {
   Check,
   Download,
@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
-import { useTransferStore } from "@/app/components/contexts/TransferStore";
+import { useTransferStore } from "@/components/contexts/TransferStore";
 import { useQuery } from "@tanstack/react-query";
 import { getTransactionDetails } from "@/funcs/transaction/TransactionFunc";
 import { useParams } from "next/navigation";
@@ -93,7 +93,7 @@ export default function TransferSuccessPage() {
     if (navigator.share && transferDetails) {
       navigator.share({
         title: "Transfer Receipt",
-        text: `Transfer of ${transferDetails?.transaction.transaction_details.from_currency} ${transferDetails?.transaction.transaction_details.from_amount} completed successfully. Transaction ID: ${transferDetails?.transaction.transactionId}`,
+        text: `Transfer of ${transferDetails?.transaction_details.from_currency} ${transferDetails?.transaction_details.from_amount} completed successfully. Transaction ID: ${transferDetails?.transactionId}`,
       });
     } else {
       toast.error("Share functionality will be available soon");
@@ -173,7 +173,7 @@ export default function TransferSuccessPage() {
               className="text-gray-600 mb-6"
             >
               Your transfer to &nbsp;
-              {transferDetails?.transaction.transaction_details.recipient_name}
+              {transferDetails?.transaction_details.recipient_name}
               &nbsp; has been submitted and is currently being processed. We
               will notify you once it is completed.
             </motion.p>
@@ -189,13 +189,13 @@ export default function TransferSuccessPage() {
                 <div>
                   <p className="text-sm text-gray-600">Transaction ID</p>
                   <p className="font-mono font-medium text-gray-900">
-                    {transferDetails?.transaction.transaction_id}
+                    {transferDetails?.transaction_id}
                   </p>
                 </div>
                 <button
                   onClick={() =>
                     handleCopy(
-                      transferDetails?.transaction.transaction_id || "",
+                      transferDetails?.transaction_id || "",
                       "Transaction ID",
                     )
                   }
@@ -232,8 +232,8 @@ export default function TransferSuccessPage() {
                 <div className="flex items-center gap-3 mb-2">
                   <CountryFlag
                     country={
-                      transferDetails?.transaction.transaction_details
-                        .from_currency === "NGN"
+                      transferDetails?.transaction_details.from_currency ===
+                      "NGN"
                         ? "nigeria"
                         : "ghana"
                     }
@@ -242,19 +242,15 @@ export default function TransferSuccessPage() {
                   <span className="text-sm text-gray-600">Amount Sent</span>
                 </div>
                 <p className="text-2xl font-bold text-gray-900">
-                  {
-                    transferDetails?.transaction.transaction_details
-                      .from_currency
-                  }{" "}
-                  {transferDetails?.transaction.transaction_details.from_amount.toLocaleString()}
+                  {transferDetails?.transaction_details.from_currency}{" "}
+                  {transferDetails?.transaction_details.from_amount.toLocaleString()}
                 </p>
               </div>
               <div>
                 <div className="flex items-center gap-3 mb-2">
                   <CountryFlag
                     country={
-                      transferDetails?.transaction.transaction_details
-                        .to_currency === "GHS"
+                      transferDetails?.transaction_details.to_currency === "GHS"
                         ? "ghana"
                         : "nigeria"
                     }
@@ -263,8 +259,8 @@ export default function TransferSuccessPage() {
                   <span className="text-sm text-gray-600">Amount Received</span>
                 </div>
                 <p className="text-2xl font-bold text-cyan-dark">
-                  {transferDetails?.transaction.transaction_details.to_currency}{" "}
-                  {transferDetails?.transaction.transaction_details.to_amount.toLocaleString()}
+                  {transferDetails?.transaction_details.to_currency}{" "}
+                  {transferDetails?.transaction_details.to_amount.toLocaleString()}
                 </p>
               </div>
             </div>
@@ -274,7 +270,7 @@ export default function TransferSuccessPage() {
           <div className="space-y-4">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-green-bg rounded-lg">
-                {transferDetails?.transaction.payment_type === "bank" ? (
+                {transferDetails?.payment_type === "bank" ? (
                   <CreditCard className="w-5 h-5 text-cyan-dark" />
                 ) : (
                   <Smartphone className="w-5 h-5 text-cyan-dark" />
@@ -282,45 +278,36 @@ export default function TransferSuccessPage() {
               </div>
               <div>
                 <p className="font-medium text-gray-900">
-                  {
-                    transferDetails?.transaction.transaction_details
-                      .recipient_name
-                  }
+                  {transferDetails?.transaction_details.recipient_name}
                 </p>
                 <p className="text-sm text-gray-600">
-                  {transferDetails?.transaction.payment_type === "bank"
+                  {transferDetails?.payment_type === "bank"
                     ? "Bank Transfer"
                     : "Mobile Money"}
                 </p>
               </div>
             </div>
 
-            {transferDetails?.transaction.payment_type === "bank" && (
+            {transferDetails?.payment_type === "bank" && (
               <div className="bg-gray-50 rounded-lg p-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <p className="text-sm text-gray-600">Bank</p>
                     <p className="font-medium text-gray-900">
-                      {
-                        transferDetails?.transaction.transaction_details
-                          .bank_name
-                      }
+                      {transferDetails?.transaction_details.bank_name}
                     </p>
                   </div>
                   <div>
                     <p className="text-sm text-gray-600">Account Number</p>
                     <div className="flex items-center gap-2">
                       <p className="font-medium text-gray-900">
-                        {
-                          transferDetails?.transaction.transaction_details
-                            .account_number
-                        }
+                        {transferDetails?.transaction_details.account_number}
                       </p>
                       <button
                         onClick={() =>
                           handleCopy(
-                            transferDetails?.transaction.transaction_details
-                              .bank_name || "",
+                            transferDetails?.transaction_details.bank_name ||
+                              "",
                             "Account Number",
                           )
                         }
@@ -340,15 +327,14 @@ export default function TransferSuccessPage() {
               </div>
             )}
 
-            {transferDetails?.transaction.payment_type === "momo" && (
+            {transferDetails?.payment_type === "momo" && (
               <div className="bg-gray-50 rounded-lg p-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <p className="text-sm text-gray-600">Network</p>
                     <p className="font-medium text-gray-900">
                       {getNetworkName(
-                        transferDetails?.transaction.transaction_details
-                          .network || "",
+                        transferDetails?.transaction_details.network || "",
                       )}
                     </p>
                   </div>
@@ -357,15 +343,15 @@ export default function TransferSuccessPage() {
                     <div className="flex items-center gap-2">
                       <p className="font-medium text-gray-900">
                         {formatPhoneNumber(
-                          transferDetails?.transaction.transaction_details
-                            .phone_number || "",
+                          transferDetails?.transaction_details.phone_number ||
+                            "",
                         )}
                       </p>
                       <button
                         onClick={() =>
                           handleCopy(
-                            transferDetails?.transaction.transaction_details
-                              .phone_number || "",
+                            transferDetails?.transaction_details.phone_number ||
+                              "",
                             "Phone Number",
                           )
                         }
@@ -393,9 +379,7 @@ export default function TransferSuccessPage() {
                   <div>
                     <p className="text-sm text-gray-600">Date</p>
                     <p className="font-medium text-gray-900">
-                      {formatDate(
-                        transferDetails?.transaction.created_at || "",
-                      )}
+                      {formatDate(transferDetails?.created_at || "")}
                     </p>
                   </div>
                 </div>
@@ -404,9 +388,7 @@ export default function TransferSuccessPage() {
                   <div>
                     <p className="text-sm text-gray-600">Time</p>
                     <p className="font-medium text-gray-900">
-                      {formatTime(
-                        transferDetails?.transaction.created_at || "",
-                      )}
+                      {formatTime(transferDetails?.created_at || "")}
                     </p>
                   </div>
                 </div>

@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { CountryFlag } from "@/app/components/payment/CountryFlag";
+import { CountryFlag } from "@/components/payment/CountryFlag";
 import {
   ArrowLeft,
   Copy,
@@ -16,7 +16,7 @@ import toast from "react-hot-toast";
 import {
   useTransferDetails,
   useTransferActions,
-} from "@/app/components/contexts/TransferStore";
+} from "@/components/contexts/TransferStore";
 import useTransaction from "@/hooks/TransactionHook";
 
 export default function DirectPaymentPage() {

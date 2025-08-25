@@ -1,4 +1,4 @@
-import ConvertForm from "@/app/components/payment/ConvertForm";
+import ConvertForm from "@/components/payment/ConvertForm";
 
 export default function TransferPage() {
   return (

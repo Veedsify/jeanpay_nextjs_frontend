@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import HeaderNotification from "../commons/HeaderNotification";
 import Input from "../ui/Input";
-import HeaderNameTag from "@/app/components/commons/HeaderNameTag";
+import HeaderNameTag from "@/components/commons/HeaderNameTag";
 
 function formatTitle(pathname: string): string {
   const segments = pathname.split("/").filter(Boolean);

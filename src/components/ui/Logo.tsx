@@ -40,7 +40,7 @@ export default function Logo({
   const logoSource = logoVariants[variant];
   return (
     <div className={`flex items-center justify-center ${className}`}>
-      <Link href={link ?? "/"}>
+      <Link href={link ?? "/dashboard/"}>
         <Image
           src={logoSource}
           alt="JeanPay Logo"

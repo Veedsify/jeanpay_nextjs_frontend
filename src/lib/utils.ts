@@ -1,7 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
-
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -27,7 +26,6 @@ export function formatCurrency(amount: number, currency: string = "NGN") {
   return `${symbol}${amount.toLocaleString()}`;
 }
 
-
 export function truncateText(text: string, length: number) {
   if (text.length <= length) return text;
   return `${text.slice(0, length)}...`;
@@ -48,7 +46,6 @@ export function getSpacing(
 
   return spacingMap[size];
 }
-
 
 export function getBorderRadius(size: "sm" | "md" | "lg" | "xl" | "full") {
   const radiusMap = {
@@ -111,7 +108,6 @@ export function getInitials(name: string): string {
     .toUpperCase();
 }
 
-
 export function isValidEmail(email: string): boolean {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
@@ -131,6 +127,9 @@ export function formatDate(
   date: Date | string,
   format: "short" | "medium" | "long" | "time" = "medium",
 ): string {
+  if (!date) {
+    return "";
+  }
   const dateObj = typeof date === "string" ? new Date(date) : date;
 
   const options: Record<string, Intl.DateTimeFormatOptions> = {
@@ -147,6 +146,9 @@ export function formatDateTime(
   date: Date | string,
   format: "short" | "medium" | "long" | "time" = "medium",
 ): string {
+  if (!date) {
+    return "";
+  }
   const dateObj = typeof date === "string" ? new Date(date) : date;
 
   const options: Record<string, Intl.DateTimeFormatOptions> = {
@@ -178,14 +180,13 @@ export function formatDateTime(
   return dateObj.toLocaleString("en-US", options[format]);
 }
 
-
 export const getStatusColor = (status: string) => {
-  switch (status) {
-    case "Completed":
+  switch (status.toLowerCase()) {
+    case "completed":
       return "bg-green-100 text-green-800 dark:bg-cyan-dark dark:text-green-200";
-    case "Pending":
+    case "pending":
       return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200";
-    case "Failed":
+    case "failed":
       return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200";
     default:
       return "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300";

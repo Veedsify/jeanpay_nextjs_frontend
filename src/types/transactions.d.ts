@@ -1,4 +1,4 @@
-import { TransferDetails } from "@/app/components/contexts/TransferStore";
+import { TransferDetails } from "@/components/contexts/TransferStore";
 
 export interface Transaction {
   id: string;

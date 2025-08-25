@@ -2,6 +2,7 @@
 import TransactionTableHeader from "./TransactionTableHeader";
 import PaymentCardIcon from "../commons/PaymentCardIcon";
 import { getStatusColor } from "@/lib/utils";
+import { Eye } from "lucide-react";
 
 interface Transaction {
   id: string;
@@ -21,6 +22,7 @@ interface TransactionTableProps {
   selectedIds: string[];
   onSelectTransaction: (id: string) => void;
   onSelectAll: (checked: boolean) => void;
+  onViewTransaction: (id: string) => void;
 }
 
 export default function TransactionTable({
@@ -28,6 +30,7 @@ export default function TransactionTable({
   selectedIds,
   onSelectTransaction,
   onSelectAll,
+  onViewTransaction,
 }: TransactionTableProps) {
  
 
@@ -131,6 +134,15 @@ export default function TransactionTable({
                     <div className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">
                       {transaction.time}
                     </div>
+                  </td>
+                  <td className="px-4 py-4 whitespace-nowrap">
+                    <button
+                      onClick={() => onViewTransaction(transaction.id)}
+                      className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/20 dark:hover:bg-blue-900/30 rounded-md transition-colors duration-200"
+                    >
+                      <Eye className="w-4 h-4 mr-1" />
+                      View
+                    </button>
                   </td>
                 </tr>
               );

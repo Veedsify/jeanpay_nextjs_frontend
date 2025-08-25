@@ -3,10 +3,12 @@
 import { useMemo, useState } from "react";
 import { RefreshCcw } from "lucide-react";
 import useTransactions from "@/hooks/TransactionsHook";
+import { useTransactionDetails } from "@/hooks/TransactionHook";
 
-import TransactionFilters from "@/app/components/transactions/TransactionFilters";
-import TransactionTable from "@/app/components/transactions/TransactionTable";
-import TransactionPagination from "@/app/components/transactions/Pagination";
+import TransactionFilters from "@/components/transactions/TransactionFilters";
+import TransactionTable from "@/components/transactions/TransactionTable";
+import TransactionPagination from "@/components/transactions/Pagination";
+import TransactionDetailsModal from "@/components/transactions/TransactionDetailsModal";
 
 // Transaction interface to match the component expectations
 interface Transaction {
@@ -77,8 +79,8 @@ export default function TransactionComponent() {
         statusRaw === "completed"
           ? "Completed"
           : statusRaw === "failed" || statusRaw === "failed"
-            ? "Failed"
-            : "Pending";
+          ? "Failed"
+          : "Pending";
       const name =
         currencyDirection[t.direction as keyof typeof currencyDirection] ||
         "Unknown";
@@ -106,7 +108,14 @@ export default function TransactionComponent() {
   const [selectedAccount, setSelectedAccount] = useState("All Account");
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedTransactionId, setSelectedTransactionId] =
+    useState<string>("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const itemsPerPage = 10;
+
+  // Fetch transaction details when a transaction is selected
+  const { data: transactionDetails, isLoading: isLoadingDetails } =
+    useTransactionDetails(selectedTransactionId);
 
   const filteredTransactions = useMemo(() => {
     setCurrentPage(1); // Reset to first page on filter change
@@ -128,7 +137,7 @@ export default function TransactionComponent() {
   const totalPages = Math.ceil(filteredTransactions.length / itemsPerPage);
   const paginatedTransactions = filteredTransactions.slice(
     (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage,
+    currentPage * itemsPerPage
   );
 
   // Handlers
@@ -136,7 +145,7 @@ export default function TransactionComponent() {
     setSelectedIds((prev) =>
       prev.includes(id)
         ? prev.filter((selectedId) => selectedId !== id)
-        : [...prev, id],
+        : [...prev, id]
     );
   };
 
@@ -159,6 +168,16 @@ export default function TransactionComponent() {
     // API call for download would go here
   };
 
+  const handleViewTransaction = (id: string) => {
+    setSelectedTransactionId(id);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedTransactionId("");
+  };
+
   return (
     <div className="lg:w-full  border rounded-2xl mt-6 mx-auto border-black/30 overflow-x-auto p-2 md:py-6  space-y-6">
       <TransactionFilters
@@ -175,6 +194,7 @@ export default function TransactionComponent() {
         selectedIds={selectedIds}
         onSelectTransaction={handleSelectTransaction}
         onSelectAll={handleSelectAll}
+        onViewTransaction={handleViewTransaction}
       />
 
       {filteredTransactions.length > 0 && (
@@ -186,6 +206,13 @@ export default function TransactionComponent() {
           onPageChange={handlePageChange}
         />
       )}
+
+      <TransactionDetailsModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        transactionDetails={transactionDetails}
+        isLoading={isLoadingDetails}
+      />
     </div>
   );
 }

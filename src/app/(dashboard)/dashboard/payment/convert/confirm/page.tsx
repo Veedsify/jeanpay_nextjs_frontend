@@ -1,10 +1,10 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { CountryFlag } from "@/app/components/payment/CountryFlag";
+import { CountryFlag } from "@/components/payment/CountryFlag";
 import AccountVerificationSteps, {
   createAccountVerificationSteps,
-} from "@/app/components/payment/AccountVerificationSteps";
+} from "@/components/payment/AccountVerificationSteps";
 import {
   ArrowLeft,
   CreditCard,
@@ -20,7 +20,7 @@ import {
   useTransferValidation,
   useTransferLoading,
   useTransferStore,
-} from "@/app/components/contexts/TransferStore";
+} from "@/components/contexts/TransferStore";
 import { getBankAccounts } from "@/funcs/paystack/paystack";
 import { BankAccountsType } from "@/types/paystack";
 import { MomoAccountsType } from "@/types/momo";

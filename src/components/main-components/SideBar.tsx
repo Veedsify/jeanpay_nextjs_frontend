@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Logo from "@/app/components/ui/Logo";
+import Logo from "@/components/ui/Logo";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { House, Bell, Gear } from "@phosphor-icons/react";

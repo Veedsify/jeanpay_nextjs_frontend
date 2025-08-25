@@ -23,7 +23,7 @@ const NeedsVerification = ({ onVerify }: { onVerify: () => void }) => {
         </div>
         <div className="py-5 text-center">
           <Link
-            href={"/"}
+            href={"/frontend/public"}
             className="font-semibold  underline text-jean-orange hover:text-cyan-dark hover:no-underline"
           >
             Can&apos;t Login?

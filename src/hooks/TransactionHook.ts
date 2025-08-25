@@ -1,7 +1,7 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
-import { TransferDetails } from "@/app/components/contexts/TransferStore";
-import { createTransaction } from "@/funcs/transaction/TransactionFunc";
+import { TransferDetails } from "@/components/contexts/TransferStore";
+import { createTransaction, getTransactionDetails } from "@/funcs/transaction/TransactionFunc";
 
 export default function useTransaction() {
   const createTransactionMutation = useMutation({
@@ -12,4 +12,12 @@ export default function useTransaction() {
   return {
     createTransactionMutation,
   };
+}
+
+export function useTransactionDetails(transactionID: string) {
+  return useQuery({
+    queryKey: ["transaction-details", transactionID],
+    queryFn: () => getTransactionDetails({ transactionID }),
+    enabled: !!transactionID,
+  });
 }

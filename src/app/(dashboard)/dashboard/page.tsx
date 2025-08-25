@@ -1,13 +1,13 @@
 "use client";
 import Link from "next/link";
 import { ClockIcon, PlusSquareIcon } from "@phosphor-icons/react";
-import ExpenseStat from "@/app/components/commons/ExpenseStat";
-import RecentActivityStat from "@/app/components/commons/RecentActivityStat";
+import ExpenseStat from "@/components/commons/ExpenseStat";
+import RecentActivityStat from "@/components/commons/RecentActivityStat";
 import Image from "next/image";
-import BalanceCard from "@/app/components/commons/BalanceCard";
+import BalanceCard from "@/components/commons/BalanceCard";
 import { QuickAction } from "@/types/commons";
 import { formatCurrency } from "@/utils/helpers";
-import { useAuthContext } from "@/app/components/contexts/UserAuthContext";
+import { useAuthContext } from "@/components/contexts/UserAuthContext";
 import { CurrencyType } from "@/types/global";
 import useDashboard from "@/hooks/DashboardHook";
 import { formatDateTime } from "@/lib/utils";
@@ -253,7 +253,7 @@ export default function DashBoardPage() {
                           className="border-b border-black/20 hover:bg-green-bg"
                         >
                           <td className="py-4 px-6">
-                            <p className="text-sm sm:text-xs font-mono text-gray-600">
+                            <p className="text-sm font-medium text-gray-600">
                               {transaction.transactionId}
                             </p>
                           </td>

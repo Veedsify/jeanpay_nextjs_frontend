@@ -1,4 +1,4 @@
-import { TransferDetails } from "@/app/components/contexts/TransferStore";
+import { TransferDetails } from "@/components/contexts/TransferStore";
 import { axiosClient } from "@/lib/axios";
 const path = {
   TransactionsBase: "/protected/transactions",
@@ -22,9 +22,9 @@ async function getTransactionDetails({
 }) {
   const response = await axiosClient.get(
     path.TransactionsBase +
-      path.TransactionsDetails.replace(":id", transactionID),
+    path.TransactionsDetails.replace(":id", transactionID),
   );
-  return response.data.data;
+  return response.data.data.transaction;
 }
 
 async function getUserTransactions(params?: {

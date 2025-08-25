@@ -3,7 +3,7 @@ import "../globals.css";
 import { Toaster } from "react-hot-toast";
 // Supports weights 300-800
 import "@fontsource-variable/host-grotesk";
-import { Hydration } from "../components/providers/Hydration";
+import { Hydration } from "@/components/providers/Hydration";
 
 export default function LayoutPage({ children }: { children: ReactNode }) {
   return (

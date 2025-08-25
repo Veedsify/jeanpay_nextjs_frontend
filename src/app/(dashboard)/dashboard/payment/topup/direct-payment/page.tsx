@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { CountryFlag } from "@/app/components/payment/CountryFlag";
+import { CountryFlag } from "@/components/payment/CountryFlag";
 import {
   ArrowLeft,
   Copy,

@@ -1,27 +1,102 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import AuthPageHeader from "@/app/components/commons/AuthPageHeader";
-import AuthPageFooter from "@/app/components/commons/AuthPageFooter";
+import { useRouter, useSearchParams } from "next/navigation";
+import AuthPageHeader from "@/components/commons/AuthPageHeader";
+import AuthPageFooter from "@/components/commons/AuthPageFooter";
 import { LucideArrowLeft } from "lucide-react";
+import { resetPassword, validateResetToken } from "@/funcs/auth/AuthFuncs";
+import { passwordStrength } from "check-password-strength";
+import { AxiosError } from "axios";
+import toast from "react-hot-toast";
 
-export default function LoginPage() {
+export default function ResetPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [show, setShow] = useState(false);
+  const params = useSearchParams();
   const router = useRouter();
+
+  useEffect(() => {
+    const token = params.get("token");
+
+    if (!token) {
+      router.push("/login");
+    }
+
+    if (token?.length != 32) {
+      router.push("/login");
+    }
+
+    async function validatePasswordResetToken() {
+      try {
+        const response = await validateResetToken(token!);
+        if (response.error) {
+          router.push("/login");
+        }
+        setShow(true);
+      } catch (err) {
+        if (err instanceof AxiosError) {
+          if (err.response?.data.error) {
+            router.push("/login");
+          }
+        }
+      }
+    }
+    validatePasswordResetToken();
+  }, [params, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
 
-    // Simulate login logic
-    setTimeout(() => {
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match", {
+        id: "password-validation",
+      });
+      return;
+    }
+
+    if (passwordStrength(password).length < 7) {
+      toast.error("Password is too weak. Please choose a stronger password.", {
+        id: "password-validation",
+      });
+      return;
+    }
+    const strength = passwordStrength(password).value;
+    console.log("Password strength:", strength);
+
+    if (strength === "Very Weak" || strength === "Weak") {
+      toast.error("Password is too weak. Please choose a stronger password.", {
+        id: "password-validation",
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const token = params.get("token");
+      if (!token) {
+        router.push("/login");
+        return;
+      }
+      const response = await resetPassword(token, password);
+      if (response.error) {
+        toast.error(response.error);
+      } else {
+        toast.success("Password reset successfully");
+        router.push("/login");
+      }
+    } catch (error) {
+      console.error("Error resetting password:", error);
+    } finally {
       setIsLoading(false);
-      router.push("/dashboard");
-    }, 1000);
+    }
   };
+
+  if (!show) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen bg-white flex items-center justify-center p-4">
