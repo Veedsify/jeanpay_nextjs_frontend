@@ -20,7 +20,7 @@ import type {
 export const BRAND = {
   name: 'JeanPay',
   tagline: 'Send and receive money across Africa and the US',
-  description: 'Fast, secure, and affordable money transfers across Africa and the US. Virtual USD cards, high-yield savings, and instant transfers.',
+  description: 'Fast, secure, and affordable money transfers across Africa.  and instant transfers.',
   email: 'hello@jeanpay.com',
   phone: '+1 (555) 123-4567',
   address: '611 South Dupont Highway Suite 102, Dover, Delaware, USA.',
@@ -50,14 +50,16 @@ export const CURRENCIES: Currency[] = [
 
 // Marquee items for the hero section
 export const MARQUEE_ITEMS: MarqueeItem[] = [
-  { text: 'Sister in Accra', flag: '🇬🇭', id: 'marquee-1' },
-  { text: 'Fashion designer in Enugu', flag: '🇳🇬', id: 'marquee-2' },
-  { text: 'Software engineer in Rongai', flag: '🇰🇪', id: 'marquee-3' },
-  { text: 'Influencer in Cape Town', flag: '🇿🇦', id: 'marquee-4' },
-  { text: 'Loved one in Lusaka', flag: '🇿🇲', id: 'marquee-5' },
-  { text: 'Family in Kumasi', flag: '🇬🇭', id: 'marquee-6' },
-  { text: 'Business partner in Lagos', flag: '🇳🇬', id: 'marquee-7' },
-  { text: 'Friend in Kigali', flag: '🇷🇼', id: 'marquee-8' }
+  { text: 'School fees in Accra', flag: '🇬🇭', id: 'marquee-1' },
+  { text: 'A supplier in Lagos', flag: '🇳🇬', id: 'marquee-2' },
+  { text: 'Your family in Kumasi', flag: '🇬🇭', id: 'marquee-3' },
+  { text: 'A friend in Abuja', flag: '🇳🇬', id: 'marquee-4' },
+  { text: 'Your parents in Takoradi', flag: '🇬🇭', id: 'marquee-5' },
+  { text: 'A business in Port Harcourt', flag: '🇳🇬', id: 'marquee-6' },
+  { text: 'Your sibling in Tema', flag: '🇬🇭', id: 'marquee-7' },
+  { text: 'A gift to Ibadan', flag: '🇳🇬', id: 'marquee-8' },
+  { text: 'Rent in Cape Coast', flag: '🇬🇭', id: 'marquee-9' },
+  { text: 'Your cousin in Kano', flag: '🇳🇬', id: 'marquee-10' }
 ];
 
 // Customer testimonials
@@ -124,24 +126,24 @@ export const MONEY_DESTINATIONS: MoneyDestination[] = [
   { flag: '🇳🇬', country: 'Nigeria', code: 'NG', available: true, processingTime: '5 minutes' },
   { flag: '🇰🇪', country: 'Kenya', code: 'KE', available: true, processingTime: '10 minutes' },
   { flag: '🇿🇦', country: 'South Africa', code: 'ZA', available: true, processingTime: '15 minutes' },
-  { flag: '🇨🇲', country: 'Cameroon', code: 'CM', available: true, processingTime: '20 minutes' },
-  { flag: '🇺🇬', country: 'Uganda', code: 'UG', available: true, processingTime: '15 minutes' },
-  { flag: '🇨🇮', country: 'Cote d\'Ivoire', code: 'CI', available: true, processingTime: '20 minutes' },
-  { flag: '🇹🇿', country: 'Tanzania', code: 'TZ', available: true, processingTime: '15 minutes' },
-  { flag: '🇿🇲', country: 'Zambia', code: 'ZM', available: true, processingTime: '25 minutes' },
-  { flag: '🇲🇼', country: 'Malawi', code: 'MW', available: true, processingTime: '30 minutes' },
-  { flag: '🇷🇼', country: 'Rwanda', code: 'RW', available: true, processingTime: '15 minutes' },
-  { flag: '🇸🇳', country: 'Senegal', code: 'SN', available: false, processingTime: 'Coming soon' }
+  // { flag: '🇨🇲', country: 'Cameroon', code: 'CM', available: true, processingTime: '20 minutes' },
+  // { flag: '🇺🇬', country: 'Uganda', code: 'UG', available: true, processingTime: '15 minutes' },
+  // { flag: '🇨🇮', country: 'Cote d\'Ivoire', code: 'CI', available: true, processingTime: '20 minutes' },
+  // { flag: '🇹🇿', country: 'Tanzania', code: 'TZ', available: true, processingTime: '15 minutes' },
+  // { flag: '🇿🇲', country: 'Zambia', code: 'ZM', available: true, processingTime: '25 minutes' },
+  // { flag: '🇲🇼', country: 'Malawi', code: 'MW', available: true, processingTime: '30 minutes' },
+  // { flag: '🇷🇼', country: 'Rwanda', code: 'RW', available: true, processingTime: '15 minutes' },
+  // { flag: '🇸🇳', country: 'Senegal', code: 'SN', available: false, processingTime: 'Coming soon' }
 ];
 
 // Partner companies
 export const PARTNERS: Partner[] = [
   { name: 'LATTICE', logo: '/partners/lattice.png', website: 'https://lattice.fund' },
   { name: 'MAVEN11', logo: '/partners/maven11.png', website: 'https://maven11.com' },
-  { name: 'LAVA', logo: '/partners/lava.png', website: 'https://lava.vc' },
-  { name: 'ALLIANCE', logo: '/partners/alliance.png', website: 'https://alliance.vc' },
-  { name: 'TECHSTARS', logo: '/partners/techstars.png', website: 'https://techstars.com' },
-  { name: 'Y COMBINATOR', logo: '/partners/yc.png', website: 'https://ycombinator.com' }
+  //   { name: 'LAVA', logo: '/partners/lava.png', website: 'https://lava.vc' },
+  //   { name: 'ALLIANCE', logo: '/partners/alliance.png', website: 'https://alliance.vc' },
+  //   { name: 'TECHSTARS', logo: '/partners/techstars.png', website: 'https://techstars.com' },
+  //   { name: 'Y COMBINATOR', logo: '/partners/yc.png', website: 'https://ycombinator.com' }
 ];
 
 // FAQ data
@@ -187,7 +189,7 @@ export const FAQS: FAQ[] = [
 // Feature cards for hero section
 export const FEATURE_CARDS: FeatureCard[] = [
   {
-    title: 'Send money to vendors across Africa.',
+    title: 'Send money to nigeria and ghana.',
     subtitle: 'Simple',
     icon: '👇',
     bgColor: 'bg-[#F7F4B8]',
@@ -195,7 +197,7 @@ export const FEATURE_CARDS: FeatureCard[] = [
     delay: 0.4
   },
   {
-    title: 'Payout in under 5 mins to any bank, MoMo or M-Pesa.',
+    title: 'Payout in under 5 mins to any bank or MoMo.',
     subtitle: 'Fast',
     icon: '⚡️',
     bgColor: 'bg-[#FAC2D5]',
@@ -278,18 +280,18 @@ export const SAVINGS_PRODUCTS: SavingsProduct[] = [
 // Transfer methods
 export const TRANSFER_METHODS: TransferMethod[] = [
   {
-    title: 'Crewtag',
+    title: 'Jeantag',
     description: 'Send money to your friend\'s JeanPay account instantly and for free!',
     icon: '👥',
-    features: ['Instant transfers', 'No fees', 'JeanPay to JeanPay'],
+    features: ['Instant transfers', 'No fees', 'JeanPay to JeanPay', 'Coming soon'],
     processingTime: 'Instant',
     fee: 'Free'
   },
   {
-    title: 'Deposit Link',
-    description: 'Share your Deposit Link to get paid by anyone, even if they don\'t use JeanPay.',
+    title: 'Direct Bank Transfer',
+    description: 'Send money directly to any bank account in supported countries quickly and securely.',
     icon: '🔗',
-    features: ['Universal payments', 'Easy sharing', 'QR codes'],
+    features: ['Ghana to Nigeria payments', 'Easy sharing', 'QR codes - coming soon'],
     processingTime: '5 minutes',
     fee: 'Low fees'
   }
@@ -297,12 +299,10 @@ export const TRANSFER_METHODS: TransferMethod[] = [
 
 // Navigation items
 export const NAV_ITEMS: NavItem[] = [
-  { label: 'Money', href: '/money' },
-  { label: 'Cards', href: '/cards' },
-  { label: 'Savings', href: '/savings' },
   { label: 'About', href: '/about' },
-  { label: 'Support', href: '/support' },
-  { label: 'Blog', href: '/blog' }
+  { label: 'Privacy Policy', href: '/privacy-policy' },
+  { label: 'Terms & Conditions', href: '/terms-conditions' },
+  { label: 'Contact', href: '/contact' },
 ];
 
 // Social media links
@@ -352,21 +352,14 @@ export const BREAKPOINTS = {
 
 // Default exchange rates (these would normally come from an API)
 export const DEFAULT_CONVERSION = {
-  fromCurrency: 'USD',
+  fromCurrency: 'GHS',
   toCurrency: 'NGN',
   amount: '100.00',
   convertedAmount: '77,000.00',
-  exchangeRate: '1 USD = 770.00 NGN',
+  exchangeRate: '1 GHS = 145.00 NGN',
   fee: '2.99',
   total: '102.99'
 };
-
-// App store links
-export const APP_STORE_LINKS = {
-  ios: 'https://apps.apple.com/app/jeanpay',
-  android: 'https://play.google.com/store/apps/details?id=com.jeanpay',
-  web: 'https://app.jeanpay.com'
-} as const;
 
 // Contact information
 export const CONTACT_INFO = {
@@ -386,11 +379,8 @@ export const CONTACT_INFO = {
 
 // Legal links
 export const LEGAL_LINKS = {
-  privacy: '/privacy',
-  terms: '/terms',
-  aml: '/aml-policy',
-  cookies: '/cookies',
-  security: '/security'
+  privacy: '/privacy-policy',
+  terms: '/terms-conditions',
 } as const;
 
 // Feature flags (for A/B testing and gradual rollouts)

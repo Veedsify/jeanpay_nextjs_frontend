@@ -34,21 +34,21 @@ const CrossBorderSection = dynamic(
   }
 );
 
-const VirtualCardSection = dynamic(
-  () => import("@/components/home/VirtualCardSection"),
-  {
-    loading: () => <LoadingSpinner />,
-    ssr: true,
-  }
-);
+// const VirtualCardSection = dynamic(
+//   () => import("@/components/home/VirtualCardSection"),
+//   {
+//     loading: () => <LoadingSpinner />,
+//     ssr: true,
+//   }
+// );
 
-const SavingsSection = dynamic(
-  () => import("@/components/home/SavingsSection"),
-  {
-    loading: () => <LoadingSpinner />,
-    ssr: true,
-  }
-);
+// const SavingsSection = dynamic(
+//   () => import("@/components/home/SavingsSection"),
+//   {
+//     loading: () => <LoadingSpinner />,
+//     ssr: true,
+//   }
+// );
 
 const InstantTransferSection = dynamic(
   () => import("@/components/home/InstantTransferSection"),
@@ -73,17 +73,6 @@ const Footer = dynamic(() => import("@/components/layout/Footer"), {
   ssr: true,
 });
 
-/**
- * Home Page Component - JeanPay Landing Page
- *
- * Features:
- * - Code splitting for better performance
- * - Proper TypeScript types
- * - Accessibility compliant
- * - SEO optimized
- * - Mobile-first responsive design
- * - Error boundaries for better UX
- */
 export default function HomePage() {
   return (
     <ErrorBoundary
@@ -126,11 +115,11 @@ export default function HomePage() {
           </Suspense>
 
           <Suspense fallback={<LoadingSpinner />}>
-            <VirtualCardSection />
+            {/* <VirtualCardSection /> */}
           </Suspense>
 
           <Suspense fallback={<LoadingSpinner />}>
-            <SavingsSection />
+            {/* <SavingsSection /> */}
           </Suspense>
 
           <Suspense fallback={<LoadingSpinner />}>

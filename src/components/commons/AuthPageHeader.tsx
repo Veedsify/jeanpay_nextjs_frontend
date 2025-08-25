@@ -7,7 +7,7 @@ const AuthPageHeader = ({
 }) => {
   return (
     <div className="text-center mb-8">
-      <Logo height={64} width={64} />
+      <Logo height={64} width={64} link="/" />
       <h1 className="text-2xl font-bold text-cyan-dark mt-4">
         Jean<span className="italic text-jean-orange">Pay</span>
       </h1>

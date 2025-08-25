@@ -15,32 +15,13 @@ const Footer = memo(({ className = "" }: FooterProps) => {
   const footerSections = [
     {
       title: "COMPANY",
-      links: [
-        { label: "About Us", href: "/about" },
-        { label: "Careers", href: "/careers" },
-        { label: "Press", href: "/press" },
-        { label: "Blog", href: "/blog" },
-        { label: "Investors", href: "/investors" },
-      ],
-    },
-    {
-      title: "PRODUCTS",
-      links: [
-        { label: "Money Transfer", href: "/money" },
-        { label: "Virtual Cards", href: "/cards" },
-        { label: "Savings", href: "/savings" },
-        { label: "Business", href: "/business" },
-        { label: "API", href: "/developers" },
-      ],
+      links: [{ label: "About Us", href: "/about" }],
     },
     {
       title: "SUPPORT",
       links: [
-        { label: "Help Center", href: "/help" },
+        { label: "Help Center", href: "/contact" },
         { label: "Contact Us", href: "/contact" },
-        { label: "FAQs", href: "/faqs" },
-        { label: "Status", href: "/status" },
-        { label: "Community", href: "/community" },
       ],
     },
     {
@@ -48,9 +29,6 @@ const Footer = memo(({ className = "" }: FooterProps) => {
       links: [
         { label: "Privacy Policy", href: LEGAL_LINKS.privacy },
         { label: "Terms of Service", href: LEGAL_LINKS.terms },
-        { label: "AML/KYC Policy", href: LEGAL_LINKS.aml },
-        { label: "Cookie Policy", href: LEGAL_LINKS.cookies },
-        { label: "Security", href: LEGAL_LINKS.security },
       ],
     },
   ];
@@ -298,7 +276,14 @@ const Footer = memo(({ className = "" }: FooterProps) => {
             >
               ❤️
             </motion.span>{" "}
-            in Accra & Lagos, Available{" "}
+            in Lagos{" "}
+            <Link
+              className="font-black text-jean-orange"
+              href={"/https://github.com/Veedsify"}
+            >
+              by Veedsify
+            </Link>
+            , Available{" "}
             <span role="img" aria-label="worldwide">
               🌍
             </span>

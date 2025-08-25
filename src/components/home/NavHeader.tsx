@@ -1,14 +1,13 @@
 "use client";
-
 import { useState, useEffect, useRef, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { SiApple } from "react-icons/si";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { NAV_ITEMS, APP_STORE_LINKS, BRAND } from "../../constants";
+import { NAV_ITEMS, BRAND } from "../../constants";
 import type { NavItem } from "../../types";
-import { User } from "lucide-react";
+import { LucideLogIn } from "lucide-react";
+import Logo from "../ui/Logo";
 
 interface NavHeaderProps {
   className?: string;
@@ -87,19 +86,13 @@ export const NavHeader = memo(({ className = "" }: NavHeaderProps) => {
     }
   };
 
-  const handleDownloadApp = () => {
-    // For demo purposes, default to iOS
-    window.open(APP_STORE_LINKS.ios, "_blank", "noopener,noreferrer");
-  };
-
   return (
     <>
       <motion.header
         ref={headerRef}
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className={`w-full transition-all duration-300 z-50 ${
+        className={`w-full z-50 ${
           isSticky
             ? "fixed top-0 left-0 right-0 py-2 bg-[#FCFBF7]/95 backdrop-blur-md shadow-sm border-b border-gray-100"
             : "absolute top-0 left-0 right-0 py-4 bg-transparent"
@@ -112,21 +105,14 @@ export const NavHeader = memo(({ className = "" }: NavHeaderProps) => {
             role="navigation"
             aria-label="Main navigation"
           >
-            {/* Logo */}
-            <Link
-              href="/"
-              className="flex items-center group"
-              aria-label={`${BRAND.name} - Go to homepage`}
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="text-xl sm:text-2xl font-bold ml-2 sm:ml-4 text-gray-900 group-hover:text-orange-500 transition-colors flex items-center gap-2"
             >
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="text-xl sm:text-2xl font-bold ml-2 sm:ml-4 text-gray-900 group-hover:text-orange-500 transition-colors"
-              >
-                {BRAND.name}
-              </motion.div>
-            </Link>
-
+              <Logo height={32} width={32} link="/" />
+              {BRAND.name}
+            </motion.div>
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
               {NAV_ITEMS.map((item) => (
@@ -158,17 +144,19 @@ export const NavHeader = memo(({ className = "" }: NavHeaderProps) => {
             {/* CTA Button and Mobile Menu Toggle */}
             <div className="flex items-center space-x-3">
               {/* CTA Button */}
-              <motion.button
+              <motion.a
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={handleDownloadApp}
-                className="bg-gradient-to-r from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 text-white px-4 sm:px-6 py-2 rounded-full font-semibold text-sm sm:text-base shadow-lg hover:shadow-xl transition-all duration-200 flex items-center space-x-2 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
+                href="/login"
+                className="bg-gradient-to-r bg-cyan-dark  hover:bg-cyan-dark/80 text-white px-4 sm:px-6 py-2 rounded-full font-semibold text-sm sm:text-base shadow-lg hover:shadow-xl transition-all duration-200 flex items-center space-x-2 focus:outline-none focus:ring-2 cursor-pointer focus:ring-offset-2"
                 aria-label="Download JeanPay app"
               >
-                <User className="w-4 h-4 sm:w-5 sm:h-5" aria-hidden="true" />
+                <LucideLogIn
+                  className="w-4 h-4 sm:w-5 sm:h-5"
+                  aria-hidden="true"
+                />
                 <span className="hidden sm:inline">Login</span>
-                <span className="sm:hidden">App</span>
-              </motion.button>
+              </motion.a>
 
               {/* Mobile Menu Toggle */}
               <button
@@ -242,13 +230,13 @@ export const NavHeader = memo(({ className = "" }: NavHeaderProps) => {
                   transition={{ delay: NAV_ITEMS.length * 0.1 }}
                   className="pt-4 border-t border-gray-100"
                 >
-                  <button
-                    onClick={handleDownloadApp}
+                  <Link
+                    href={"/login"}
                     className="w-full bg-gradient-to-r from-orange-400 to-orange-500 text-white px-6 py-3 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center space-x-2 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
                   >
-                    <SiApple className="w-5 h-5" />
-                    <span>Download JeanPay</span>
-                  </button>
+                    <LucideLogIn className="w-5 h-5" />
+                    <span>Login</span>
+                  </Link>
                 </motion.div>
 
                 {/* Contact Info */}

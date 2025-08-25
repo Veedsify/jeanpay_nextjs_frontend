@@ -8,7 +8,7 @@ const AuthPageFooter = () => {
           <Link href="/privacy-policy">Privacy Policy</Link>
         </li>
         <li className="font-medium  hover:underline hover:text-jean-orange text-cyan-dark no-underline">
-          <Link href="/terms-of-service">Terms of Service</Link>
+          <Link href="/terms-conditions">Terms of Service</Link>
         </li>
       </ul>
     </div>

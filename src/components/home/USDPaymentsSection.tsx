@@ -44,13 +44,13 @@ const USDPaymentsSection = memo(
               className="text-orange-500 font-semibold hover:text-orange-600 transition-colors focus:outline-none focus:underline"
               aria-label="Learn more about USD payments"
             >
-              Send and receive USD ›››
+              Send and receive Naira or Cedis ›››
             </a>
             <h2
               id="usd-payments-title"
               className="text-4xl md:text-5xl font-bold mt-4 mb-6 text-gray-900"
             >
-              Send and receive USD
+              Send and receive Naira
               <br />
               payments with ease
               <motion.span
@@ -71,7 +71,7 @@ const USDPaymentsSection = memo(
               </motion.span>
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Get your USD account and enjoy seamless ACH payments, direct
+              Get your GHS and NGN account and enjoy seamless payments, direct
               deposits, and instant transfers with competitive rates.
             </p>
           </motion.div>
@@ -94,7 +94,7 @@ const USDPaymentsSection = memo(
                   transition={{ duration: 0.6, delay: 0.2 }}
                   className="text-2xl lg:text-3xl font-bold mb-4 text-gray-900"
                 >
-                  Send and receive ACH payments with your JeanPay USD account.
+                  Send and receive payments with your JeanPay account.
                 </motion.h3>
 
                 <motion.p
@@ -104,9 +104,8 @@ const USDPaymentsSection = memo(
                   transition={{ duration: 0.6, delay: 0.3 }}
                   className="text-gray-700 mb-6 leading-relaxed"
                 >
-                  Open a USD account in minutes and enjoy all the benefits of US
-                  banking without the hassle. Perfect for freelancers,
-                  businesses, and anyone dealing with USD payments.
+                  Open an account in minutes and enjoy all the benefits of
+                  JeanPay without the hassle.
                 </motion.p>
 
                 {/* Feature List */}
@@ -120,19 +119,19 @@ const USDPaymentsSection = memo(
                   <div className="flex items-center space-x-3">
                     <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
                     <span className="text-gray-700">
-                      Receive ACH payments directly
+                      Receive NGN & GHS payments directly
                     </span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
                     <span className="text-gray-700">
-                      Send money to any US bank account
+                      Send money to any bank account
                     </span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
                     <span className="text-gray-700">
-                      Get paid by US clients and employers
+                      Get paid by clients and employers
                     </span>
                   </div>
                   <div className="flex items-center space-x-3">
@@ -151,9 +150,9 @@ const USDPaymentsSection = memo(
                   transition={{ duration: 0.6, delay: 0.5 }}
                   className="flex flex-wrap gap-3"
                 >
-                  <FeatureIcon icon={BanknotesIcon} title="ACH Payments" />
-                  <FeatureIcon icon={ShieldCheckIcon} title="FDIC Insured" />
-                  <FeatureIcon icon={ClockIcon} title="Same Day" />
+                  <FeatureIcon icon={BanknotesIcon} title="NGN Payments" />
+                  <FeatureIcon icon={ShieldCheckIcon} title="Secured" />
+                  <FeatureIcon icon={ClockIcon} title="5 Minute Wait Day" />
                 </motion.div>
               </div>
 
@@ -196,7 +195,7 @@ const USDPaymentsSection = memo(
                       </motion.div>
                       <div className="bg-white/90 backdrop-blur-sm rounded-lg p-4 shadow-sm">
                         <p className="font-bold text-green-600 text-lg">
-                          $2,500.00
+                          ₦253,000.00
                         </p>
                         <p className="text-sm text-gray-600">
                           Available Balance
@@ -253,7 +252,7 @@ const USDPaymentsSection = memo(
                 icon: "🔒",
                 title: "Bank-Level Security",
                 description:
-                  "Your funds are protected by the same security measures used by major US banks.",
+                  "Your funds are protected by the same security measures used by major banks.",
               },
               {
                 icon: "⚡",
@@ -263,9 +262,8 @@ const USDPaymentsSection = memo(
               },
               {
                 icon: "📱",
-                title: "Mobile Banking",
-                description:
-                  "Manage your USD account on the go with our intuitive mobile app.",
+                title: "Mobile Friendly",
+                description: "Manage your account on the go.",
               },
             ].map((feature, index) => (
               <motion.div
@@ -299,14 +297,15 @@ const USDPaymentsSection = memo(
             transition={{ duration: 0.7, delay: 0.8 }}
             className="mt-16"
           >
-            <motion.button
+            <motion.a
+              href="/signup"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="bg-gradient-to-r from-orange-400 to-orange-500 text-white px-8 py-4 rounded-full font-bold shadow-lg hover:shadow-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
               aria-label="Open USD account with JeanPay"
             >
-              Open Your USD Account
-            </motion.button>
+              Open Your JeanPay Account
+            </motion.a>
           </motion.div>
         </div>
       </section>

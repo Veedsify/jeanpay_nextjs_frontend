@@ -1,5 +1,5 @@
-"use client";
-import React, { useState } from "react";
+"use client";;
+import { useState } from "react";
 import {
   ChevronDown,
   ArrowDown,
@@ -44,7 +44,7 @@ const quickActions: QuickAction[] = [
 export default function TopupForm() {
   const router = useRouter();
   const [selectedWallet, setSelectedWallet] = useState<"nigeria" | "ghana">(
-    "nigeria",
+    "nigeria"
   );
   const [amount, setAmount] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -313,13 +313,6 @@ export default function TopupForm() {
                 className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-cyan-dark focus:border-cyan-dark outline-none transition-colors text-lg font-bold bg-gray-50 hover:bg-white"
               />
             </div>
-            <p className="text-xs text-gray-500 mt-2">
-              Enter the amount you want to top up in{" "}
-              <span className="font-semibold text-cyan-dark">
-                {wallets[selectedWallet].currency}
-              </span>
-              .
-            </p>
           </div>
 
           {/* Action Buttons */}

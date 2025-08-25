@@ -2,7 +2,7 @@
 
 import { memo } from "react";
 import { motion } from "framer-motion";
-import { APP_STORE_LINKS, BRAND } from "@/constants";
+import { BRAND } from "@/constants";
 import { LucideSendHorizontal } from "lucide-react";
 
 interface CTASectionProps {
@@ -10,11 +10,6 @@ interface CTASectionProps {
 }
 
 const CTASection = memo(({ className = "" }: CTASectionProps) => {
-  const handleDownloadApp = (store: "ios" | "android") => {
-    const url = store === "ios" ? APP_STORE_LINKS.ios : APP_STORE_LINKS.android;
-    window.open(url, "_blank", "noopener,noreferrer");
-  };
-
   return (
     <section
       className={`py-24 px-4 text-center bg-gradient-to-br from-[#FCFBF7] to-[#F8F6F0] ${className}`}
@@ -55,10 +50,10 @@ const CTASection = memo(({ className = "" }: CTASectionProps) => {
           transition={{ duration: 0.7, delay: 0.2 }}
           className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16"
         >
-          <motion.button
+          <motion.a
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => handleDownloadApp("android")}
+            href="/signup"
             className="bg-gray-900 text-white px-8 py-4 rounded-full font-bold flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-700 focus:ring-offset-2 min-w-[220px]"
             aria-label="Download JeanPay for Android"
           >
@@ -67,7 +62,7 @@ const CTASection = memo(({ className = "" }: CTASectionProps) => {
               aria-hidden="true"
             />
             Get Stated{" "}
-          </motion.button>
+          </motion.a>
         </motion.div>
 
         {/* Features Grid */}

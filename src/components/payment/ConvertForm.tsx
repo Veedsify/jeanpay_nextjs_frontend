@@ -22,6 +22,10 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { getWalletBalance } from "@/funcs/wallet/WalletFunc";
 import { formatIntoSpace } from "@/lib/textformat";
+import {
+  getExchangeRates,
+  calculateConversion,
+} from "@/funcs/convert/ConvertFuncs";
 
 interface CurrencyOption {
   code: string;
@@ -59,7 +63,7 @@ const currencyOptions: CurrencyOption[] = [
     code: "GHS",
     name: "Ghanaian Cedi",
     country: "ghana",
-    balance: 53000,
+    balance: 0,
     flag: "ghana",
   },
 ];
@@ -89,6 +93,27 @@ export default function ConvertForm() {
   const toDropdownRef = useRef<HTMLDivElement>(null);
   const [copiedCardCode, setCopiedCardCode] = useState<string | null>(null);
   const router = useRouter();
+  const [exchangeRates, setExchangeRates] = useState<Record<
+    string,
+    number
+  > | null>(null);
+
+  useEffect(() => {
+    let aborted = false;
+    // Fetch exchange rates from backend
+    getExchangeRates()
+      .then((resp) => {
+        if (aborted) return;
+        const rates = resp?.data?.rates;
+        if (rates && typeof rates === "object") {
+          setExchangeRates(rates as Record<string, number>);
+        }
+      })
+      .catch(() => {});
+    return () => {
+      aborted = true;
+    };
+  }, []);
   // Fetch wallet balance
   const {
     data: walletBalance,
@@ -114,13 +139,13 @@ export default function ConvertForm() {
     }
     if (conversionData.fromCurrency) {
       const fromCurr = currencyOptions.find(
-        (c) => c.code === conversionData.fromCurrency,
+        (c) => c.code === conversionData.fromCurrency
       );
       if (fromCurr) setFromCurrency(fromCurr);
     }
     if (conversionData.toCurrency) {
       const toCurr = currencyOptions.find(
-        (c) => c.code === conversionData.toCurrency,
+        (c) => c.code === conversionData.toCurrency
       );
       if (toCurr) setToCurrency(toCurr);
     }
@@ -179,15 +204,10 @@ export default function ConvertForm() {
     if (fromCurrency.code === toCurrency.code) {
       return 1;
     }
-
-    // Exchange rates for both directions
-    const rates: Record<string, number> = {
-      "NGN-GHS": 0.023,
-      "GHS-NGN": 43.48,
-    };
-
     const rateKey = `${fromCurrency.code}-${toCurrency.code}`;
-    return rates[rateKey] || 1;
+    const fallbackKey = `${fromCurrency.code}_${toCurrency.code}`;
+    const rate = exchangeRates?.[rateKey] ?? exchangeRates?.[fallbackKey];
+    return typeof rate === "number" ? rate : 1;
   };
 
   const currentRate = getCurrentExchangeRate();
@@ -233,14 +253,13 @@ export default function ConvertForm() {
     setFromCurrency(option);
     setShowFromDropdown(false);
 
-    // Update amounts based on new currency selection
-    const rates: Record<string, number> = {
-      "NGN-GHS": 0.023,
-      "GHS-NGN": 58.48,
-    };
-
+    // Update amounts based on new currency selection using fetched rates
     const rateKey = `${option.code}-${toCurrency.code}`;
-    const newRate = rates[rateKey] || 1;
+    const fallbackKey = `${option.code}_${toCurrency.code}`;
+    const newRate = (exchangeRates?.[rateKey] ??
+      exchangeRates?.[fallbackKey] ??
+      1) as number;
+
     const fromAmountNum = parseFormattedCurrency(fromAmount);
     const convertedAmount = fromAmountNum * newRate;
     const newToAmount = formatCurrency(convertedAmount.toFixed(0));
@@ -261,14 +280,13 @@ export default function ConvertForm() {
     setToCurrency(option);
     setShowToDropdown(false);
 
-    // Update amounts based on new currency selection
-    const rates: Record<string, number> = {
-      "NGN-GHS": 0.023,
-      "GHS-NGN": 43.48,
-    };
-
+    // Update amounts based on new currency selection using fetched rates
     const rateKey = `${fromCurrency.code}-${option.code}`;
-    const newRate = rates[rateKey] || 1;
+    const fallbackKey = `${fromCurrency.code}_${option.code}`;
+    const newRate = (exchangeRates?.[rateKey] ??
+      exchangeRates?.[fallbackKey] ??
+      1) as number;
+
     const fromAmountNum = parseFormattedCurrency(fromAmount);
     const convertedAmount = fromAmountNum * newRate;
     const newToAmount = formatCurrency(convertedAmount.toFixed(0));
@@ -291,9 +309,29 @@ export default function ConvertForm() {
     setFromAmount(formattedValue);
 
     const numericValue = parseFormattedCurrency(formattedValue) || 0;
-    const convertedAmount = numericValue * currentRate;
-    const newToAmount = formatCurrency(convertedAmount.toFixed(0));
+
+    // Optimistic local calculation using current rate
+    const optimistic = numericValue * currentRate;
+    const newToAmount = formatCurrency(optimistic.toFixed(0));
     setToAmount(newToAmount);
+
+    // Request exact calculation from backend (includes fees)
+    if (numericValue > 0 && fromCurrency.code !== toCurrency.code) {
+      calculateConversion({
+        fromCurrency: fromCurrency.code as "NGN" | "GHS",
+        toCurrency: toCurrency.code as "NGN" | "GHS",
+        amount: numericValue,
+      })
+        .then((resp) => {
+          const conv = resp?.data?.convertedAmount;
+          if (typeof conv === "number") {
+            setToAmount(formatCurrency(conv.toFixed(0)));
+          }
+        })
+        .catch(() => {
+          // Keep optimistic value on error
+        });
+    }
 
     // Update store
     setConversionData({
@@ -420,9 +458,7 @@ export default function ConvertForm() {
                       key={option.id}
                       className={cn(
                         "relative overflow-hidden rounded-2xl bg-white border flex flex-col gap-4 p-0",
-                        index === 0
-                          ? "border-primary-100"
-                          : "border-orange-100",
+                        index === 0 ? "border-primary-100" : "border-orange-100"
                       )}
                     >
                       {/* Decorative top bar */}
@@ -431,7 +467,7 @@ export default function ConvertForm() {
                           "h-3 w-full",
                           index === 0
                             ? "bg-gradient-to-r from-primary-400 to-primary-600"
-                            : "bg-gradient-to-r from-orange-400 to-orange-600",
+                            : "bg-gradient-to-r from-orange-400 to-orange-600"
                         )}
                       />
                       <div className="flex items-center gap-4 px-6 pt-6 pb-2">
@@ -440,7 +476,7 @@ export default function ConvertForm() {
                             "w-16 h-16 rounded-xl flex items-center justify-center border-4",
                             option.currency === "NGN"
                               ? "bg-primary-500/90 border-primary-200"
-                              : "bg-orange-500/90 border-orange-200",
+                              : "bg-orange-500/90 border-orange-200"
                           )}
                         >
                           <CountryFlag
@@ -463,7 +499,7 @@ export default function ConvertForm() {
                                 "text-lg font-bold tracking-wide",
                                 option.currency === "NGN"
                                   ? "text-primary-700"
-                                  : "text-orange-700",
+                                  : "text-orange-700"
                               )}
                             >
                               {option.currency}
@@ -487,7 +523,7 @@ export default function ConvertForm() {
                             className={cn(
                               "text-gray-400 hover:text-primary-500 transition-colors p-1 rounded-lg hover:bg-primary-50 border border-transparent hover:border-primary-200",
                               copiedCardCode === option.id &&
-                                "bg-green-50 border-green-200",
+                                "bg-green-50 border-green-200"
                             )}
                             title="Copy card number"
                           >
@@ -504,7 +540,7 @@ export default function ConvertForm() {
                             "px-3 py-1 rounded-full text-xs font-semibold",
                             option.currency === "NGN"
                               ? "bg-primary-50 text-primary-700"
-                              : "bg-orange-50 text-orange-700",
+                              : "bg-orange-50 text-orange-700"
                           )}
                         >
                           {option.currency}

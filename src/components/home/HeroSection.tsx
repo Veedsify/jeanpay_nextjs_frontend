@@ -11,7 +11,6 @@ import {
   FEATURE_CARDS,
   CURRENCIES,
   DEFAULT_CONVERSION,
-  APP_STORE_LINKS,
   ANIMATIONS,
 } from "@/constants";
 import type { Currency, MarqueeItem, FeatureCard } from "@/types";
@@ -86,7 +85,7 @@ const FeatureCardComponent = memo(
         )}
       </div>
     </motion.div>
-  ),
+  )
 );
 
 FeatureCardComponent.displayName = "FeatureCardComponent";
@@ -94,7 +93,7 @@ FeatureCardComponent.displayName = "FeatureCardComponent";
 // Currency converter component
 const CurrencyConverter = memo(() => {
   const [fromCurrency, setFromCurrency] = useState(
-    DEFAULT_CONVERSION.fromCurrency,
+    DEFAULT_CONVERSION.fromCurrency
   );
   const [toCurrency, setToCurrency] = useState(DEFAULT_CONVERSION.toCurrency);
   const [amount, setAmount] = useState(DEFAULT_CONVERSION.amount);
@@ -240,10 +239,27 @@ export const HeroSection = memo(({ className = "" }: HeroSectionProps) => {
     return () => mediaQuery.removeEventListener("change", handleChange);
   }, []);
 
-  const handleDownloadApp = (store: "ios" | "android") => {
-    const url = store === "ios" ? APP_STORE_LINKS.ios : APP_STORE_LINKS.android;
-    window.open(url, "_blank", "noopener,noreferrer");
-  };
+  const rotatingTexts = [
+    "across Africa.",
+    "in Nigeria.",
+    "in Ghana.",
+    "Instantly.",
+    "with the best rates.",
+    "within minutes.",
+    "with JeanPay.",
+    "in South Africa.",
+  ];
+  const [currentTextIndex, setCurrentTextIndex] = useState(0);
+  const currentText = rotatingTexts[currentTextIndex];
+  useEffect(() => {
+    if (reducedMotion) return; // Disable rotation if reduced motion is preferred
+    const interval = setInterval(() => {
+      setCurrentTextIndex(
+        (prevIndex) => (prevIndex + 1) % rotatingTexts.length
+      );
+    }, 3000); // Change text every 3 seconds
+    return () => clearInterval(interval);
+  }, [reducedMotion, rotatingTexts.length]);
 
   return (
     <section
@@ -260,7 +276,21 @@ export const HeroSection = memo(({ className = "" }: HeroSectionProps) => {
       >
         Send and receive money
         <br />
-        across <span className="text-orange-500">Africa</span>
+        <motion.span
+          key={currentText}
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -20 }}
+          transition={{
+            duration: 0.6,
+            ease: "easeOut",
+            type: "spring",
+            stiffness: 100,
+          }}
+          className="text-orange-500 inline-block"
+        >
+          {currentText}
+        </motion.span>
       </motion.h1>
 
       {/* Subtitle */}
@@ -281,16 +311,16 @@ export const HeroSection = memo(({ className = "" }: HeroSectionProps) => {
         transition={{ duration: 0.7, delay: 0.2 }}
         className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16"
       >
-        <motion.button
+        <motion.a
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          onClick={() => handleDownloadApp("android")}
+          href="/signup"
           className="bg-gray-900 text-white px-8 py-4 rounded-full font-bold flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-700 focus:ring-offset-2 min-w-[200px]"
           aria-label="Download JeanPay for Android"
         >
           <LucideSendHorizonal className="mr-2 text-2xl" aria-hidden="true" />
           Get Started
-        </motion.button>
+        </motion.a>
       </motion.div>
 
       {/* Marquee */}
@@ -312,7 +342,7 @@ export const HeroSection = memo(({ className = "" }: HeroSectionProps) => {
           {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map(
             (item, index) => (
               <MarqueeItemComponent key={`${item.id}-${index}`} item={item} />
-            ),
+            )
           )}
         </motion.div>
       </div>
