@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { ClockIcon, PlusSquareIcon } from "@phosphor-icons/react";
-import ExpenseStat from "@/components/commons/ExpenseStat";
+// import ExpenseStat from "@/components/commons/ExpenseStat";
 import RecentActivityStat from "@/components/commons/RecentActivityStat";
 import Image from "next/image";
 import BalanceCard from "@/components/commons/BalanceCard";
@@ -23,7 +23,7 @@ export default function DashBoardPage() {
   const { user } = useAuthContext();
   // Use dashboard hooks
   const {
-    summary,
+    // summary,
     recentActivity,
     walletOverview,
     isLoading,
@@ -53,7 +53,7 @@ export default function DashBoardPage() {
   ];
 
   // Get dashboard summary data
-  const dashboardSummary = summary.data?.data;
+  // const dashboardSummary = summary.data?.data;
   const totalBalance = walletOverview.data?.data?.totalBalance || 0;
   const filteredTransactions = overview.data?.data.recentTransactions;
 
@@ -308,18 +308,18 @@ export default function DashBoardPage() {
         {/* Right Section - Exchange Rates and Stats */}
         <div className="flex flex-col xl:flex-col lg:flex-row xl:w-1/4 lg:w-full gap-6">
           <div className="flex-1">
-            <ExpenseStat
+            {/* <ExpenseStat
               totalExpense={dashboardSummary?.monthlyExpenses || 15500}
               moneyIn={dashboardSummary?.monthlyIncome || 14800}
               moneyOut={dashboardSummary?.monthlyExpenses || 13500}
               isLoading={summary.isLoading}
-            />
-          </div>
-          <div className="flex-1">
+            /> */}
             <RecentActivityStat
               recentActivity={recentActivity.data?.data}
               isLoading={recentActivity.isLoading}
             />
+          </div>
+          <div className="flex-1">
           </div>
         </div>
       </div>

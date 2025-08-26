@@ -68,8 +68,8 @@ const Footer = memo(({ className = "" }: FooterProps) => {
             </Link>
 
             <p className="text-gray-600 mb-4 leading-relaxed">
-              {BRAND.tagline}. Fast, secure, and affordable money transfers
-              across Africa and the US.
+              {BRAND.tagline}. Fast, secure, and affordable money transfers in
+              Nigeria, Togo & Ivory Coast.
             </p>
 
             {/* Contact Information */}

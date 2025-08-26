@@ -85,7 +85,7 @@ const FeatureCardComponent = memo(
         )}
       </div>
     </motion.div>
-  )
+  ),
 );
 
 FeatureCardComponent.displayName = "FeatureCardComponent";
@@ -93,7 +93,7 @@ FeatureCardComponent.displayName = "FeatureCardComponent";
 // Currency converter component
 const CurrencyConverter = memo(() => {
   const [fromCurrency, setFromCurrency] = useState(
-    DEFAULT_CONVERSION.fromCurrency
+    DEFAULT_CONVERSION.fromCurrency,
   );
   const [toCurrency, setToCurrency] = useState(DEFAULT_CONVERSION.toCurrency);
   const [amount, setAmount] = useState(DEFAULT_CONVERSION.amount);
@@ -171,7 +171,6 @@ const CurrencyConverter = memo(() => {
             </button>
             <span className="ml-2">{fromCurrency}1.00 ($1.00)</span>
           </div>
-          <span>Flat fee</span>
         </div>
         <div className="flex items-center justify-between">
           <div className="flex items-center">
@@ -240,14 +239,14 @@ export const HeroSection = memo(({ className = "" }: HeroSectionProps) => {
   }, []);
 
   const rotatingTexts = [
-    "across Africa.",
     "in Nigeria.",
     "in Ghana.",
     "Instantly.",
     "with the best rates.",
     "within minutes.",
     "with JeanPay.",
-    "in South Africa.",
+    "in Togo.",
+    "Ivory Coast",
   ];
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
   const currentText = rotatingTexts[currentTextIndex];
@@ -255,7 +254,7 @@ export const HeroSection = memo(({ className = "" }: HeroSectionProps) => {
     if (reducedMotion) return; // Disable rotation if reduced motion is preferred
     const interval = setInterval(() => {
       setCurrentTextIndex(
-        (prevIndex) => (prevIndex + 1) % rotatingTexts.length
+        (prevIndex) => (prevIndex + 1) % rotatingTexts.length,
       );
     }, 3000); // Change text every 3 seconds
     return () => clearInterval(interval);
@@ -342,7 +341,7 @@ export const HeroSection = memo(({ className = "" }: HeroSectionProps) => {
           {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map(
             (item, index) => (
               <MarqueeItemComponent key={`${item.id}-${index}`} item={item} />
-            )
+            ),
           )}
         </motion.div>
       </div>
