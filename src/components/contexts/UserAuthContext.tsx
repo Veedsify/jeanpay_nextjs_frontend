@@ -1,6 +1,6 @@
 "use client";
 import { validateUser } from "@/funcs/user/UserFuncs";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { axiosClient } from "@/lib/axios";
 
 import {
@@ -74,6 +74,8 @@ interface AuthProviderProps {
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const pathname = usePathname();
   const router = useRouter();
+  const errorParam = useSearchParams().get("error");
+  const messageParam = useSearchParams().get("message");
 
   const [authState, setAuthState] = useState<AuthState>({
     user: null,
@@ -154,24 +156,30 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     try {
       // Call logout API if user is authenticated
       if (authState.isAuthenticated) {
-        await logoutUser();
+        const response = await logoutUser();
+        console.log(response);
+        if (response.status == 200) {
+          setAuthState({
+            user: null,
+            isAuthenticated: false,
+            isLoading: false,
+            error: null,
+          });
+          router.push(
+            `/login?error=${errorParam}&message=${messageParam || ""}`,
+          );
+        }
       }
+      setAuthState((prev) => ({
+        ...prev,
+        isLoading: false,
+      }));
+      router.push(`/login?error=${errorParam}&message=${messageParam || ""}`);
     } catch (error) {
       console.error("Logout API call failed:", error);
-      // Continue with logout even if API call fails
-    } finally {
-      // Reset auth state
-      setAuthState({
-        user: null,
-        isAuthenticated: false,
-        isLoading: false,
-        error: null,
-      });
-
-      // Navigate to login
-      router.push("/login");
+      router.push(`/login?error=${errorParam}&message=${messageParam || ""}`);
     }
-  }, [authState.isAuthenticated, router]);
+  }, [authState.isAuthenticated, router, errorParam, messageParam]);
 
   // Public logout method
   const logout = async () => {

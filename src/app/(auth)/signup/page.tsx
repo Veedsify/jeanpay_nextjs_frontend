@@ -35,7 +35,7 @@ export default function SignupPage() {
   };
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     setFormData({
       ...formData,
@@ -70,7 +70,7 @@ export default function SignupPage() {
         toast.error(
           //@ts-expect-error create user failed
           String(error.response.data.message) || "Something went wrong",
-          { id: "signup-toast" },
+          { id: "signup-toast" }
         );
       },
       onSettled: () => {
@@ -112,7 +112,8 @@ export default function SignupPage() {
                 >
                   You can now log in with your new account.
                   <br />
-                  Please check your inbox for a verification link.
+                  Please check your inbox for a verification link, <br /> if you did
+                  not receive it, check your spam folder.
                 </motion.p>
                 <div>
                   <motion.button

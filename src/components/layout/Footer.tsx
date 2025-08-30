@@ -69,7 +69,7 @@ const Footer = memo(({ className = "" }: FooterProps) => {
 
             <p className="text-gray-600 mb-4 leading-relaxed">
               {BRAND.tagline}. Fast, secure, and affordable money transfers in
-              Nigeria, Togo & Ivory Coast.
+              Nigeria, Ghana, Togo & Ivory Coast.
             </p>
 
             {/* Contact Information */}

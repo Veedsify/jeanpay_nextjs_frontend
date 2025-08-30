@@ -142,8 +142,8 @@ const CTASection = memo(({ className = "" }: CTASectionProps) => {
             </div>
           </div>
           <p className="text-xs text-gray-500">
-            Trusted by users across Africa • Available 24/7 • Licensed and
-            Regulated
+            Trusted by users across Nigeria & Ghana • Available 24/7 • Licensed
+            and Regulated
           </p>
         </motion.div>
 

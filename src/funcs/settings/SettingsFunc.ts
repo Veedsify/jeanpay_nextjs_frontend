@@ -27,6 +27,7 @@ const path = {
   SettingsTwoFactorDisable: "/security/two-factor/disable",
   SettingsWallet: "/wallet",
   SettingsWithdrawal: "/withdrawal",
+  SettingsGetPlatformSettings: "/settings/platform",
 };
 
 // Get user settings
@@ -170,6 +171,13 @@ async function updateWithdrawalMethods(
   return response.data;
 }
 
+async function getPlatformSettings(): Promise<
+  SettingsApiResponse<Record<string, number | string | boolean>>
+> {
+  const response = await axiosClient.get(path.SettingsGetPlatformSettings);
+  return response.data;
+}
+
 export {
   getUserSettings,
   updateUserSettings,
@@ -184,5 +192,6 @@ export {
   updateNotificationSettings,
   updateWalletInfo,
   updateWithdrawalMethods,
+  getPlatformSettings,
   path as SettingsPath,
 };

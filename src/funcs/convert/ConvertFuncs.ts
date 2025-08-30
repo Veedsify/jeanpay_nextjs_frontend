@@ -20,8 +20,6 @@ export interface CalculationResponse {
   fromCurrency: string;
   toCurrency: string;
   originalAmount: number;
-  fee: number;
-  amountAfterFee: number;
   convertedAmount: number;
   rate: number;
   estimatedArrival: string;
@@ -41,9 +39,7 @@ export interface ConversionCalculateRequest {
 export async function getExchangeRates(): Promise<
   ApiEnvelope<ExchangeRatesResponse>
 > {
-  const res = await axiosClient.get(
-    "/protected/convert/rates",
-  );
+  const res = await axiosClient.get("/convert/rates");
   return res.data as ApiEnvelope<ExchangeRatesResponse>;
 }
 
@@ -54,10 +50,7 @@ export async function getExchangeRates(): Promise<
 export async function calculateConversion(
   payload: ConversionCalculateRequest,
 ): Promise<ApiEnvelope<CalculationResponse>> {
-  const res = await axiosClient.post(
-    "/protected/convert/calculate",
-    payload,
-  );
+  const res = await axiosClient.post("/protected/convert/calculate", payload);
   return res.data as ApiEnvelope<CalculationResponse>;
 }
 

@@ -30,7 +30,7 @@ const FAQItem = memo(({ faq, index }: FAQItemProps) => {
     >
       <button
         onClick={toggleOpen}
-        className="w-full flex justify-between items-center p-6 text-left hover:bg-green-50 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-inset"
+        className="w-full flex justify-between items-center p-6 text-left hover:bg-green-50 transition-colors focus:outline-none"
         aria-expanded={isOpen}
         aria-controls={`faq-answer-${faq.id}`}
       >

@@ -22,17 +22,34 @@ async function logoutUser() {
 }
 
 async function sendResetEmail(email: string) {
-  const response = await axiosClient.post("/auth/password-reset-email", { email })
-  return response.data
+  const response = await axiosClient.post("/auth/password-reset-email", {
+    email,
+  });
+  return response.data;
 }
 
 async function validateResetToken(token: string) {
-  const response = await axiosClient.get("/auth/reset-password-verify", { params: { token } })
-  return response.data
+  const response = await axiosClient.get("/auth/reset-password-verify", {
+    params: { token },
+  });
+  return response.data;
 }
 
 async function resetPassword(token: string, password: string) {
-  const response = await axiosClient.post("/auth/reset-password", { token, password })
-  return response.data
+  const response = await axiosClient.post("/auth/reset-password", {
+    token,
+    password,
+  });
+  return response.data;
 }
-export { createUser, loginUser, verifyAccount, verifyToken, logoutUser, sendResetEmail, validateResetToken, resetPassword };
+
+export {
+  createUser,
+  loginUser,
+  verifyAccount,
+  verifyToken,
+  logoutUser,
+  sendResetEmail,
+  validateResetToken,
+  resetPassword,
+};

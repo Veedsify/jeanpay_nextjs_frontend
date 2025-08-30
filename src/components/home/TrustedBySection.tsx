@@ -39,8 +39,8 @@ const TrustCard = memo(
                   i < 4
                     ? "text-yellow-400"
                     : i === 4
-                      ? "text-yellow-300"
-                      : "text-gray-300"
+                    ? "text-yellow-300"
+                    : "text-gray-300"
                 }`}
                 fill="currentColor"
               />
@@ -75,7 +75,7 @@ const TrustCard = memo(
         )}
       </div>
     </motion.div>
-  ),
+  )
 );
 
 TrustCard.displayName = "TrustCard";
@@ -148,7 +148,7 @@ const TestimonialCard = memo(
         </footer>
       )}
     </motion.article>
-  ),
+  )
 );
 
 TestimonialCard.displayName = "TestimonialCard";
@@ -168,7 +168,7 @@ const PartnerLogo = memo(
         {partner}
       </span>
     </motion.div>
-  ),
+  )
 );
 
 PartnerLogo.displayName = "PartnerLogo";
@@ -179,7 +179,7 @@ const TrustedBySection = memo(({ className = "" }: TrustedBySectionProps) => {
 
   const displayedPartners = useMemo(
     () => PARTNERS.slice(0, 6).map((p) => p.name),
-    [],
+    []
   );
 
   return (
@@ -246,9 +246,11 @@ const TrustedBySection = memo(({ className = "" }: TrustedBySectionProps) => {
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.7, delay: 0.5 }}
         >
-          <p className="text-sm uppercase tracking-widest text-gray-500 mb-6 font-medium">
-            Backed by the best
-          </p>
+          {displayedPartners.length > 0 && (
+            <p className="text-sm uppercase tracking-widest text-gray-500 mb-6 font-medium">
+              Backed by the best
+            </p>
+          )}
           <div className="flex flex-wrap justify-center items-center gap-x-8 gap-y-4">
             {displayedPartners.map((partner, index) => (
               <PartnerLogo key={partner} partner={partner} index={index} />
@@ -267,14 +269,15 @@ const TrustedBySection = memo(({ className = "" }: TrustedBySectionProps) => {
           <p className="text-gray-600 mb-6">
             Ready to join thousands of satisfied customers?
           </p>
-          <motion.button
+          <motion.a
+            href="/signup"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="bg-gradient-to-r from-orange-400 to-orange-500 text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
             aria-label="Start using JeanPay today"
           >
             Get Started Today
-          </motion.button>
+          </motion.a>
         </motion.div>
       </div>
 

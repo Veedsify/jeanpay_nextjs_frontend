@@ -9,13 +9,18 @@ import AuthPageFooter from "@/components/commons/AuthPageFooter";
 import useAuth from "@/hooks/AuthHook";
 import toast from "react-hot-toast";
 import NeedsVerification from "@/components/commons/NeedsVerification";
-// import { validateUser } from "@/funcs/user/UserFuncs";
 import _ from "lodash";
 import { motion } from "framer-motion";
 import { LucideLoaderCircle } from "lucide-react";
 import { useAuthContext } from "@/components/contexts/UserAuthContext";
 
-export default function LoginPage() {
+export default function LoginPage({
+  error,
+  message,
+}: {
+  error?: boolean | null;
+  message?: string | null;
+}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -30,7 +35,15 @@ export default function LoginPage() {
   } = useAuthContext();
   const router = useRouter();
   const { loginUser, verifyAccount } = useAuth();
+  const [mounted, setMounted] = useState(false);
 
+  useEffect(() => {
+    if (mounted) return;
+    if (error && message && message?.length > 0) {
+      toast.error(message || "An error occurred during login.");
+      setMounted(true);
+    }
+  }, [error, message, mounted]);
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (!isAuthenticated) {
@@ -38,6 +51,15 @@ export default function LoginPage() {
       return;
     }
   }, [initializeAuth, isAuthenticated]);
+
+  const handleGoogleSignIn = async () => {
+    setIsLoading(true);
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
+    document.body.appendChild(form);
+    form.submit();
+  };
 
   useEffect(() => {
     async function checkUserIsLoggedIn() {
@@ -230,6 +252,7 @@ export default function LoginPage() {
             <div className="flex-1">
               <button
                 type="submit"
+                onClick={handleGoogleSignIn}
                 disabled={isLoading}
                 className="w-full flex items-center gap-4 justify-center cursor-pointer bg-white border py-3 px-4 rounded-lg font-medium hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-cyan-dark focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >

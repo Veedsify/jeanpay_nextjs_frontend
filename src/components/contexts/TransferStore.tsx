@@ -1,7 +1,6 @@
 "use client";
 
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
 import { useMemo } from "react";
 
 // Deep equality check for objects
@@ -114,10 +113,133 @@ const initialAccountDetails: AccountDetails = {
 };
 
 // Create the store
-export const useTransferStore = create<TransferState>()(
-  persist(
-    (set, get) => ({
-      // Initial state
+export const useTransferStore = create<TransferState>()((set, get) => ({
+  // Initial state
+  conversionData: initialConversionData,
+  accountDetails: initialAccountDetails,
+  transferDetails: null,
+  transferError: null,
+  isValidating: false,
+  isProcessing: false,
+  isFormValid: false,
+  validationError: "",
+
+  // Actions
+  setConversionData: (data) =>
+    set((state) => {
+      const newConversionData = { ...state.conversionData, ...data };
+
+      // Prevent unnecessary updates if data hasn't changed
+      if (deepEqual(state.conversionData, newConversionData)) {
+        return state;
+      }
+
+      return {
+        conversionData: newConversionData,
+        validationError: "",
+      };
+    }),
+
+  setAccountDetails: (details) =>
+    set((state) => {
+      const newAccountDetails = { ...state.accountDetails, ...details };
+
+      // Prevent unnecessary updates if data hasn't changed
+      if (deepEqual(state.accountDetails, newAccountDetails)) {
+        return state;
+      }
+
+      return {
+        accountDetails: newAccountDetails,
+        validationError: "",
+      };
+    }),
+
+  setTransferDetails: (details) =>
+    set((state) => ({
+      transferDetails: state.transferDetails
+        ? { ...state.transferDetails, ...details }
+        : (details as TransferDetails),
+      validationError: "",
+    })),
+
+  setTransferError: (error) =>
+    set(() => ({
+      transferError: error,
+    })),
+
+  setValidating: (loading) =>
+    set(() => ({
+      isValidating: loading,
+    })),
+
+  setProcessing: (processing) =>
+    set(() => ({
+      isProcessing: processing,
+    })),
+
+  setValidationError: (error) =>
+    set(() => ({
+      validationError: error,
+    })),
+
+  validateForm: () => {
+    const { accountDetails } = get();
+
+    let isValid = false;
+    let errorMessage = "";
+
+    if (!accountDetails.type) {
+      errorMessage = "Please select a payment method";
+    } else if (accountDetails.type === "bank") {
+      if (!accountDetails.accountNumber) {
+        errorMessage = "Please enter account number";
+      } else if (!accountDetails.bankCode) {
+        errorMessage = "Please select a bank";
+      } else if (accountDetails.accountNumber.length !== 10) {
+        errorMessage = "Account number must be 10 digits";
+      } else {
+        isValid = true;
+      }
+    } else if (accountDetails.type === "momo") {
+      if (!accountDetails.phoneNumber) {
+        errorMessage = "Please enter phone number";
+      } else if (!accountDetails.network) {
+        errorMessage = "Please select a network";
+      } else if (String(accountDetails.phoneNumber).length < 10) {
+        errorMessage = "Please enter a valid phone number";
+      } else {
+        isValid = true;
+      }
+    }
+
+    console.log(isValid, errorMessage);
+
+    set(() => ({
+      isFormValid: isValid,
+      validationError: errorMessage,
+    }));
+    return isValid;
+  },
+
+  generateTransferDetails: () => {
+    const { conversionData, accountDetails } = get();
+
+    const transferDetails: TransferDetails = {
+      ...conversionData,
+      method: accountDetails.type,
+      recipientName: accountDetails.recipientName || "",
+      accountNumber: accountDetails.accountNumber,
+      bankName: accountDetails.bankName,
+      phoneNumber: accountDetails.phoneNumber,
+      network: accountDetails.network,
+    };
+
+    set(() => ({ transferDetails }));
+  },
+
+  clearTransferData: () =>
+    set(() => ({
       conversionData: initialConversionData,
       accountDetails: initialAccountDetails,
       transferDetails: null,
@@ -126,149 +248,14 @@ export const useTransferStore = create<TransferState>()(
       isProcessing: false,
       isFormValid: false,
       validationError: "",
+    })),
 
-      // Actions
-      setConversionData: (data) =>
-        set((state) => {
-          const newConversionData = { ...state.conversionData, ...data };
-
-          // Prevent unnecessary updates if data hasn't changed
-          if (deepEqual(state.conversionData, newConversionData)) {
-            return state;
-          }
-
-          return {
-            conversionData: newConversionData,
-            validationError: "",
-          };
-        }),
-
-      setAccountDetails: (details) =>
-        set((state) => {
-          const newAccountDetails = { ...state.accountDetails, ...details };
-
-          // Prevent unnecessary updates if data hasn't changed
-          if (deepEqual(state.accountDetails, newAccountDetails)) {
-            return state;
-          }
-
-          return {
-            accountDetails: newAccountDetails,
-            validationError: "",
-          };
-        }),
-
-      setTransferDetails: (details) =>
-        set((state) => ({
-          transferDetails: state.transferDetails
-            ? { ...state.transferDetails, ...details }
-            : (details as TransferDetails),
-          validationError: "",
-        })),
-
-      setTransferError: (error) =>
-        set(() => ({
-          transferError: error,
-        })),
-
-      setValidating: (loading) =>
-        set(() => ({
-          isValidating: loading,
-        })),
-
-      setProcessing: (processing) =>
-        set(() => ({
-          isProcessing: processing,
-        })),
-
-      setValidationError: (error) =>
-        set(() => ({
-          validationError: error,
-        })),
-
-      validateForm: () => {
-        const { accountDetails } = get();
-
-        let isValid = false;
-        let errorMessage = "";
-
-        if (!accountDetails.type) {
-          errorMessage = "Please select a payment method";
-        } else if (accountDetails.type === "bank") {
-          if (!accountDetails.accountNumber) {
-            errorMessage = "Please enter account number";
-          } else if (!accountDetails.bankCode) {
-            errorMessage = "Please select a bank";
-          } else if (accountDetails.accountNumber.length !== 10) {
-            errorMessage = "Account number must be 10 digits";
-          } else {
-            isValid = true;
-          }
-        } else if (accountDetails.type === "momo") {
-          if (!accountDetails.phoneNumber) {
-            errorMessage = "Please enter phone number";
-          } else if (!accountDetails.network) {
-            errorMessage = "Please select a network";
-          } else if (String(accountDetails.phoneNumber).length < 10) {
-            errorMessage = "Please enter a valid phone number";
-          } else {
-            isValid = true;
-          }
-        }
-
-        console.log(isValid, errorMessage);
-
-        set(() => ({
-          isFormValid: isValid,
-          validationError: errorMessage,
-        }));
-        return isValid;
-      },
-
-      generateTransferDetails: () => {
-        const { conversionData, accountDetails } = get();
-
-        const transferDetails: TransferDetails = {
-          ...conversionData,
-          method: accountDetails.type,
-          recipientName: accountDetails.recipientName || "",
-          accountNumber: accountDetails.accountNumber,
-          bankName: accountDetails.bankName,
-          phoneNumber: accountDetails.phoneNumber,
-          network: accountDetails.network,
-        };
-
-        set(() => ({ transferDetails }));
-      },
-
-      clearTransferData: () =>
-        set(() => ({
-          conversionData: initialConversionData,
-          accountDetails: initialAccountDetails,
-          transferDetails: null,
-          transferError: null,
-          isValidating: false,
-          isProcessing: false,
-          isFormValid: false,
-          validationError: "",
-        })),
-
-      clearError: () =>
-        set(() => ({
-          transferError: null,
-          validationError: "",
-        })),
-    }),
-    {
-      name: "transfer-store",
-      partialize: (state) => ({
-        conversionData: state.conversionData,
-        accountDetails: state.accountDetails,
-        transferDetails: state.transferDetails,
-      }),
-    },
-  ),
-);
+  clearError: () =>
+    set(() => ({
+      transferError: null,
+      validationError: "",
+    })),
+}));
 
 // Selector hooks for better performance
 export const useConversionData = () =>
@@ -292,7 +279,7 @@ export const useTransferLoading = () => {
       isValidating,
       isProcessing,
     }),
-    [isValidating, isProcessing],
+    [isValidating, isProcessing]
   );
 };
 
@@ -307,7 +294,7 @@ export const useTransferValidation = () => {
       validationError,
       validateForm,
     }),
-    [isFormValid, validationError, validateForm],
+    [isFormValid, validationError, validateForm]
   );
 };
 
@@ -379,6 +366,6 @@ export const useTransferActions = () => {
       generateTransferDetails,
       clearTransferData,
       clearError,
-    ],
+    ]
   );
 };

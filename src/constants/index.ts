@@ -19,7 +19,7 @@ import type {
 // Brand constants
 export const BRAND = {
   name: "JeanPay",
-  tagline: "Send and receive money across Africa and the US",
+  tagline: "Send and receive money across Africa",
   description:
     "Fast, secure, and affordable money transfers across Africa.  and instant transfers.",
   email: "jeanpayafrica@gmail.com",
@@ -38,18 +38,6 @@ export const BRAND = {
 export const CURRENCIES: Currency[] = [
   { code: "NGN", name: "Nigerian Naira", flag: "🇳🇬", symbol: "₦" },
   { code: "GHS", name: "Ghanaian Cedi", flag: "🇬🇭", symbol: "₵" },
-  { code: "KES", name: "Kenyan Shilling", flag: "🇰🇪", symbol: "KSh" },
-  {
-    code: "XAF",
-    name: "Central African CFA Franc",
-    flag: "🇨🇲",
-    symbol: "FCFA",
-  },
-  { code: "UGX", name: "Ugandan Shilling", flag: "🇺🇬", symbol: "USh" },
-  { code: "XOF", name: "West African CFA Franc", flag: "🇨🇮", symbol: "CFA" },
-  { code: "TZS", name: "Tanzanian Shilling", flag: "🇹🇿", symbol: "TSh" },
-  { code: "ZMW", name: "Zambian Kwacha", flag: "🇿🇲", symbol: "ZK" },
-  { code: "MWK", name: "Malawian Kwacha", flag: "🇲🇼", symbol: "MK" },
 ];
 
 // Marquee items for the hero section
@@ -163,18 +151,7 @@ export const MONEY_DESTINATIONS: MoneyDestination[] = [
 ];
 
 // Partner companies
-export const PARTNERS: Partner[] = [
-  {
-    name: "LATTICE",
-    logo: "/partners/lattice.png",
-    website: "https://lattice.fund",
-  },
-  {
-    name: "MAVEN11",
-    logo: "/partners/maven11.png",
-    website: "https://maven11.com",
-  },
-];
+export const PARTNERS: Partner[] = [];
 
 // FAQ data
 export const FAQS: FAQ[] = [
@@ -182,7 +159,7 @@ export const FAQS: FAQ[] = [
     id: "faq-1",
     question: "What can I do with JeanPay?",
     answer:
-      "With JeanPay, you can send and receive money across Africa and the US, get a virtual USD card for online shopping, save money with high-yield accounts, and manage your finances with our intuitive mobile app.",
+      "With JeanPay, you can send and receive money across Africa, Convert Save and Also Send to your loved ones.",
     category: "general",
   },
   {
@@ -212,13 +189,6 @@ export const FAQS: FAQ[] = [
     answer:
       "Yes! We use bank-level security, encryption, and are fully licensed and regulated. Your funds are protected by industry-leading security measures.",
     category: "security",
-  },
-  {
-    id: "faq-6",
-    question: "How do I get a virtual USD card?",
-    answer:
-      "Simply sign up for a JeanPay account and you can request your virtual USD card instantly through our mobile app. It's ready to use in minutes!",
-    category: "cards",
   },
 ];
 
