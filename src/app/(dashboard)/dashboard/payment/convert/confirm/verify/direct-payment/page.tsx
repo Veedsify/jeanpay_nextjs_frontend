@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { CountryFlag } from "@/components/payment/CountryFlag";
 import {
@@ -18,17 +18,57 @@ import {
   useTransferActions,
 } from "@/components/contexts/TransferStore";
 import useTransaction from "@/hooks/TransactionHook";
+import { PaymentAccount } from "@/types/account";
+import { axiosClient } from "@/lib/axios";
 
 export default function DirectPaymentPage() {
   const router = useRouter();
   const [hasPaid, setHasPaid] = useState(false);
   const [isConfirming, setIsConfirming] = useState(false);
   const [copiedField, setCopiedField] = useState<string>("");
-
+  const [loadingAccount, setLoadingAccount] = useState(true);
   // Zustand store
   const transferDetails = useTransferDetails();
+  const { setValidating } = useTransferActions();
   const { setProcessing } = useTransferActions();
   const { createTransactionMutation } = useTransaction();
+  const [paymentAccount, setPaymentAccount] = useState<PaymentAccount | null>(
+    null,
+  );
+  const fetchPaymentAccount = useCallback(async () => {
+    if (!transferDetails) return; // Add guard clause
+    try {
+      setLoadingAccount(true);
+      const response = await axiosClient(`/payment-accounts/active`, {
+        params: {
+          currency: transferDetails?.fromCurrency,
+          account_type: transferDetails?.method === "bank" ? "momo" : "bank",
+        },
+      });
+
+      if (response.data.error === false && response.data.data.length > 0) {
+        setPaymentAccount(response.data.data[0]); // Use the first active account
+      } else {
+        toast.error(
+          "No payment account available for this currency and payment type",
+        );
+        setValidating(false);
+        router.push("/dashboard/payment/convert");
+      }
+    } catch (error) {
+      console.error("Failed to fetch payment account:", error);
+      toast.error("Failed to load payment account details");
+      router.push("/dashboard/payment/topup");
+    } finally {
+      setLoadingAccount(false);
+    }
+  }, [router, transferDetails, setValidating]);
+
+  useEffect(() => {
+    if (transferDetails) {
+      fetchPaymentAccount();
+    }
+  }, [transferDetails, fetchPaymentAccount]);
 
   useEffect(() => {
     // Redirect back if no transfer details or not direct payment
@@ -83,29 +123,6 @@ export default function DirectPaymentPage() {
       },
     );
   };
-
-  // Mock account details - In production, these would come from your backend
-  const getAccountDetails = () => {
-    if (transferDetails?.method === "bank") {
-      return {
-        type: "momo",
-        accountName: "JeanPay Limited",
-        phoneNumber: "0241234567",
-        network: "MTN",
-        currency: transferDetails?.fromCurrency,
-      };
-    } else {
-      return {
-        type: "bank",
-        accountName: "JeanPay Limited",
-        accountNumber: "0123456789",
-        bankName: "GTBank",
-        currency: transferDetails?.fromCurrency,
-      };
-    }
-  };
-
-  const accountDetails = getAccountDetails();
 
   if (!transferDetails) {
     return (
@@ -192,159 +209,167 @@ export default function DirectPaymentPage() {
             </div>
           </div>
         </div>
-
         {/* Account Details */}
-        <div className="bg-white border border-gray-200 rounded-lg p-6 mb-6">
-          <div className="flex items-center gap-3 mb-4">
-            {accountDetails.type === "bank" ? (
-              <CreditCard className="w-6 h-6 text-cyan-dark" />
-            ) : (
-              <Smartphone className="w-6 h-6 text-cyan-dark" />
-            )}
-            <h3 className="text-lg font-semibold text-gray-900">
-              {accountDetails.type === "bank"
-                ? "Bank Account Details"
-                : "Mobile Money Details"}
-            </h3>
+        {loadingAccount ? (
+          <div className="flex items-center justify-center py-12">
+            <div className="w-8 h-8 border-2 border-cyan-dark border-t-transparent rounded-full animate-spin"></div>
           </div>
+        ) : (
+          <div className="bg-white border border-gray-200 rounded-lg p-6 mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              {paymentAccount?.account_type === "bank" ? (
+                <CreditCard className="w-6 h-6 text-cyan-dark" />
+              ) : (
+                <Smartphone className="w-6 h-6 text-cyan-dark" />
+              )}
+              <h3 className="text-lg font-semibold text-gray-900">
+                {paymentAccount?.account_type === "bank"
+                  ? "Bank Account Details"
+                  : "Mobile Money Details"}
+              </h3>
+            </div>
 
-          <div className="space-y-4">
-            {accountDetails.type === "bank" ? (
-              <>
-                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                  <div>
-                    <p className="text-sm text-gray-600">Account Name</p>
-                    <p className="font-medium text-gray-900">
-                      {accountDetails.accountName}
-                    </p>
+            <div className="space-y-4">
+              {paymentAccount?.account_type === "bank" ? (
+                <>
+                  <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div>
+                      <p className="text-sm text-gray-600">Account Name</p>
+                      <p className="font-medium text-gray-900">
+                        {paymentAccount.account_name}
+                      </p>
+                    </div>
+                    <button
+                      onClick={() =>
+                        copyToClipboard(
+                          paymentAccount.account_name,
+                          "Account Name",
+                        )
+                      }
+                      className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
+                    >
+                      <Copy
+                        className={`w-4 h-4 ${copiedField === "Account Name" ? "text-green-600" : "text-gray-600"}`}
+                      />
+                    </button>
                   </div>
-                  <button
-                    onClick={() =>
-                      copyToClipboard(
-                        accountDetails.accountName,
-                        "Account Name",
-                      )
-                    }
-                    className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
-                  >
-                    <Copy
-                      className={`w-4 h-4 ${copiedField === "Account Name" ? "text-green-600" : "text-gray-600"}`}
-                    />
-                  </button>
-                </div>
 
-                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                  <div>
-                    <p className="text-sm text-gray-600">Account Number</p>
-                    <p className="font-medium text-gray-900">
-                      {accountDetails.accountNumber}
-                    </p>
+                  <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div>
+                      <p className="text-sm text-gray-600">Account Number</p>
+                      <p className="font-medium text-gray-900">
+                        {paymentAccount.account_number}
+                      </p>
+                    </div>
+                    <button
+                      onClick={() =>
+                        copyToClipboard(
+                          paymentAccount.account_number || "",
+                          "Account Number",
+                        )
+                      }
+                      className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
+                    >
+                      <Copy
+                        className={`w-4 h-4 ${copiedField === "Account Number" ? "text-green-600" : "text-gray-600"}`}
+                      />
+                    </button>
                   </div>
-                  <button
-                    onClick={() =>
-                      copyToClipboard(
-                        accountDetails.accountNumber || "",
-                        "Account Number",
-                      )
-                    }
-                    className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
-                  >
-                    <Copy
-                      className={`w-4 h-4 ${copiedField === "Account Number" ? "text-green-600" : "text-gray-600"}`}
-                    />
-                  </button>
-                </div>
 
-                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                  <div>
-                    <p className="text-sm text-gray-600">Bank Name</p>
-                    <p className="font-medium text-gray-900">
-                      {accountDetails.bankName}
-                    </p>
+                  <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div>
+                      <p className="text-sm text-gray-600">Bank Name</p>
+                      <p className="font-medium text-gray-900">
+                        {paymentAccount.bank_name}
+                      </p>
+                    </div>
+                    <button
+                      onClick={() =>
+                        copyToClipboard(
+                          paymentAccount.bank_name || "",
+                          "Bank Name",
+                        )
+                      }
+                      className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
+                    >
+                      <Copy
+                        className={`w-4 h-4 ${copiedField === "Bank Name" ? "text-green-600" : "text-gray-600"}`}
+                      />
+                    </button>
                   </div>
-                  <button
-                    onClick={() =>
-                      copyToClipboard(
-                        accountDetails.bankName || "",
-                        "Bank Name",
-                      )
-                    }
-                    className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
-                  >
-                    <Copy
-                      className={`w-4 h-4 ${copiedField === "Bank Name" ? "text-green-600" : "text-gray-600"}`}
-                    />
-                  </button>
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                  <div>
-                    <p className="text-sm text-gray-600">Account Name</p>
-                    <p className="font-medium text-gray-900">
-                      {accountDetails.accountName}
-                    </p>
+                </>
+              ) : (
+                <>
+                  <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div>
+                      <p className="text-sm text-gray-600">Account Name</p>
+                      <p className="font-medium text-gray-900">
+                        {paymentAccount?.account_name}
+                      </p>
+                    </div>
+                    <button
+                      onClick={() =>
+                        copyToClipboard(
+                          paymentAccount?.account_name || "",
+                          "Account Name",
+                        )
+                      }
+                      className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
+                    >
+                      <Copy
+                        className={`w-4 h-4 ${copiedField === "Account Name" ? "text-green-600" : "text-gray-600"}`}
+                      />
+                    </button>
                   </div>
-                  <button
-                    onClick={() =>
-                      copyToClipboard(
-                        accountDetails.accountName,
-                        "Account Name",
-                      )
-                    }
-                    className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
-                  >
-                    <Copy
-                      className={`w-4 h-4 ${copiedField === "Account Name" ? "text-green-600" : "text-gray-600"}`}
-                    />
-                  </button>
-                </div>
 
-                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                  <div>
-                    <p className="text-sm text-gray-600">Phone Number</p>
-                    <p className="font-medium text-gray-900">
-                      {accountDetails.phoneNumber}
-                    </p>
+                  <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div>
+                      <p className="text-sm text-gray-600">Phone Number</p>
+                      <p className="font-medium text-gray-900">
+                        {paymentAccount?.phone_number}
+                      </p>
+                    </div>
+                    <button
+                      onClick={() =>
+                        copyToClipboard(
+                          paymentAccount?.phone_number || "",
+                          "Phone Number",
+                        )
+                      }
+                      className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
+                    >
+                      <Copy
+                        className={`w-4 h-4 ${copiedField === "Phone Number" ? "text-green-600" : "text-gray-600"}`}
+                      />
+                    </button>
                   </div>
-                  <button
-                    onClick={() =>
-                      copyToClipboard(
-                        accountDetails.phoneNumber || "",
-                        "Phone Number",
-                      )
-                    }
-                    className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
-                  >
-                    <Copy
-                      className={`w-4 h-4 ${copiedField === "Phone Number" ? "text-green-600" : "text-gray-600"}`}
-                    />
-                  </button>
-                </div>
 
-                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                  <div>
-                    <p className="text-sm text-gray-600">Network</p>
-                    <p className="font-medium text-gray-900">
-                      {accountDetails.network}
-                    </p>
+                  <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div>
+                      <p className="text-sm text-gray-600">Network</p>
+                      <p className="font-medium text-gray-900">
+                        {paymentAccount?.network}
+                      </p>
+                    </div>
+                    <button
+                      onClick={() =>
+                        copyToClipboard(
+                          paymentAccount?.network || "",
+                          "Network",
+                        )
+                      }
+                      className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
+                    >
+                      <Copy
+                        className={`w-4 h-4 ${copiedField === "Network" ? "text-green-600" : "text-gray-600"}`}
+                      />
+                    </button>
                   </div>
-                  <button
-                    onClick={() =>
-                      copyToClipboard(accountDetails.network || "", "Network")
-                    }
-                    className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
-                  >
-                    <Copy
-                      className={`w-4 h-4 ${copiedField === "Network" ? "text-green-600" : "text-gray-600"}`}
-                    />
-                  </button>
-                </div>
-              </>
-            )}
+                </>
+              )}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Payment Confirmation */}
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">

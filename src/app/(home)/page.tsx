@@ -2,6 +2,7 @@
 
 import { Suspense } from "react";
 import dynamic from "next/dynamic";
+import "@fontsource/bowlby-one-sc";
 
 // Core components that should load immediately
 import { HeroSection } from "@/components/home/HeroSection";
@@ -15,7 +16,7 @@ const TrustedBySection = dynamic(
   {
     loading: () => <LoadingSpinner />,
     ssr: true,
-  }
+  },
 );
 
 const USDPaymentsSection = dynamic(
@@ -23,7 +24,7 @@ const USDPaymentsSection = dynamic(
   {
     loading: () => <LoadingSpinner />,
     ssr: true,
-  }
+  },
 );
 
 const CrossBorderSection = dynamic(
@@ -31,7 +32,7 @@ const CrossBorderSection = dynamic(
   {
     loading: () => <LoadingSpinner />,
     ssr: true,
-  }
+  },
 );
 
 // const VirtualCardSection = dynamic(
@@ -55,7 +56,7 @@ const InstantTransferSection = dynamic(
   {
     loading: () => <LoadingSpinner />,
     ssr: true,
-  }
+  },
 );
 
 const FAQSection = dynamic(() => import("@/components/home/FAQSection"), {

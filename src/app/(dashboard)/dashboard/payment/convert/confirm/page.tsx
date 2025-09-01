@@ -71,11 +71,13 @@ export default function ConfirmTransferPage() {
   const { isValidating } = useTransferLoading();
 
   useEffect(() => {
+    setValidating(false);
+  }, [setValidating]);
+
+  useEffect(() => {
     const fetchBanks = async () => {
       const response = await getBankAccounts("nigeria");
-      // const response2 = await getMomoProviders("ghana");
       const data = response.data.data;
-      // console.log(response2);
       setNigerianBanks(data);
     };
     fetchBanks();

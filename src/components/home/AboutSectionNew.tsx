@@ -17,10 +17,10 @@ interface AboutSectionProps {
 }
 
 const stats = [
-  { label: "Countries Served", value: "11+", icon: GlobeAltIcon },
-  { label: "Active Users", value: "200K+", icon: UserGroupIcon },
-  { label: "Transactions Daily", value: "10K+", icon: CheckCircleIcon },
-  { label: "Years in Business", value: "3+", icon: LightBulbIcon },
+  { label: "Countries Served", value: "4+", icon: GlobeAltIcon },
+  { label: "Active Users", value: "2K+", icon: UserGroupIcon },
+  { label: "Transactions Daily", value: "8K+", icon: CheckCircleIcon },
+  { label: "Years in Business", value: "2+", icon: LightBulbIcon },
 ];
 
 const values = [

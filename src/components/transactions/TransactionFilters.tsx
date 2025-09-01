@@ -101,7 +101,7 @@ export default function TransactionFilters({
                 value={search}
                 onChange={(e) => onSearchChange(e.target.value)}
                 placeholder="Search transaction"
-                className="w-full pl-9 pr-3 py-2 text-sm rounded-md border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                className="w-full pl-9 pr-3 py-2 text-sm rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
               />
               <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-500 dark:text-gray-400" />
             </div>
@@ -124,22 +124,22 @@ export default function TransactionFilters({
           {/* RIGHT GROUP - Date and Download */}
           <div className="flex items-center gap-2 md:gap-3 lg:gap-[12px] flex-shrink-0">
             {/* Date */}
-            <button
+            {/*<button
               type="button"
               className="text-sm px-3 py-2 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-white flex items-center gap-2 w-[140px] md:w-[160px] lg:w-[200px]"
             >
               <Calendar className="h-4 w-4 text-gray-500 dark:text-gray-400" />
               <span className="truncate">{dateRange}</span>
-            </button>
+            </button>*/}
 
             {/* Download */}
-            <button
+            {/*<button
               onClick={onDownload}
               className="bg-[#004643] hover:bg-[#005954] text-white text-sm px-3 md:px-4 lg:px-5 py-2 rounded-md flex items-center gap-2 whitespace-nowrap"
             >
               <Download className="h-4 w-4" />
               <span className="hidden md:inline">Download</span>
-            </button>
+            </button>*/}
           </div>
         </div>
       </div>

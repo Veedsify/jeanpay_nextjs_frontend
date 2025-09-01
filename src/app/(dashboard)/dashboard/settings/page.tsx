@@ -33,7 +33,7 @@ export default function SettingsPage() {
     { id: "profile", label: "Profile", icon: User },
     { id: "account", label: "Account", icon: User },
     { id: "preferences", label: "Preferences", icon: Bell },
-    { id: "notifications", label: "Notifications", icon: Bell },
+    // { id: "notifications", label: "Notifications", icon: Bell },
     { id: "security", label: "Security", icon: Lock },
   ];
 
@@ -76,7 +76,7 @@ export default function SettingsPage() {
         )}
         {activeTab === "account" && <AccountSection />}
         {activeTab === "preferences" && <PreferencesSection />}
-        {activeTab === "notifications" && <NotificationsSection />}
+        {/*{activeTab === "notifications" && <NotificationsSection />}*/}
         {activeTab === "security" && <SecuritySection />}
       </div>
     </div>

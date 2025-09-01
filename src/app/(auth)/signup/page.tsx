@@ -35,7 +35,7 @@ export default function SignupPage() {
   };
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     setFormData({
       ...formData,
@@ -70,13 +70,22 @@ export default function SignupPage() {
         toast.error(
           //@ts-expect-error create user failed
           String(error.response.data.message) || "Something went wrong",
-          { id: "signup-toast" }
+          { id: "signup-toast" },
         );
       },
       onSettled: () => {
         setIsLoading(false);
       },
     });
+  };
+
+  const handleGoogleSignIn = async () => {
+    setIsLoading(true);
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
+    document.body.appendChild(form);
+    form.submit();
   };
 
   if (createAccountSuccess) {
@@ -112,8 +121,8 @@ export default function SignupPage() {
                 >
                   You can now log in with your new account.
                   <br />
-                  Please check your inbox for a verification link, <br /> if you did
-                  not receive it, check your spam folder.
+                  Please check your inbox for a verification link, <br /> if you
+                  did not receive it, check your spam folder.
                 </motion.p>
                 <div>
                   <motion.button
@@ -326,6 +335,7 @@ export default function SignupPage() {
           <div className="flex-1">
             <button
               type="submit"
+              onClick={handleGoogleSignIn}
               disabled={isLoading}
               className="w-full flex items-center gap-4 justify-center cursor-pointer bg-white border py-3 px-4 rounded-lg font-medium hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-cyan-dark focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >

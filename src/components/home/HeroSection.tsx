@@ -396,6 +396,7 @@ export const HeroSection = memo(({ className = "" }: HeroSectionProps) => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7 }}
+        style={{ fontFamily: "'Bowlby One SC'" }}
         className="text-4xl sm:text-7xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight text-gray-900"
       >
         Send and receive money

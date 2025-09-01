@@ -5,7 +5,7 @@ import DashboardHeader from "@/components/main-components/DashboardHeader";
 import MobileHeader from "@/components/main-components/MobileHeader";
 import DashboardFooter from "@/components/main-components/DashboardFooter";
 import { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Bricolage_Grotesque } from "next/font/google";
 import { Hydration } from "@/components/providers/Hydration";
 import { AuthProvider } from "@/components/contexts/UserAuthContext";
 import FullLoader from "@/components/ui/FullLoader";
@@ -13,7 +13,7 @@ import { Toaster } from "react-hot-toast";
 import InitilizeAuthProvider from "@/components/providers/InitializeAuth";
 import { PlatformSettingsProvider } from "@/components/contexts/PlatformSettingContext";
 
-const geist = Geist({
+const geist = Bricolage_Grotesque({
   subsets: ["latin"],
 });
 

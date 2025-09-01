@@ -166,7 +166,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             error: null,
           });
           router.push(
-            `/login?error=${errorParam}&message=${messageParam || ""}`,
+            `/login${errorParam && `?error=${errorParam}`}${messageParam && `&message=${messageParam || ""}`}`,
           );
         }
       }
@@ -174,10 +174,20 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         ...prev,
         isLoading: false,
       }));
-      router.push(`/login?error=${errorParam}&message=${messageParam || ""}`);
+      if (errorParam || messageParam) {
+        router.push(
+          `/login${errorParam && `?error=${errorParam}`}${messageParam && `&message=${messageParam || ""}`}`,
+        );
+      }
+      router.push("/login");
     } catch (error) {
       console.error("Logout API call failed:", error);
-      router.push(`/login?error=${errorParam}&message=${messageParam || ""}`);
+      if (errorParam || messageParam) {
+        router.push(
+          `/login${errorParam && `?error=${errorParam}`}${messageParam && `&message=${messageParam || ""}`}`,
+        );
+      }
+      router.push("/login");
     }
   }, [authState.isAuthenticated, router, errorParam, messageParam]);
 

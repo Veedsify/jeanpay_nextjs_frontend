@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { Instrument_Sans } from "next/font/google";
+import { Bricolage_Grotesque } from "next/font/google";
 import "../globals.css";
 import { Hydration } from "@/components/providers/Hydration";
+import { Toaster } from "react-hot-toast";
 
-const font = Instrument_Sans({
+const font = Bricolage_Grotesque({
   subsets: ["latin"],
 });
 
@@ -76,6 +77,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${font.className} antialiased`}>
+        <Toaster position="top-center" containerClassName="text-center" />
         <Hydration>{children}</Hydration>
       </body>
     </html>

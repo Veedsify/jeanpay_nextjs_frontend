@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { CountryFlag } from "@/components/payment/CountryFlag";
 import {
@@ -14,13 +14,8 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 import useWallet from "@/hooks/WalletHook";
-
-interface TopupData {
-  currency: string;
-  amount: string;
-  paymentType: "bank" | "momo";
-  wallet: "nigeria" | "ghana";
-}
+import { axiosClient } from "@/lib/axios";
+import { PaymentAccount, TopupData } from "@/types/account";
 
 export default function DirectTopupPaymentPage() {
   const router = useRouter();
@@ -28,6 +23,10 @@ export default function DirectTopupPaymentPage() {
   const [hasPaid, setHasPaid] = useState(false);
   const [isConfirming, setIsConfirming] = useState(false);
   const [copiedField, setCopiedField] = useState<string>("");
+  const [paymentAccount, setPaymentAccount] = useState<PaymentAccount | null>(
+    null,
+  );
+  const [loadingAccount, setLoadingAccount] = useState(true);
   const { topUpWalletMutation } = useWallet();
 
   useEffect(() => {
@@ -41,13 +40,48 @@ export default function DirectTopupPaymentPage() {
     }
   }, [router]);
 
-  const copyToClipboard = (text: string, field: string) => {
+  const fetchPaymentAccount = useCallback(async () => {
+    if (!topupData) return; // Add guard clause
+    try {
+      setLoadingAccount(true);
+      const response = await axiosClient(`/payment-accounts/active`, {
+        params: {
+          currency: topupData?.currency,
+          account_type: topupData?.paymentType,
+        },
+      });
+
+      if (response.data.error === false && response.data.data.length > 0) {
+        setPaymentAccount(response.data.data[0]); // Use the first active account
+      } else {
+        toast.error(
+          "No payment account available for this currency and payment type",
+        );
+        router.push("/dashboard/payment/topup");
+      }
+    } catch (error) {
+      console.error("Failed to fetch payment account:", error);
+      toast.error("Failed to load payment account details");
+      router.push("/dashboard/payment/topup");
+    } finally {
+      setLoadingAccount(false);
+    }
+  }, [topupData, router]);
+
+  const copyToClipboard = useCallback((text: string, field: string) => {
     navigator.clipboard.writeText(text).then(() => {
       setCopiedField(field);
       toast.success(`${field} copied to clipboard`);
       setTimeout(() => setCopiedField(""), 2000);
     });
-  };
+  }, []);
+
+  // Fetch payment account when topupData is available
+  useEffect(() => {
+    if (topupData) {
+      fetchPaymentAccount();
+    }
+  }, [topupData, fetchPaymentAccount]);
 
   const handleConfirmPayment = async () => {
     if (!hasPaid) {
@@ -78,7 +112,7 @@ export default function DirectTopupPaymentPage() {
           setTopupData(null);
           setIsConfirming(false);
           router.push(
-            `/dashboard/payment/topup/success/${result.transactionId}`
+            `/dashboard/payment/topup/success/${result.transactionId}`,
           );
         },
         onError: (error) => {
@@ -90,43 +124,39 @@ export default function DirectTopupPaymentPage() {
           toast.error(errorMessage);
           setIsConfirming(false);
         },
-      }
+      },
     );
   };
 
-  // Mock account details - In production, these would come from your backend
+  // Get account details from the fetched payment account
   const getAccountDetails = () => {
-    if (!topupData) return null;
+    if (!paymentAccount || !topupData) return null;
 
-    // NGN always uses bank transfer, GHS always uses mobile money
-    if (topupData.currency === "NGN") {
-      return {
-        type: "bank",
-        accountName: "JeanPay Limited",
-        accountNumber: "0123456789",
-        bankName: "GTBank",
-        currency: topupData.currency,
-      };
-    } else {
-      // GHS uses mobile money
-      return {
-        type: "momo",
-        accountName: "JeanPay Limited",
-        phoneNumber: "0241234567",
-        network: "MTN Ghana",
-        currency: topupData.currency,
-      };
-    }
+    return {
+      type: paymentAccount.account_type,
+      accountName: paymentAccount.account_name,
+      accountNumber: paymentAccount.account_number,
+      bankName: paymentAccount.bank_name,
+      bankCode: paymentAccount.bank_code,
+      phoneNumber: paymentAccount.phone_number,
+      network: paymentAccount.network,
+      currency: topupData.currency,
+    };
   };
 
   const accountDetails = getAccountDetails();
 
-  if (!topupData || !accountDetails) {
+  if (!topupData || loadingAccount || !accountDetails) {
     return (
       <main className="py-6">
         <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-sm border border-gray-100 p-6">
           <div className="flex items-center justify-center py-12">
             <div className="w-8 h-8 border-2 border-cyan-dark border-t-transparent rounded-full animate-spin"></div>
+            <p className="ml-3 text-gray-600">
+              {loadingAccount
+                ? "Loading payment account details..."
+                : "Loading..."}
+            </p>
           </div>
         </div>
       </main>
@@ -227,7 +257,7 @@ export default function DirectTopupPaymentPage() {
                     onClick={() =>
                       copyToClipboard(
                         accountDetails.accountName,
-                        "Account Name"
+                        "Account Name",
                       )
                     }
                     className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
@@ -253,7 +283,7 @@ export default function DirectTopupPaymentPage() {
                     onClick={() =>
                       copyToClipboard(
                         accountDetails.accountNumber || "",
-                        "Account Number"
+                        "Account Number",
                       )
                     }
                     className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
@@ -279,7 +309,7 @@ export default function DirectTopupPaymentPage() {
                     onClick={() =>
                       copyToClipboard(
                         accountDetails.bankName || "",
-                        "Bank Name"
+                        "Bank Name",
                       )
                     }
                     className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
@@ -307,7 +337,7 @@ export default function DirectTopupPaymentPage() {
                     onClick={() =>
                       copyToClipboard(
                         accountDetails.accountName,
-                        "Account Name"
+                        "Account Name",
                       )
                     }
                     className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
@@ -333,7 +363,7 @@ export default function DirectTopupPaymentPage() {
                     onClick={() =>
                       copyToClipboard(
                         accountDetails.phoneNumber || "",
-                        "Phone Number"
+                        "Phone Number",
                       )
                     }
                     className="p-2 hover:bg-gray-200 rounded-lg transition-colors"

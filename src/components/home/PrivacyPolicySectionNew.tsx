@@ -18,83 +18,131 @@ interface PrivacySectionProps {
 
 const privacySections = [
   {
-    id: "information-collection",
-    title: "Information We Collect",
+    id: "introduction",
+    title: "Introduction",
     icon: UserIcon,
     content: [
-      "Personal information (name, email, phone number, address)",
-      "Financial information (bank account details, transaction history)",
-      "Identity verification documents (government-issued ID, proof of address)",
-      "Device and usage information (IP address, browser type, device ID)",
-      "Location data when you use our mobile app",
-      "Customer service interactions and communications",
+      "JeanPay is committed to protecting your privacy.",
+      "This policy explains what we collect, how we use it, and how we keep it safe.",
     ],
   },
   {
-    id: "information-use",
-    title: "How We Use Your Information",
+    id: "data-collection",
+    title: "Data We Collect",
+    icon: DocumentTextIcon,
+    content: [
+      "Personal Information: name, email, phone number.",
+      "Financial Information: transaction history, bank details.",
+      "Technical Data: IP address, device, and usage data.",
+    ],
+  },
+  {
+    id: "data-use",
+    title: "How We Use Data",
     icon: EyeIcon,
     content: [
-      "Process transactions and provide our financial services",
-      "Verify your identity and comply with regulatory requirements",
-      "Prevent fraud and enhance security measures",
-      "Improve our services and develop new features",
-      "Send important updates about your account and transactions",
-      "Provide customer support and respond to your inquiries",
-      "Conduct marketing activities (with your consent)",
+      "Provide payment and transfer services.",
+      "Prevent fraud and secure accounts.",
+      "Comply with AML and financial laws.",
+      "Improve JeanPay’s app and services.",
+      "JeanPay never sells your data.",
     ],
   },
   {
-    id: "information-sharing",
-    title: "Information Sharing and Disclosure",
+    id: "data-sharing",
+    title: "Sharing of Data",
     icon: GlobeAltIcon,
     content: [
-      "We do not sell your personal information to third parties",
-      "We share information with trusted service providers and partners",
-      "We may disclose information to comply with legal obligations",
-      "We share data with financial institutions to process transactions",
-      "We may share information to prevent fraud or protect our rights",
-      "Business transfers may include your information with proper notice",
+      "JeanPay may share data with:",
+      "Banks & financial institutions (transaction settlement).",
+      "Payment partners (service delivery).",
+      "Regulators & authorities (legal compliance).",
+      "As legally required (e.g., investigations).",
+      "We do not sell data to advertisers.",
     ],
   },
   {
     id: "data-security",
-    title: "Data Security and Protection",
+    title: "Data Security",
     icon: ShieldCheckIcon,
     content: [
-      "Bank-level encryption for all data transmission and storage",
-      "Multi-factor authentication and advanced security protocols",
-      "Regular security audits and penetration testing",
-      "Secure data centers with 24/7 monitoring",
-      "Employee background checks and security training",
-      "Incident response procedures for any security breaches",
+      "Encryption for sensitive data.",
+      "Access controls for authorized staff only.",
+      "Monitoring systems to detect fraud.",
+      "Industry standards for compliance.",
     ],
   },
   {
-    id: "your-rights",
-    title: "Your Privacy Rights",
-    icon: DocumentTextIcon,
+    id: "user-rights",
+    title: "User Rights",
+    icon: UserIcon,
     content: [
-      "Access your personal information we have on file",
-      "Request correction of inaccurate or incomplete data",
-      "Request deletion of your personal information",
-      "Object to processing of your information",
-      "Data portability to transfer your information",
-      "Withdraw consent for marketing communications",
-      "File complaints with relevant data protection authorities",
+      "Request access to your data.",
+      "Correct inaccurate details.",
+      "Request deletion (where legally allowed).",
+      "Contact us at Jeanpayafrica@gmail.com to exercise your rights.",
     ],
   },
   {
-    id: "retention",
+    id: "cookies-tracking",
+    title: "Cookies & Tracking",
+    icon: EyeIcon,
+    content: [
+      "JeanPay uses cookies/analytics to:",
+      "Enhance performance.",
+      "Understand usage.",
+      "Improve features.",
+      "You can disable cookies, but some features may not work.",
+    ],
+  },
+  {
+    id: "data-retention",
     title: "Data Retention",
     icon: ClockIcon,
     content: [
-      "We retain your information as long as your account is active",
-      "Transaction records are kept for regulatory compliance periods",
-      "Identity verification documents are retained as required by law",
-      "Marketing data is retained until you opt out",
-      "We securely delete information when no longer needed",
-      "Some information may be retained for legal or business purposes",
+      "Active accounts: data retained for as long as account exists.",
+      "Closed accounts: some data retained for legal/regulatory compliance.",
+      "Once no longer needed, data is securely deleted.",
+    ],
+  },
+  {
+    id: "international-transfers",
+    title: "International Transfers",
+    icon: GlobeAltIcon,
+    content: [
+      "If data leaves Nigeria or Ghana, JeanPay ensures:",
+      "Encryption and safeguards.",
+      "Legal compliance.",
+      "Use of trusted partners only.",
+    ],
+  },
+  {
+    id: "childrens-privacy",
+    title: "Children’s Privacy",
+    icon: ShieldCheckIcon,
+    content: [
+      "JeanPay is not for users under 18.",
+      "We do not knowingly collect minors’ data.",
+      "Parents may contact us to request deletion.",
+    ],
+  },
+  {
+    id: "policy-changes",
+    title: "Changes to Policy",
+    icon: DocumentTextIcon,
+    content: [
+      "JeanPay may update this Privacy Policy and will notify users through the app, website, or email.",
+      "Continued use means acceptance.",
+    ],
+  },
+  {
+    id: "contact-us",
+    title: "Contact Us",
+    icon: UserIcon,
+    content: [
+      "For questions, complaints, or data requests:",
+      "Email: Jeanpayafrica@gmail.com",
+      "Phone/WhatsApp: +233 538 994 763 / +234 816 842 8010",
     ],
   },
 ];
@@ -122,7 +170,7 @@ export const PrivacyPolicySection = ({
           </p>
           <p className="text-sm text-gray-500">
             Last updated:{" "}
-            {new Date().toLocaleDateString("en-US", {
+            {new Date("08-31-2025").toLocaleDateString("en-US", {
               year: "numeric",
               month: "long",
               day: "numeric",
@@ -168,7 +216,7 @@ export const PrivacyPolicySection = ({
               <button
                 onClick={() =>
                   setActiveSection(
-                    activeSection === section.id ? null : section.id
+                    activeSection === section.id ? null : section.id,
                   )
                 }
                 className="w-full p-6 text-left hover:bg-white/50 transition-colors focus:outline-none"

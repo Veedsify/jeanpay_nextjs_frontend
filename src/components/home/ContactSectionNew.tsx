@@ -13,6 +13,9 @@ import {
   HeartIcon,
 } from "@heroicons/react/24/outline";
 import { BRAND, CONTACT_INFO } from "@/constants";
+import toast from "react-hot-toast";
+import { axiosClient } from "@/lib/axios";
+import { AxiosError } from "axios";
 
 interface ContactSectionProps {
   className?: string;
@@ -61,7 +64,7 @@ const contactMethods: ContactMethod[] = [
     icon: ChatBubbleLeftRightIcon,
     value: "Whatsapp available in app",
     action: "Start Chat",
-    href: "#",
+    href: `https://wa.me/${CONTACT_INFO.support.phone}?text=${encodeURIComponent("Hi Jeanpay Africa, i would like")}`,
     available: "Mon-Fri 8AM-8PM GMT",
     color: "text-green-600",
   },
@@ -86,7 +89,7 @@ export const ContactSection = ({ className = "" }: ContactSectionProps) => {
   const handleInputChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    >,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -95,22 +98,33 @@ export const ContactSection = ({ className = "" }: ContactSectionProps) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    try {
+      const response = await axiosClient.post("/contact", {
+        email: formData.email,
+        full_name: formData.name,
+        message: formData.message,
+        subject: formData.subject,
+        category: formData.category,
+      });
 
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    // Reset form
-    setFormData({
-      name: "",
-      email: "",
-      subject: "",
-      message: "",
-      category: "general",
-    });
-    setIsSubmitting(false);
-
-    // Show success message (you would implement actual form handling here)
-    alert("Message sent successfully! We'll get back to you soon.");
+      if (response.status == 200) {
+        toast.success("Message sent successfully! We'll get back to you soon.");
+        // Reset form
+        setFormData({
+          name: "",
+          email: "",
+          subject: "",
+          message: "",
+          category: "general",
+        });
+      }
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        toast.error(err.response?.data.message);
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -159,8 +173,8 @@ export const ContactSection = ({ className = "" }: ContactSectionProps) => {
                   method.id === "phone"
                     ? "bg-cyan-dark text-white hover:bg-cyan-800"
                     : method.id === "email"
-                    ? "bg-jean-orange text-white hover:bg-orange-600"
-                    : "bg-gray-800 text-white hover:bg-gray-700"
+                      ? "bg-jean-orange text-white hover:bg-orange-600"
+                      : "bg-gray-800 text-white hover:bg-gray-700"
                 }`}
               >
                 {method.action}
