@@ -1,5 +1,5 @@
 # Use Node.js 22
-FROM node:22-alpine
+FROM node:lts-alpine3.22
 
 # Set the working directory
 WORKDIR /app
@@ -16,7 +16,7 @@ RUN apk add --no-cache \
 ENV PYTHON=/usr/bin/python3
 
 # Copy package.json and package-lock.json separately to leverage Docker cache
-COPY package.json package-lock.json* ./
+COPY package.json package-lock.json ./
 
 # Install dependencies with npm
 RUN npm install
