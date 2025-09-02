@@ -279,7 +279,7 @@ const Footer = memo(({ className = "" }: FooterProps) => {
             in Lagos{" "}
             <Link
               className="font-black text-jean-orange"
-              href={"/https://github.com/Veedsify"}
+              href={"https://github.com/Veedsify"}
             >
               by Veedsify
             </Link>
