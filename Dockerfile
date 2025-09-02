@@ -19,7 +19,7 @@ ENV PYTHON=/usr/bin/python3
 COPY package.json package-lock.json* ./
 
 # Install dependencies with npm
-RUN npm ci
+RUN npm install
 
 # Copy the rest of the application code
 COPY . .
