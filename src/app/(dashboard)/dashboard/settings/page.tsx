@@ -5,7 +5,7 @@ import { SettingsHeader } from "@/components/settings/SettingsHeader";
 import { ProfileSection } from "@/components/settings/ProfileSection";
 import { AccountSection } from "@/components/settings/AccountSection";
 import { PreferencesSection } from "@/components/settings/PreferenceSection";
-import { NotificationsSection } from "@/components/settings/NotificationSection";
+// import { NotificationsSection } from "@/components/settings/NotificationSection";
 import { SecuritySection } from "@/components/settings/SecuritySection";
 import { useAuthContext } from "@/components/contexts/UserAuthContext";
 import useSettings from "@/hooks/SettingsHook";
