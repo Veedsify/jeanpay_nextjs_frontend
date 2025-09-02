@@ -12,14 +12,10 @@ const font = Bricolage_Grotesque({
 export const metadata: Metadata = {
   title: "JeanPay - Send Money Across Africa | Fast, Secure, Affordable",
   description:
-    "Send and receive money across Africa with JeanPay. Enjoy the best exchange rates, lowest fees, and lightning-fast transfers. Save up to 7% annually on your USD savings.",
+    "Send and receive money across Africa with JeanPay. Enjoy the best exchange rates, lowest fees, and lightning-fast transfers.",
   keywords: [
     "money transfer",
-    "Africa remittance",
     "cross-border payments",
-    "USD account",
-    "virtual card",
-    "savings account",
     "Ghana Nigeria Kenya",
     "JeanPay",
   ].join(", "),
@@ -28,8 +24,7 @@ export const metadata: Metadata = {
   publisher: "JeanPay",
   openGraph: {
     title: "JeanPay - Send Money Across Africa",
-    description:
-      "Fast, secure, and affordable money transfers across Africa. Virtual USD cards, high-yield savings, and instant transfers.",
+    description: "Fast, secure, and affordable money transfers across Africa.",
     url: "https://jeanpay.com",
     siteName: "JeanPay",
     images: [
