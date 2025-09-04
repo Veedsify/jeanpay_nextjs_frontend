@@ -6,7 +6,13 @@ import Link from "next/link";
 import Logo from "@/components/ui/Logo";
 import { AnimatePresence, motion } from "framer-motion";
 import { House, Bell, Gear, X, List } from "@phosphor-icons/react";
-import { ArrowRightLeft, ChevronDown, CreditCardIcon } from "lucide-react";
+import {
+  ArrowRightLeft,
+  ChevronDown,
+  CreditCardIcon,
+  LogOut,
+} from "lucide-react";
+import HeaderNameTag from "../commons/HeaderNameTag";
 
 const navItems = [
   { id: "dashboard", name: "Dashboard", href: "/dashboard", icon: House },
@@ -136,18 +142,21 @@ export default function MobileHeader() {
   return (
     <>
       {/* Mobile Header */}
-      <div className="bg-green-bg px-4 py-4 flex items-center justify-between">
+      <div className="bg-green-bg px-4 py-4 flex items-center gap-4 justify-between">
         <div className="flex items-center gap-3">
           <Logo variant="secondary" className="w-8 h-8" />
         </div>
         <h1 className="text-xl font-bold text-cyan-dark">{title}</h1>
         <button
           onClick={toggleMobileMenu}
-          className="text-cyan-dark hover:text-cyan-600 transition-colors cursor-pointer"
+          className="text-cyan-dark ml-auto hover:text-cyan-600 transition-colors cursor-pointer"
           aria-label="Toggle menu"
         >
           <List size={24} />
         </button>
+        <div className="">
+          <HeaderNameTag />
+        </div>
       </div>
 
       <AnimatePresence>
@@ -187,7 +196,7 @@ export default function MobileHeader() {
               </div>
             </div>
 
-            <div className="flex-1 space-y-2">
+            <div className="flex-1 flex flex-col space-y-2">
               {navItems.map((item) => (
                 <div key={item.id}>
                   {item.children ? (
@@ -212,6 +221,12 @@ export default function MobileHeader() {
                   )}
                 </div>
               ))}
+              <button
+                className={`flex mt-auto items-center gap-3 px-4 py-3 transition-colors text-red-500 hover:bg-gray-10 rounded-full`}
+              >
+                <LogOut size={20} />
+                <span className="font-medium md:block block">{"Logout"}</span>
+              </button>
             </div>
           </nav>
         </div>

@@ -5,7 +5,7 @@ import Link from "next/link";
 import {
   ArrowRightLeft,
   ChevronDown,
-  Copy,
+  // Copy,
   PlusSquareIcon,
   MoreHorizontal,
   LucideLoader2,
@@ -21,7 +21,7 @@ import {
 } from "../contexts/TransferStore";
 import { useQuery } from "@tanstack/react-query";
 import { getWalletBalance } from "@/funcs/wallet/WalletFunc";
-import { formatIntoSpace } from "@/lib/textformat";
+// import { formatIntoSpace } from "@/lib/textformat";
 import {
   getExchangeRates,
   calculateConversion,
@@ -92,7 +92,7 @@ export default function ConvertForm() {
   const [showToDropdown, setShowToDropdown] = useState(false);
   const fromDropdownRef = useRef<HTMLDivElement>(null);
   const toDropdownRef = useRef<HTMLDivElement>(null);
-  const [copiedCardCode, setCopiedCardCode] = useState<string | null>(null);
+  // const [copiedCardCode, setCopiedCardCode] = useState<string | null>(null);
   const router = useRouter();
   // const { platformSetting } = usePlatFromSettings();
   const { data: exchangeRates } = useQuery({
@@ -140,15 +140,15 @@ export default function ConvertForm() {
     }
   }, [conversionData]);
 
-  const handleCopy = async (cardNumber: string, cardCode: string) => {
-    try {
-      await navigator.clipboard.writeText(cardNumber);
-      setCopiedCardCode(cardCode);
-      setTimeout(() => setCopiedCardCode(null), 2000);
-    } catch (err) {
-      console.log("Failed to copy", err);
-    }
-  };
+  // const handleCopy = async (cardNumber: string, cardCode: string) => {
+  //   try {
+  //     await navigator.clipboard.writeText(cardNumber);
+  //     setCopiedCardCode(cardCode);
+  //     setTimeout(() => setCopiedCardCode(null), 2000);
+  //   } catch (err) {
+  //     console.log("Failed to copy", err);
+  //   }
+  // };
 
   // Format currency with commas
   const formatCurrency = (value: string) => {
@@ -428,7 +428,7 @@ export default function ConvertForm() {
           <div className="space-y-8">
             <div className="bg-green-bg rounded-2xl p-8 space-y-10 border border-green-100">
               <h3 className="font-semibold text-gray-700 text-lg mb-2">
-                Payment Account
+                Wallet Balance
               </h3>
               {/* Wallet Cards */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -508,7 +508,7 @@ export default function ConvertForm() {
                         </div>
                       </div>
                       <div className="flex items-center justify-between px-6 pb-6 pt-2">
-                        <div className="flex items-center gap-2">
+                        {/*<div className="flex items-center gap-2">
                           <span className="text-xs text-gray-400 font-mono tracking-widest bg-gray-50 px-2 py-1 rounded-lg border border-gray-200">
                             {formatIntoSpace(option.walletId, 4, " ")}
                           </span>
@@ -541,7 +541,7 @@ export default function ConvertForm() {
                           )}
                         >
                           {option.currency}
-                        </span>
+                        </span>*/}
                       </div>
                     </div>
                   ))}

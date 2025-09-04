@@ -5,7 +5,7 @@ import Logo from "@/components/ui/Logo";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { House, Bell, Gear } from "@phosphor-icons/react";
-import { ArrowRightLeft, ChevronDown } from "lucide-react";
+import { ArrowRightLeft, ChevronDown, LogOut } from "lucide-react";
 import { CreditCardIcon } from "@phosphor-icons/react/dist/ssr";
 
 const navItems = [
@@ -109,7 +109,7 @@ export default function SideBar() {
         </h1>
       </div>
 
-      <div className="flex-1 space-y-2">
+      <div className="flex-1 flex flex-col space-y-2">
         {navItems.map((item) => {
           if (item.children) {
             return (
@@ -139,6 +139,12 @@ export default function SideBar() {
             </Link>
           );
         })}
+        <button
+          className={`flex mt-auto items-center gap-3 px-4 py-3 transition-colors text-red-500 hover:bg-gray-10 rounded-full`}
+        >
+          <LogOut size={20} />
+          <span className="font-medium md:block block">{"Logout"}</span>
+        </button>
       </div>
     </nav>
   );

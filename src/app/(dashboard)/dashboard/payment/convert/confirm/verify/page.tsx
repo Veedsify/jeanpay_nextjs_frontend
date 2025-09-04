@@ -325,7 +325,7 @@ export default function VerifyTransferPage() {
                         className="w-4 h-4 text-jean-orange border-gray-300 accent-jean-orange border-none"
                       />
                       <span className="text-sm font-medium text-gray-900">
-                        Direct Payment
+                        Direct Payment to Company Account
                       </span>
                     </label>
                   </div>

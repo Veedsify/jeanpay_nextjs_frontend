@@ -37,7 +37,7 @@ export default function HeaderNameTag() {
 
   return (
     <div className={"flex gap-5 items-center"}>
-      <h1 className="text-2xl font-bold text-cyan-dark">
+      <h1 className="text-2xl font-bold text-cyan-dark md:block hidden">
         {user?.first_name || ""} {user?.last_name || ""}
       </h1>
       <div className="relative" ref={dropdownRef}>
@@ -51,7 +51,7 @@ export default function HeaderNameTag() {
             width={50}
             height={50}
             className={
-              "rounded-full aspect-square border object-cover border-cyan-dark hover:border-cyan-600 transition-colors cursor-pointer"
+              "rounded-full aspect-square h-10 w-10 md:w-14 md:h-14 border object-cover border-cyan-dark hover:border-cyan-600 transition-colors cursor-pointer"
             }
           />
         </button>
