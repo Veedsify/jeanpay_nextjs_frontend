@@ -218,6 +218,24 @@ export default function SignupPage() {
               </div>
               <div>
                 <label
+                  htmlFor="phone"
+                  className="block text-sm font-medium text-cyan-dark mb-2"
+                >
+                  Phone Number (Whatsapp)
+                </label>
+                <input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-dark focus:border-transparent"
+                  placeholder="Enter your phone number"
+                  required
+                />
+              </div>
+              <div>
+                <label
                   htmlFor="country"
                   className="block text-sm font-medium text-cyan-dark mb-2"
                 >
