@@ -119,10 +119,38 @@ export default function ConfirmTransferPage() {
   }, [conversionData.toCurrency, handleMethodSelect]);
 
   const handleInputChange = (field: string, value: string) => {
+    // For phoneNumber and accountNumber, reject any non-numeric input immediately
+    if (field === "phoneNumber" || field === "accountNumber") {
+      // Remove any non-numeric characters
+      value = value.replace(/[^0-9]/g, "");
+    }
     setAccountDetails({
-      [field]: value.trim(),
+      [field]: value,
     });
     setValidationError("");
+  };
+
+  // Additional handler for keypress events to prevent non-numeric input
+  const handleNumericKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    // Allow backspace, delete, tab, escape, enter, and arrow keys
+    if (
+      e.key === "Backspace" ||
+      e.key === "Delete" ||
+      e.key === "Tab" ||
+      e.key === "Escape" ||
+      e.key === "Enter" ||
+      e.key === "ArrowLeft" ||
+      e.key === "ArrowRight" ||
+      e.key === "ArrowUp" ||
+      e.key === "ArrowDown"
+    ) {
+      return;
+    }
+
+    // Prevent non-numeric characters
+    if (!/[0-9]/.test(e.key)) {
+      e.preventDefault();
+    }
   };
 
   const validateAccount = async () => {
@@ -325,10 +353,20 @@ export default function ConfirmTransferPage() {
                   </label>
                   <input
                     type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    required
                     value={accountDetails.accountNumber || ""}
-                    onChange={(e) =>
-                      handleInputChange("accountNumber", e.target.value)
-                    }
+                    onChange={(e) => {
+                      handleInputChange("accountNumber", e.target.value);
+                    }}
+                    onKeyDown={handleNumericKeyPress}
+                    onPaste={(e) => {
+                      e.preventDefault();
+                      const pastedText = e.clipboardData.getData("text");
+                      const numericOnly = pastedText.replace(/[^0-9]/g, "");
+                      handleInputChange("accountNumber", numericOnly);
+                    }}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-dark focus:border-transparent"
                     placeholder="Enter 10-digit account number"
                     maxLength={10}
@@ -364,12 +402,22 @@ export default function ConfirmTransferPage() {
                     Phone Number
                   </label>
                   <input
-                    type="tel"
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
                     maxLength={10}
+                    required
                     value={accountDetails.phoneNumber || ""}
-                    onChange={(e) =>
-                      handleInputChange("phoneNumber", e.target.value)
-                    }
+                    onChange={(e) => {
+                      handleInputChange("phoneNumber", e.target.value);
+                    }}
+                    onKeyDown={handleNumericKeyPress}
+                    onPaste={(e) => {
+                      e.preventDefault();
+                      const pastedText = e.clipboardData.getData("text");
+                      const numericOnly = pastedText.replace(/[^0-9]/g, "");
+                      handleInputChange("phoneNumber", numericOnly);
+                    }}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-dark focus:border-transparent"
                     placeholder="Enter mobile money number"
                   />
